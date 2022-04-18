@@ -21,7 +21,7 @@ Sample preview running the website:
 
 https://fernandoparmezani.com.br/
 
-This is my Professional Portifolio 
+This is my Professional Portifolio.
 [fernandoparmezani](https://fernandoparmezani.com.br "Site do Fernando Parmezani").
 
 

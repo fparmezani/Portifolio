@@ -4,11 +4,31 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>C# Moderno Sem Medo — Passe na Entrevista Técnica .NET</title>
-<meta name="description" content="O guia direto ao ponto com as principais perguntas de entrevistas técnicas .NET e como respondê-las com objetividade. R$ 29,90 com 7 dias de garantia." />
+<meta name="description" content="O guia direto ao ponto com as principais perguntas de entrevistas técnicas .NET e como respondê-las com objetividade. R$ 27,90 com 7 dias de garantia." />
 <meta property="og:title" content="C# Moderno Sem Medo — Passe na Entrevista Técnica .NET" />
-<meta property="og:description" content="As perguntas que realmente caem nas entrevistas .NET e as respostas certeiras. R$ 29,90, 7 dias de garantia." />
+<meta property="og:description" content="As perguntas que realmente caem nas entrevistas .NET e as respostas certeiras. R$ 27,90, 7 dias de garantia." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1689726792541553');
+fbq('init', '2020488128549947');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1689726792541553&ev=PageView&noscript=1"
+/><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2020488128549947&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -40,14 +60,33 @@ p{margin:0}
 section{padding:76px 0;position:relative}
 .card{background:linear-gradient(180deg,rgba(11,35,80,.72),rgba(6,16,41,.72));border:1px solid var(--line);border-radius:16px;padding:24px}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:520px;
-  padding:20px 28px;border-radius:14px;text-decoration:none;font-weight:700;font-size:18px;color:#02122b;
-  background:linear-gradient(100deg,#4fd2ff,#1d7dfc);
-  box-shadow:0 18px 50px -18px rgba(29,125,252,.95);transition:transform .18s ease, box-shadow .18s ease;
-  text-align:center;
+  position:relative;overflow:hidden;
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:100%;max-width:560px;
+  padding:22px 30px;border-radius:14px;text-decoration:none;text-align:center;
+  font-family:"Barlow Condensed",Inter,sans-serif;font-weight:800;font-size:clamp(21px,5.4vw,26px);
+  letter-spacing:.03em;line-height:1.1;text-transform:uppercase;color:#fff;
+  text-shadow:0 1px 2px rgba(2,18,43,.45);
+  background:linear-gradient(180deg,#1f78f5 0%,#0b4fd0 100%);
+  border:1px solid rgba(120,200,255,.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 4px rgba(29,125,252,.18),0 18px 50px -14px rgba(29,125,252,.95);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  animation:btnPulse 2.6s ease-in-out infinite;
 }
-.btn:hover{transform:translateY(-2px);box-shadow:0 26px 60px -18px rgba(79,210,255,.9)}
-.btn small{display:block;font-weight:500;font-size:12px;opacity:.75}
+.btn::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:skewX(-20deg);animation:btnShine 3.8s ease-in-out infinite;pointer-events:none;
+}
+.btn:hover{
+  transform:translateY(-2px);animation:none;
+  background:linear-gradient(180deg,#2a84ff 0%,#0d58e0 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 0 0 6px rgba(79,210,255,.22),0 26px 60px -16px rgba(79,210,255,.9);
+}
+.btn:focus-visible{outline:3px solid var(--cyan-400);outline-offset:4px}
+.btn small{display:block;font-family:Inter,sans-serif;font-weight:500;font-size:13px;letter-spacing:0;text-transform:none;color:#d6e8ff;text-shadow:none}
+@keyframes btnPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 4px rgba(29,125,252,.18),0 18px 50px -14px rgba(29,125,252,.95)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 9px rgba(29,125,252,.06),0 18px 50px -14px rgba(29,125,252,.95)}}
+@keyframes btnShine{0%,60%{left:-60%}100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.btn,.btn::after{animation:none}}
 .center{text-align:center}
 .muted{color:var(--muted)}
 /* HERO */
@@ -116,7 +155,7 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
         <span class="badge">C# moderno + .NET atual</span>
       </div>
       <div style="margin-top:30px">
-        <a class="btn" href="#oferta">QUERO PASSAR NA ENTREVISTA — R$ 29,90 <small>acesso imediato · 7 dias de garantia</small></a>
+        <a class="btn" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener" onclick="fbq(&quot;track&quot;, &quot;InitiateCheckout&quot;)">QUERO PASSAR NA ENTREVISTA — R$ 27,90 </a>
       </div>
       <p class="muted" style="margin-top:14px;font-size:13px">Pagamento único. Sem mensalidade. Leitura em um fim de semana.</p>
     </div>
@@ -217,10 +256,10 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
       <h2 style="margin-top:12px">C# Moderno Sem Medo</h2>
       <p class="muted" style="margin-top:10px">Guia de preparação para entrevistas técnicas .NET</p>
       <p class="old" style="margin-top:26px">de R$ 79,90</p>
-      <p class="price grad">R$ 29,90</p>
+      <p class="price grad">R$ 27,90</p>
       <p class="muted" style="margin-top:6px">pagamento único · acesso imediato</p>
       <div style="display:flex;justify-content:center;margin-top:28px">
-        <a class="btn" href="#oferta">GARANTIR MEU EXEMPLAR AGORA <small>menos que uma pizza — pode valer sua primeira vaga</small></a>
+        <a class="btn" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener" onclick="fbq(&quot;track&quot;, &quot;InitiateCheckout&quot;)">GARANTIR MEU EXEMPLAR AGORA <small>menos que uma pizza — pode valer sua primeira vaga</small></a>
       </div>
       <div class="guarantee" style="margin-top:30px;text-align:left">
         <span class="shield">🛡️</span>
@@ -250,7 +289,7 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
   <div class="wrap center">
     <h2>A próxima entrevista vai chegar.<br/><span class="grad">A pergunta é: você vai estar pronto?</span></h2>
     <div style="display:flex;justify-content:center;margin-top:28px">
-      <a class="btn" href="#oferta">COMEÇAR POR R$ 29,90 <small>7 dias de garantia · acesso imediato</small></a>
+      <a class="btn" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener" onclick="fbq(&quot;track&quot;, &quot;InitiateCheckout&quot;)">COMEÇAR POR R$ 27,90 <small>7 dias de garantia · acesso imediato</small></a>
     </div>
   </div>
 </section>
@@ -259,8 +298,24 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
   <div class="wrap center">
     <p>C# Moderno Sem Medo · Todos os direitos reservados.</p>
     <p style="margin-top:8px">Este produto não garante contratação; os resultados dependem da sua dedicação.</p>
+    <p style="margin-top:14px"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a> · <a href="/termos.html" style="color:inherit">Termos de Uso</a> · <a href="mailto:fparmezani@gmail.com" style="color:inherit">fparmezani@gmail.com</a></p>
+    <p style="margin-top:8px">FERNANDO PARMEZANI DOS REIS DESENVOLVIMENTO DE SISTEMAS ME</p>
+    <p style="margin:14px auto 0;max-width:640px;font-size:11.5px;opacity:.8">Este site não é afiliado ao Facebook nem a qualquer entidade do Meta. Depois que você sai do Facebook, a responsabilidade não é deles, e sim deste site. Facebook e Instagram são marcas registradas da Meta Platforms, Inc.</p>
   </div>
 </footer>
 
+<script>
+(function () {
+  var qs = window.location.search.slice(1);
+  if (!qs) return;
+  document.querySelectorAll('a[href*="pay.cakto.com.br"]').forEach(function (a) {
+    var url = new URL(a.href);
+    new URLSearchParams(qs).forEach(function (v, k) {
+      if (!url.searchParams.has(k)) url.searchParams.set(k, v);
+    });
+    a.href = url.toString();
+  });
+})();
+</script>
 </body>
 </html>

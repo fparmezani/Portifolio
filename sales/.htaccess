@@ -1,0 +1,10 @@
+# sales.fernandoparmezani.com.br  (raiz = public_html/sales)
+Options -Indexes
+RewriteEngine On
+
+# Qualquer variação de maiúsculas (ex.: /CSharp-Sem-Medo) → /csharp-sem-medo
+RewriteCond %{REQUEST_URI} !^/csharp-sem-medo
+RewriteRule ^csharp-sem-medo(/.*)?$ /csharp-sem-medo$1 [NC,R=301,L]
+
+# Raiz do subdomínio → produto principal (trocar por uma vitrine quando houver mais produtos)
+RewriteRule ^$ /csharp-sem-medo/ [R=302,L]

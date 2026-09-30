@@ -117,6 +117,22 @@ ul{list-style:none;padding:0;margin:0}
 /* modules */
 .mod{display:flex;gap:16px;align-items:flex-start;padding:20px;border:1px solid var(--line);border-radius:14px;background:rgba(8,24,60,.45)}
 .num{font-family:"Barlow Condensed";font-size:30px;font-weight:800;color:var(--blue-400);line-height:1;min-width:44px}
+/* depoimentos */
+.testi{display:grid;grid-template-columns:repeat(2,minmax(0,340px));gap:22px;justify-content:center;margin-top:34px}
+.tcard{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(8,24,60,.55);box-shadow:0 30px 70px -40px rgba(29,125,252,.8)}
+.tvideo{position:relative;aspect-ratio:4/5;background:#02061a}
+.tvideo video{width:100%;height:100%;object-fit:cover;display:block}
+.tplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:0;padding:0;cursor:pointer;
+  background:linear-gradient(180deg,rgba(3,7,22,0) 45%,rgba(3,7,22,.75))}
+.tplay span{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#1f78f5,#0b4fd0);border:1px solid rgba(120,200,255,.55);
+  box-shadow:0 0 0 8px rgba(29,125,252,.22),0 16px 40px -10px rgba(29,125,252,.9);transition:transform .18s ease}
+.tplay:hover span{transform:scale(1.08)}
+.tplay svg{width:28px;height:28px;margin-left:4px;fill:#fff}
+.tplay .dur{position:absolute;right:12px;bottom:12px;width:auto;height:auto;padding:4px 9px;border-radius:999px;background:rgba(3,7,22,.8);border:0;box-shadow:none;font-size:12px;font-weight:600;color:#fff;font-family:Inter,sans-serif}
+.tplay[hidden]{display:none}
+.tplay:focus-visible{outline:3px solid var(--cyan-400);outline-offset:-3px}
+.tmeta{padding:16px 18px}
 /* offer */
 .offer{border:1px solid rgba(79,210,255,.45);border-radius:22px;padding:44px 34px;background:linear-gradient(180deg,rgba(11,35,80,.9),rgba(3,7,22,.9));box-shadow:0 40px 90px -40px rgba(29,125,252,.7);max-width:720px;margin:0 auto}
 .price{font-family:"Barlow Condensed";font-size:82px;font-weight:800;line-height:.9}
@@ -135,6 +151,7 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:34px}
   .grid3,.grid2{grid-template-columns:1fr}
+  .testi{grid-template-columns:minmax(0,380px)}
   section{padding:56px 0}
   .cover-glow{order:-1}
 }
@@ -248,6 +265,37 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
   </div>
 </section>
 
+<!-- DEPOIMENTOS -->
+<section id="depoimentos">
+  <div class="wrap">
+    <p class="eyebrow center">Quem leu, recomenda</p>
+    <h2 class="center" style="margin-top:12px">Ouça de quem já leu</h2>
+    <p class="muted center" style="margin:14px auto 0;max-width:560px">Depoimentos reais de leitores do C# Moderno Sem Medo, enviados em vídeo.</p>
+    <div class="testi">
+      <figure class="tcard" style="margin:0">
+        <div class="tvideo">
+          <video src="assets/video/depoimento-1.mp4" poster="assets/video/depoimento-1.jpg" preload="none" playsinline></video>
+          <button class="tplay" type="button" aria-label="Assistir depoimento de Leandro Oliveira">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="dur">0:17</span>
+          </button>
+        </div>
+        <figcaption class="tmeta"><p style="margin:0;font-weight:600">Leandro Oliveira</p><p class="muted" style="margin-top:2px;font-size:13.5px">Leitor do ebook</p></figcaption>
+      </figure>
+      <figure class="tcard" style="margin:0">
+        <div class="tvideo">
+          <video src="assets/video/depoimento-2.mp4" poster="assets/video/depoimento-2.jpg" preload="none" playsinline></video>
+          <button class="tplay" type="button" aria-label="Assistir depoimento de Jeferson Santos">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="dur">1:24</span>
+          </button>
+        </div>
+        <figcaption class="tmeta"><p style="margin:0;font-weight:600">Jeferson Santos</p><p class="muted" style="margin-top:2px;font-size:13.5px">Leitor do ebook</p></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- OFERTA -->
 <section id="oferta">
   <div class="wrap">
@@ -314,6 +362,22 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
       if (!url.searchParams.has(k)) url.searchParams.set(k, v);
     });
     a.href = url.toString();
+  });
+})();
+</script>
+<script>
+(function () {
+  var videos = document.querySelectorAll('.tvideo video');
+  document.querySelectorAll('.tvideo').forEach(function (box, i) {
+    var video = box.querySelector('video');
+    var play = box.querySelector('.tplay');
+    play.addEventListener('click', function () {
+      videos.forEach(function (v) { if (v !== video) v.pause(); });
+      play.hidden = true;
+      video.controls = true;
+      video.play();
+      if (typeof fbq === 'function') fbq('trackCustom', 'AssistiuDepoimento', { depoimento: i + 1 });
+    });
   });
 })();
 </script>

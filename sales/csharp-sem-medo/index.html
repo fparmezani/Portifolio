@@ -140,7 +140,7 @@ ul{list-style:none;padding:0;margin:0}
 .author{display:grid;grid-template-columns:320px 1fr;gap:48px;align-items:center;max-width:980px;margin:0 auto}
 .author-photo{position:relative}
 .author-photo::after{content:"";position:absolute;inset:8%;background:radial-gradient(closest-side,rgba(29,125,252,.5),transparent 70%);filter:blur(34px);z-index:0}
-.author-photo img{position:relative;z-index:1;width:100%;display:block;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.author-photo img{position:relative;z-index:1;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
 .author-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
 .author-stats span{font-size:13px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(8,24,60,.6);color:#d6e3ff}
 .author-stats b{color:var(--cyan-400);font-weight:700}

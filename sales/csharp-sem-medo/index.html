@@ -90,13 +90,13 @@ section{padding:76px 0;position:relative}
 .center{text-align:center}
 .muted{color:var(--muted)}
 /* HERO */
-.hero{padding-top:56px;overflow:hidden}
+.hero{padding:48px 0 56px;overflow:hidden}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
 .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .badge{font-size:12.5px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(8,24,60,.6)}
 .cover-glow{position:relative;display:flex;justify-content:center}
 .cover-glow::after{content:"";position:absolute;inset:12% 6%;background:radial-gradient(closest-side,rgba(29,125,252,.55),transparent 70%);filter:blur(38px);z-index:0}
-.cover-glow img{position:relative;z-index:1;width:100%;max-width:1180px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
+.cover-glow img{position:relative;z-index:1;width:100%;max-width:430px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
 .hook{font-size:clamp(17px,2.1vw,21px);color:#cfe0ff;margin-top:22px;max-width:640px}
 /* pain */
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -136,6 +136,14 @@ ul{list-style:none;padding:0;margin:0}
 .tin{display:inline-flex;vertical-align:-2px;margin-left:6px;color:#4fa3ff}
 .tin svg{width:15px;height:15px;fill:currentColor}
 .tin:hover{color:var(--cyan-400)}
+/* autor */
+.author{display:grid;grid-template-columns:320px 1fr;gap:48px;align-items:center;max-width:980px;margin:0 auto}
+.author-photo{position:relative}
+.author-photo::after{content:"";position:absolute;inset:8%;background:radial-gradient(closest-side,rgba(29,125,252,.5),transparent 70%);filter:blur(34px);z-index:0}
+.author-photo img{position:relative;z-index:1;width:100%;display:block;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.author-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.author-stats span{font-size:13px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(8,24,60,.6);color:#d6e3ff}
+.author-stats b{color:var(--cyan-400);font-weight:700}
 /* offer */
 .offer{border:1px solid rgba(79,210,255,.45);border-radius:22px;padding:44px 34px;background:linear-gradient(180deg,rgba(11,35,80,.9),rgba(3,7,22,.9));box-shadow:0 40px 90px -40px rgba(29,125,252,.7);max-width:720px;margin:0 auto}
 .price{font-family:"Barlow Condensed";font-size:82px;font-weight:800;line-height:.9}
@@ -157,6 +165,11 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
   .testi{grid-template-columns:minmax(0,380px)}
   section{padding:56px 0}
   .cover-glow{order:-1}
+  .hero{padding:24px 0 48px}
+  .cover-glow img{max-width:190px}
+  .author{grid-template-columns:1fr;text-align:center;gap:26px}
+  .author-photo{max-width:220px;margin:0 auto}
+  .author-stats{justify-content:center}
 }
 </style>
 </head>
@@ -295,6 +308,26 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
         </div>
         <figcaption class="tmeta"><p style="margin:0;font-weight:600">Jeferson Santos <a class="tin" href="https://www.linkedin.com/in/jeferson-rodrigues-dos-santos-4555905b/" target="_blank" rel="noopener" aria-label="LinkedIn de Jeferson Santos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></p><p class="muted" style="margin-top:2px;font-size:13.5px">Dev Full Stack · .NET e ASP.NET Core</p></figcaption>
       </figure>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOR -->
+<section id="autor">
+  <div class="wrap author">
+    <div class="author-photo"><img src="assets/img/fernando-parmezani.jpg" alt="Fernando Parmezani, autor do ebook" width="640" height="640" loading="lazy" /></div>
+    <div>
+      <p class="eyebrow">Quem escreveu</p>
+      <h2 style="margin-top:12px">Fernando Parmezani</h2>
+      <p style="margin-top:8px;color:var(--cyan-400);font-weight:600">Engenheiro de Software Sênior · .NET &amp; Tech Lead</p>
+      <p class="muted" style="margin-top:18px">Há mais de 18 anos eu desenvolvo aplicações web com C#, .NET, Angular e cloud. Hoje atuo como Desenvolvedor .NET Sênior e Tech Lead em sistemas corporativos, APIs, integrações e modernização de sistemas legados.</p>
+      <p class="muted" style="margin-top:14px">Escrevi o <strong style="color:var(--ink)">C# Moderno Sem Medo</strong> para entregar o que eu gostaria de ter recebido no começo da carreira: o que realmente importa numa entrevista técnica .NET, explicado de forma direta, com exemplos e sem enrolação.</p>
+      <div class="author-stats">
+        <span><b>18+</b> anos com .NET</span>
+        <span>Tech Lead</span>
+        <span>Backend, APIs e cloud</span>
+      </div>
+      <p style="margin-top:22px;font-size:14px"><a href="https://www.linkedin.com/in/fparmezani" target="_blank" rel="noopener" style="color:var(--cyan-400);font-weight:600;text-decoration:none">Ver meu LinkedIn →</a></p>
     </div>
   </div>
 </section>

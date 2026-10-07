@@ -1,0 +1,6 @@
+# Subdomínio das ferramentas (raiz = pasta tools)
+Options -Indexes
+
+# O código da API roda como app Node, não é servido como arquivo
+RewriteEngine On
+RewriteRule ^backend(/|$) - [F,L]

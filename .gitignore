@@ -1,2 +1,5 @@
 # Arquivos brutos que não vão para o site
 WhatsApp Video*
+
+# Dependências do backend
+node_modules/

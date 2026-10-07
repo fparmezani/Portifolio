@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raio-X do Currículo | Fernando Parmezani</title>
+  <meta name="description" content="Envie o PDF do currículo e receba o que mudar, trecho a trecho, e uma versão reescrita pronta para exportar. Nada é guardado." />
+  <meta name="raio-x-api" content="https://api.fernandoparmezani.com.br" />
+  <meta name="theme-color" content="#020814" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
+  <link rel="stylesheet" href="../tools.css?v=11" />
+</head>
+<body>
+  <div class="site-bg" aria-hidden="true"></div>
+  <header class="header">
+    <a class="brand" href="https://fernandoparmezani.com.br/">
+      <img src="https://fernandoparmezani.com.br/assets/logotipo.png" alt="Fernando Parmezani" class="brand-logo">
+      <span>Fernando Parmezani</span>
+    </a>
+    <nav class="nav" aria-label="Navegação">
+      <a href="https://fernandoparmezani.com.br/">Início</a>
+      <a href="../">Ferramentas</a>
+      <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
+    </nav>
+  </header>
+
+  <main class="tools-main">
+    <div class="container">
+      <p class="crumb"><a href="../">Ferramentas</a> / Raio-X do Currículo</p>
+
+      <section id="view-upload">
+        <div class="center-copy">
+          <p class="eyebrow"><span class="pulse-dot"></span> Consulta ATS</p>
+          <h1>Raio-X do<br><strong>Currículo</strong></h1>
+          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para exportar. Nenhum dado é inventado.</p>
+        </div>
+        <form class="context-form" id="context-form">
+          <p>Opcional, mas com a vaga a reescrita mira nela. Pode enviar só o PDF.</p>
+          <div class="context-grid">
+            <label>Nome da empresa
+              <input id="company" name="company" type="text" maxlength="120" autocomplete="organization" placeholder="Empresa da vaga" />
+            </label>
+            <label>Nome da empresa recrutadora
+              <input id="recruiter" name="recruiter" type="text" maxlength="120" autocomplete="off" placeholder="Quem está recrutando" />
+            </label>
+          </div>
+          <label>Descrição da vaga
+            <textarea id="job-description" name="job-description" rows="4" maxlength="2000" placeholder="Cole a descrição, se tiver"></textarea>
+          </label>
+        </form>
+        <label class="dropzone" id="dropzone">
+          <strong>Solte o PDF aqui</strong>
+          <span>ou clique para escolher · só .pdf</span>
+          <input id="file" type="file" accept="application/pdf,.pdf" hidden />
+        </label>
+        <p class="form-error" id="upload-error" role="alert"></p>
+        <p class="disclaimer center-copy">O PDF é lido no seu navegador. Só o texto extraído segue para a análise e é descartado em seguida, sem banco e sem log (LGPD). A nota mede boas práticas, não é nota oficial de ATS.</p>
+      </section>
+
+      <section id="view-scan" hidden>
+        <div class="center-copy">
+          <p class="eyebrow"><span class="pulse-dot"></span> Lendo o arquivo</p>
+          <h1>Varredura</h1>
+        </div>
+        <div class="scan-wrap">
+          <div class="scan-stage" id="scan-stage">
+            <canvas id="page-canvas"></canvas>
+            <div class="scan-line" aria-hidden="true"></div>
+          </div>
+          <p class="scan-status" id="scan-status" aria-live="polite">Lendo o texto selecionável…</p>
+        </div>
+      </section>
+
+      <section id="view-result" hidden>
+        <p class="eyebrow"><span class="pulse-dot"></span> Consulta ATS</p>
+        <h1>Raio-X do<br><strong>Currículo</strong></h1>
+        <p class="file-chip" id="file-chip"></p>
+
+        <div id="full-result">
+          <article class="panel verdict-panel">
+            <div class="score-wrap">
+              <div class="score-ring" id="score-ring"><b id="score-value">0</b></div>
+              <div>
+                <p class="verdict-kicker">Aderência a boas práticas<span id="vacancy-tag"></span></p>
+                <h2 id="verdict-headline"></h2>
+                <p class="score-copy" id="verdict-summary"></p>
+              </div>
+            </div>
+            <div class="verdict-cols">
+              <div>
+                <h3 class="col-ok">O que já funciona</h3>
+                <ul class="dot-list is-ok" id="strength-list"></ul>
+              </div>
+              <div>
+                <h3 class="col-bad">O que derruba a leitura</h3>
+                <ul class="dot-list is-bad" id="risk-list"></ul>
+              </div>
+            </div>
+            <div class="kw-row" id="kw-row"></div>
+          </article>
+
+          <h2 class="step-title"><span>1</span> O que mudar, trecho a trecho</h2>
+          <p class="step-lead">Cada cartão mostra o texto de hoje e o texto sugerido, pronto para copiar.</p>
+          <div id="section-list" class="section-list"></div>
+
+          <h2 class="step-title"><span>2</span> Seu currículo reescrito</h2>
+          <p class="step-lead">Montado com os seus dados. Clique em qualquer texto para editar. Os trechos em amarelo pedem um dado que só você tem.</p>
+          <div class="todo-box" id="todo-box" hidden>
+            <strong>Antes de exportar</strong>
+            <ul id="todo-list"></ul>
+          </div>
+          <div class="resume-bar">
+            <span id="todo-count" class="todo-count"></span>
+            <div class="gate-actions">
+              <button class="btn btn-secondary" type="button" id="export-doc">Baixar Word</button>
+              <button class="btn btn-primary" type="button" id="export-pdf">Exportar PDF</button>
+            </div>
+          </div>
+          <div class="sheet-frame">
+            <article id="resume-sheet" class="resume-sheet" contenteditable="true" spellcheck="true"></article>
+          </div>
+        </div>
+
+        <div id="lite-result" hidden>
+          <article class="panel lite-note">
+            <h2>Leitura básica</h2>
+            <p id="lite-reason"></p>
+          </article>
+          <article class="panel">
+            <div class="score-wrap">
+              <div class="score-ring" id="lite-ring"><b id="lite-score">0</b></div>
+              <p class="score-copy"><strong style="color:var(--text)">Aderência a boas práticas</strong><br>Leitura por regras, feita no navegador.</p>
+            </div>
+            <ul class="check-list" id="rank-list"></ul>
+          </article>
+          <div id="block-list" class="block-list"></div>
+        </div>
+
+        <article class="panel close-sale" id="close-sale">
+          <img src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
+          <div>
+            <h2 id="close-title"></h2>
+            <p id="close-body"></p>
+            <div class="gate-actions">
+              <a class="btn btn-primary" id="close-link" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
+              <button class="btn btn-secondary" type="button" id="again">Analisar outro PDF</button>
+            </div>
+          </div>
+        </article>
+        <p class="disclaimer">O texto do currículo é usado só para gerar esta leitura e é descartado. Nada é guardado. A nota não é oficial de nenhum ATS.</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="gate" id="gate" hidden>
+    <div class="gate-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div>
+        <video id="gate-video" controls playsinline preload="metadata" hidden></video>
+        <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
+      </div>
+      <div>
+        <p class="gate-status" id="gate-status" aria-live="polite">Reescrevendo o seu currículo. Leva cerca de um minuto.</p>
+        <h2 id="gate-title">O ATS leu a forma. A entrevista cobra o porquê.</h2>
+        <p>O raio-x só olha o arquivo. Na call, a pergunta é outra: <code>record</code>, <code>await</code>, valor e referência. Você precisa explicar o que o código faz antes de rodar.</p>
+        <p>O C# Moderno Sem Medo são 10 capítulos nesse caminho, com laboratório e mais de 100 perguntas de revisão. R$ 27,90, PDF na hora, 7 dias para devolver.</p>
+        <div class="gate-actions">
+          <button class="btn btn-primary" type="button" id="see-result" disabled>Ver meu raio-x</button>
+          <a class="btn btn-secondary" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead.</div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="analyze.js"></script>
+  <script src="app.js"></script>
+  <script src="../chrome.js"></script>
+</body>
+</html>

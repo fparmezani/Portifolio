@@ -3,3 +3,6 @@ WhatsApp Video*
 
 # Dependências do backend
 node_modules/
+
+# Credenciais MCP (Cakto etc.)
+.cursor/mcp.json

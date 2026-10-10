@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fernando Parmezani · Links</title>
+  <meta name="description" content="Todos os links de Fernando Parmezani — portfólio, cursos, LinkedIn e contato." />
+  <meta property="og:title" content="Fernando Parmezani · Links" />
+  <meta property="og:description" content="Portfólio, cursos e redes em um só lugar." />
+  <meta property="og:image" content="https://links.fernandoparmezani.com.br/assets/fernandoparmezani.png" />
+  <link rel="icon" href="assets/logotipo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #020814;
+      --bg2: #06111f;
+      --blue: #0d6efd;
+      --accent: #1d4ed8;
+      --deep: #073d92;
+      --cyan: #38bdf8;
+      --link: #83bdff;
+      --text: #f8fafc;
+      --muted: #a8b3c7;
+      --soft: #708096;
+      --panel: rgba(8, 20, 38, .82);
+      --line: rgba(59, 130, 246, .25);
+      --radius: 18px;
+      --display: Sora, Inter, system-ui, sans-serif;
+      --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      color: var(--text);
+      font-family: var(--font);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(13, 110, 253, .35), transparent 55%),
+        radial-gradient(circle at 85% 80%, rgba(6, 40, 101, .45), transparent 45%),
+        var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 56px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(13, 110, 253, .45) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at 50% 20%, #000 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 420px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* —— header —— */
+    .avatar-wrap {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: rise .7s var(--ease) .05s forwards;
+    }
+
+    .avatar-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 110, 253, .55), transparent 70%);
+      animation: pulse 3.2s ease-in-out infinite;
+    }
+
+    .avatar {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      border: 2px solid var(--line);
+      background: var(--bg2);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 7px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: rgba(13, 110, 253, .08);
+      color: var(--link);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: rise .7s var(--ease) .12s forwards;
+    }
+
+    .tag::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 10px var(--blue);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(1.55rem, 5vw, 1.85rem);
+      letter-spacing: -.04em;
+      text-align: center;
+      text-transform: uppercase;
+      line-height: 1.1;
+      opacity: 0;
+      animation: rise .7s var(--ease) .18s forwards;
+    }
+
+    h1 .hl {
+      background: linear-gradient(135deg, #2e8bff 0%, var(--blue) 45%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin-top: 10px;
+      margin-bottom: 32px;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.5;
+      text-align: center;
+      max-width: 320px;
+      opacity: 0;
+      animation: rise .7s var(--ease) .24s forwards;
+    }
+
+    /* —— links —— */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link {
+      --delay: 0s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .28);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise .65s var(--ease) var(--delay) forwards;
+      overflow: visible;
+      transition:
+        transform .22s var(--ease),
+        border-color .22s var(--ease),
+        background .22s var(--ease),
+        box-shadow .22s var(--ease);
+    }
+
+    .link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(46, 139, 255, .12), transparent 55%);
+      opacity: 0;
+      transition: opacity .22s var(--ease);
+      pointer-events: none;
+    }
+
+    .link:hover {
+      transform: translateY(-3px) scale(1.015);
+      border-color: rgba(13, 110, 253, .55);
+      background: rgba(10, 28, 56, .92);
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, .4),
+        0 0 0 1px rgba(13, 110, 253, .15),
+        0 0 28px rgba(13, 110, 253, .18);
+    }
+
+    .link:hover::after { opacity: 1; }
+
+    .link:active {
+      transform: translateY(-1px) scale(.99);
+      transition-duration: .1s;
+    }
+
+    .link:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .link-icon {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(13, 110, 253, .12);
+      border: 1px solid var(--line);
+      color: var(--link);
+      transition: transform .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease);
+    }
+
+    .link:hover .link-icon {
+      transform: scale(1.08);
+      background: rgba(13, 110, 253, .22);
+    }
+
+    .link-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .link-icon.brand {
+      background: rgba(255, 255, 255, .06);
+      border-color: var(--line2, rgba(148, 163, 184, .13));
+    }
+
+    .link-icon.brand svg {
+      width: 22px;
+      height: 22px;
+      stroke: none;
+      fill: currentColor;
+    }
+
+    .link-icon.brand.ig { color: #E4405F; }
+    .link-icon.brand.yt { color: #FF0000; }
+    .link-icon.brand.li { color: #0A66C2; }
+    .link-icon.brand.wa { color: #25D366; }
+
+    .link-icon.brand.ig svg {
+      fill: url(#ig-grad);
+    }
+
+    .link:hover .link-icon.brand {
+      background: rgba(255, 255, 255, .1);
+      transform: scale(1.1);
+    }
+
+    .link-icon.cover {
+      padding: 0;
+      overflow: visible;
+      background: transparent;
+      border-color: rgba(13, 110, 253, .35);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .35);
+    }
+
+    .link-icon.cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 11px;
+      display: block;
+      transition: transform .22s var(--ease);
+    }
+
+    .link:hover .link-icon.cover {
+      transform: scale(1.42) translateY(-8px);
+      background: transparent;
+      box-shadow:
+        0 14px 28px rgba(0, 0, 0, .5),
+        0 0 22px rgba(13, 110, 253, .35);
+      z-index: 2;
+    }
+
+    .link:hover .link-icon.cover img {
+      transform: none;
+    }
+
+    .link-copy {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .link-copy strong {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: .98rem;
+      letter-spacing: -.02em;
+    }
+
+    .link-copy span {
+      color: var(--soft);
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+
+    .link-arrow {
+      flex-shrink: 0;
+      color: var(--soft);
+      transition: transform .22s var(--ease), color .22s var(--ease);
+    }
+
+    .link-arrow svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .link:hover .link-arrow {
+      color: var(--link);
+      transform: translateX(4px);
+    }
+
+    .link.primary {
+      background: linear-gradient(135deg, var(--blue), var(--deep));
+      border-color: transparent;
+    }
+
+    .link.primary .link-icon:not(.cover) {
+      background: rgba(255, 255, 255, .14);
+      border-color: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .link.primary .link-icon.cover {
+      border-color: rgba(255, 255, 255, .28);
+    }
+
+    .link.primary .link-copy span { color: rgba(248, 250, 252, .78); }
+    .link.primary .link-arrow { color: rgba(248, 250, 252, .7); }
+
+    .link.primary:hover {
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, .4),
+        0 0 32px rgba(13, 110, 253, .35);
+      border-color: transparent;
+    }
+
+    .section-label {
+      width: 100%;
+      margin: 8px 0 2px;
+      padding-left: 4px;
+      color: var(--soft);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: rise .65s var(--ease) .42s forwards;
+    }
+
+    .footer {
+      margin-top: 40px;
+      color: var(--soft);
+      font-size: .75rem;
+      letter-spacing: .06em;
+      text-align: center;
+      opacity: 0;
+      animation: rise .7s var(--ease) .85s forwards;
+    }
+
+    .footer a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    @keyframes rise {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: .55; transform: scale(1); }
+      50% { opacity: .9; transform: scale(1.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .avatar-wrap,
+      .tag,
+      h1,
+      .lead,
+      .link,
+      .section-label,
+      .footer {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#f09433" />
+        <stop offset="25%" stop-color="#e6683c" />
+        <stop offset="50%" stop-color="#dc2743" />
+        <stop offset="75%" stop-color="#cc2366" />
+        <stop offset="100%" stop-color="#bc1888" />
+      </linearGradient>
+    </defs>
+  </svg>
+  <main class="page">
+    <div class="avatar-wrap">
+      <img
+        class="avatar"
+        src="assets/fernandoparmezani.png"
+        alt="Fernando Parmezani"
+        width="112"
+        height="112"
+      />
+    </div>
+
+    <div class="tag">Senior .NET · Tech Lead</div>
+    <h1>Fernando <span class="hl">Parmezani</span></h1>
+    <p class="lead">Produtos, ferramentas e redes — escolhe o próximo passo.</p>
+
+    <nav class="links" aria-label="Links principais">
+      <p class="section-label" style="animation-delay: .28s">Cursos &amp; produtos</p>
+
+      <a
+        class="link primary"
+        style="--delay: .32s"
+        href="https://sales.fernandoparmezani.com.br/csharp-sem-medo/?utm_source=links&amp;utm_medium=bio&amp;utm_campaign=link_in_bio&amp;utm_content=csharp-sem-medo"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon cover" aria-hidden="true">
+          <img src="assets/ebook-csharp-sem-medo.png" alt="" width="42" height="42" />
+        </span>
+        <span class="link-copy">
+          <strong>C# Moderno Sem Medo</strong>
+          <span>Ebook prático para entrevistas e dia a dia</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a
+        class="link"
+        style="--delay: .4s"
+        href="https://pay.cakto.com.br/33icgn7_1093660?utm_source=links&amp;utm_medium=bio&amp;utm_campaign=link_in_bio&amp;utm_content=claude-code-dotnet"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon cover" aria-hidden="true">
+          <img src="assets/ebook-claude-dotnet.png" alt="" width="42" height="42" />
+        </span>
+        <span class="link-copy">
+          <strong>Claude Code para .NET</strong>
+          <span>Montando seu ambiente de engenharia avançada</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a
+        class="link"
+        style="--delay: .48s"
+        href="https://pay.cakto.com.br/qm7gdn3_1164989?utm_source=links&amp;utm_medium=bio&amp;utm_campaign=link_in_bio&amp;utm_content=mentoria-csharp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon cover" aria-hidden="true">
+          <img src="assets/mentoria-csharp.png" alt="" width="42" height="42" />
+        </span>
+        <span class="link-copy">
+          <strong>Mentoria em C# Sem Medo</strong>
+          <span>Sessões 1:1 · C# e .NET com feedback direto</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <p class="section-label" style="animation-delay: .52s">Ferramentas</p>
+
+      <a
+        class="link"
+        style="--delay: .56s"
+        href="https://tools.fernandoparmezani.com.br/ats/?utm_source=links&amp;utm_medium=bio&amp;utm_campaign=link_in_bio&amp;utm_content=raio-x-curriculo"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon cover" aria-hidden="true">
+          <img src="assets/raio-x-curriculo.png" alt="" width="42" height="42" />
+        </span>
+        <span class="link-copy">
+          <strong>Raio-X do Currículo</strong>
+          <span>Ferramenta gratuita · análise ATS</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+
+      <p class="section-label">Redes &amp; contato</p>
+
+      <a
+        class="link"
+        style="--delay: .64s"
+        href="https://www.instagram.com/fernandoparmezani"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon brand ig" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+        </span>
+        <span class="link-copy">
+          <strong>Instagram</strong>
+          <span>@fernandoparmezani</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a
+        class="link"
+        style="--delay: .72s"
+        href="https://www.youtube.com/@fernandoparmezani"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon brand yt" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </span>
+        <span class="link-copy">
+          <strong>YouTube</strong>
+          <span>@fernandoparmezani</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a
+        class="link"
+        style="--delay: .8s"
+        href="https://www.linkedin.com/in/fparmezani"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon brand li" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </span>
+        <span class="link-copy">
+          <strong>LinkedIn</strong>
+          <span>Conteúdo .NET e carreira tech</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a
+        class="link"
+        style="--delay: .88s"
+        href="https://wa.me/5511963767799"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link-icon brand wa" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </span>
+        <span class="link-copy">
+          <strong>WhatsApp</strong>
+          <span>Fala comigo direto</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+    </nav>
+
+    <p class="footer">
+      <a href="https://fernandoparmezani.com.br">fernandoparmezani.com.br</a>
+    </p>
+  </main>
+</body>
+</html>

@@ -9,10 +9,10 @@
 <meta property="og:description" content="Configure. Automatize. Produza. Evolua. O playbook para colocar IA no seu fluxo .NET de verdade. R$ 17,00, 7 dias de garantia." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://sales.fernandoparmezani.com.br/claudecodenet/" />
-<meta property="og:image" content="https://sales.fernandoparmezani.com.br/claudecodenet/assets/img/hero-mockup.jpg" />
+<meta property="og:image" content="https://sales.fernandoparmezani.com.br/claudecodenet/assets/img/mockup-ebook.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="canonical" href="https://sales.fernandoparmezani.com.br/claudecodenet/" />
-<link rel="icon" href="assets/img/ebook-cover.jpg" />
+<link rel="icon" href="assets/img/mockup-ebook.png" />
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -95,12 +95,32 @@ section{padding:76px 0;position:relative}
 .muted{color:var(--muted)}
 /* HERO */
 .hero{padding:48px 0 56px;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
 .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .badge{font-size:12.5px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(8,24,60,.6)}
-.cover-glow{position:relative;display:flex;justify-content:center;align-items:center}
-.cover-glow::after{content:"";position:absolute;inset:18% 8%;background:radial-gradient(closest-side,rgba(29,125,252,.45),transparent 72%);filter:blur(36px);z-index:0;pointer-events:none}
-.cover-glow img{position:relative;z-index:1;display:block;width:100%;max-width:560px;height:auto;aspect-ratio:2400/1792;object-fit:contain;filter:drop-shadow(0 28px 48px rgba(0,0,0,.55))}
+.cover-glow{position:relative;display:flex;justify-content:center;align-items:center;padding-bottom:28px}
+.cover-glow::before{
+  content:"";position:absolute;left:50%;bottom:2%;transform:translateX(-50%);
+  width:78%;height:18%;border-radius:50%;
+  background:
+    radial-gradient(ellipse at center, rgba(79,210,255,.28) 0%, rgba(29,125,252,.16) 38%, transparent 72%),
+    radial-gradient(ellipse at center, rgba(0,0,0,.75) 0%, transparent 70%);
+  filter:blur(10px);z-index:0;pointer-events:none;
+}
+.cover-glow::after{
+  content:"";position:absolute;inset:8% 6% 14%;
+  background:radial-gradient(closest-side, rgba(29,125,252,.48), transparent 72%);
+  filter:blur(38px);z-index:0;pointer-events:none;
+}
+.cover-glow img{
+  position:relative;z-index:1;display:block;width:100%;max-width:420px;height:auto;
+  aspect-ratio:1024/1536;object-fit:contain;
+  filter:
+    drop-shadow(0 0 1px rgba(120,200,255,.35))
+    drop-shadow(0 18px 28px rgba(0,0,0,.55))
+    drop-shadow(0 36px 56px rgba(29,125,252,.28))
+    drop-shadow(0 48px 70px rgba(0,0,0,.65));
+}
 .hook{font-size:clamp(17px,2.1vw,21px);color:#cfe0ff;margin-top:22px;max-width:640px}
 /* pain */
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -155,9 +175,9 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
   .grid3,.grid2,.pillars{grid-template-columns:1fr}
   .pillars{grid-template-columns:repeat(2,1fr)}
   section{padding:56px 0}
-  .cover-glow{order:-1}
+  .cover-glow{order:-1;padding-bottom:20px}
   .hero{padding:24px 0 48px}
-  .cover-glow img{max-width:min(100%,380px)}
+  .cover-glow img{max-width:200px}
   .author{grid-template-columns:1fr;text-align:center;gap:26px}
   .author-photo{max-width:220px;margin:0 auto}
   .author-stats{justify-content:center}
@@ -187,7 +207,7 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--muted);f
       </div>
       <p class="muted" style="margin-top:14px;font-size:13px">Pagamento único. Sem mensalidade. Acesso imediato após a compra.</p>
     </div>
-    <div class="cover-glow"><img src="assets/img/hero-mockup.jpg" alt="Mockup Claude Code para .NET — livro, laptop e mobile" width="2400" height="1792" /></div>
+    <div class="cover-glow"><img src="assets/img/mockup-ebook.png" alt="Capa do ebook Claude Code para .NET" width="1024" height="1536" /></div>
   </div>
 </section>
 

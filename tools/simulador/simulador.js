@@ -1,4 +1,4 @@
-import { exigirCadastro, barraDoUsuario, registrarUso, supabase } from "../auth.js?v=3";
+import { exigirCadastro, barraDoUsuario, registrarUso, supabase } from "../auth.js?v=4";
 
 const POR_SIMULADO = 10;
 const LIVRO = "C# Moderno sem Medo";

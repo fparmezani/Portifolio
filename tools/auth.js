@@ -21,6 +21,8 @@ const ERROS = {
 };
 const traduzir = (erro) => ERROS[erro?.message] ?? "Não deu certo agora. Tente de novo em instantes.";
 const urlDeVolta = () => location.origin + location.pathname;
+// Se o Supabase devolver a pessoa para /tools/, a página de Ferramentas usa isto para mandá-la de volta à ferramenta.
+const lembrarVolta = () => { try { localStorage.setItem("auth:voltar", location.pathname); } catch { /* modo privado */ } };
 
 function el(html) {
   const t = document.createElement("template");
@@ -73,6 +75,7 @@ function telaCadastro(raiz, aoEntrar) {
     }));
 
   card.querySelector("[data-google]").addEventListener("click", async () => {
+    lembrarVolta();
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: urlDeVolta() } });
     if (error) avisar(traduzir(error));
   });
@@ -88,6 +91,7 @@ function telaCadastro(raiz, aoEntrar) {
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
     if (!f.get("termos")) return avisar("Para criar a conta, aceite a Política de Privacidade.");
     ocupado(criar, true);
+    lembrarVolta();
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -119,6 +123,7 @@ function telaCadastro(raiz, aoEntrar) {
   card.querySelector("[data-esqueci]").addEventListener("click", async () => {
     const email = String(new FormData(entrar).get("email")).trim();
     if (!email.includes("@")) return avisar("Digite seu e-mail acima e clique de novo em Esqueci a senha.");
+    lembrarVolta();
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: urlDeVolta() });
     avisar(error ? traduzir(error) : `Se existir uma conta com ${email}, você vai receber um link para criar uma nova senha.`, !error);
   });

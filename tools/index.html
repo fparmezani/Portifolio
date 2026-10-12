@@ -13,6 +13,15 @@
   <link rel="stylesheet" href="tools.css?v=7" />
 </head>
 <body>
+  <script>
+    // Voltou de um link de confirmação ou do Google para /tools/: segue para a ferramenta de origem, já logado.
+    (function () {
+      if (!/access_token=|error_description=|[?&]code=/.test(location.hash + location.search)) return;
+      var destino = "/tools/simulador/";
+      try { destino = localStorage.getItem("auth:voltar") || destino; } catch (e) {}
+      location.replace(destino + location.search + location.hash);
+    })();
+  </script>
   <div class="site-bg" aria-hidden="true"></div>
   <header class="header">
     <a class="brand" href="https://fernandoparmezani.com.br/">

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulador de Entrevista C# | Fernando Parmezani</title>
+  <meta name="description" content="10 perguntas de múltipla escolha que caem em entrevista técnica C# e .NET. Veja onde errou, por quê e o que o entrevistador queria ouvir." />
+  <meta name="theme-color" content="#020814" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
+  <link rel="stylesheet" href="../tools.css?v=11" />
+  <link rel="stylesheet" href="../auth.css?v=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+  <link rel="stylesheet" href="simulador.css?v=4" />
+</head>
+<body>
+  <div class="site-bg" aria-hidden="true"></div>
+  <header class="header">
+    <a class="brand" href="https://fernandoparmezani.com.br/">
+      <img src="https://fernandoparmezani.com.br/assets/logotipo.png" alt="Fernando Parmezani" class="brand-logo">
+      <span>Fernando Parmezani</span>
+    </a>
+    <nav class="nav" aria-label="Navegação">
+      <a href="https://fernandoparmezani.com.br/">Início</a>
+      <a href="../">Ferramentas</a>
+      <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
+    </nav>
+  </header>
+
+  <main class="tools-main">
+    <div class="container">
+      <p class="crumb"><a href="../">Ferramentas</a> / Simulador de Entrevista C#</p>
+
+      <div class="center-copy sim-hero">
+        <p class="eyebrow"><span class="pulse-dot"></span> Entrevista técnica</p>
+        <h1>Simulador de<br><strong>Entrevista C#</strong></h1>
+        <p class="lead">10 perguntas que caem de verdade em entrevista C# e .NET. No fim, você vê onde errou, por quê e o que o entrevistador queria ouvir.</p>
+      </div>
+
+      <div id="auth-gate" hidden></div>
+
+      <div id="app" hidden>
+        <!-- 1. Montar a entrevista -->
+        <section id="view-setup" class="sim-panel" hidden>
+          <h2>Qual vaga você quer passar?</h2>
+          <div>
+            <p class="sim-label">Nível</p>
+            <div class="sim-seg" role="radiogroup" aria-label="Nível">
+              <button type="button" role="radio" data-nivel="junior" aria-checked="false">Júnior</button>
+              <button type="button" role="radio" data-nivel="pleno" aria-checked="true">Pleno</button>
+              <button type="button" role="radio" data-nivel="senior" aria-checked="false">Sênior</button>
+            </div>
+          </div>
+          <div>
+            <p class="sim-label">Temas · os 10 capítulos do livro</p>
+            <div class="sim-chips" id="temas"></div>
+            <button type="button" class="sim-mini-link" id="todos-temas">Marcar todos</button>
+          </div>
+          <p class="sim-tip"><b>Sem repetição:</b> o sorteio prioriza perguntas que você ainda não viu e embaralha as alternativas.</p>
+          <p class="sim-meta"><span><b>10</b> perguntas</span><span><b>~8</b> min</span><span><b>múltipla escolha</b></span></p>
+          <p class="form-error" id="setup-erro" role="alert"></p>
+          <button type="button" class="btn btn-primary sim-cta" id="comecar">Começar entrevista</button>
+        </section>
+
+        <!-- 2. Responder -->
+        <section id="view-quiz" class="sim-panel" hidden>
+          <div class="sim-qhead">
+            <span id="q-contador"></span>
+            <span class="sim-tag" id="q-tag"></span>
+            <span class="sim-timer" id="q-timer">00:00</span>
+          </div>
+          <div class="sim-bar"><span id="q-progresso"></span></div>
+          <h2 class="sim-q" id="q-texto"></h2>
+          <div id="q-codigo" hidden></div>
+          <div class="sim-opts" id="q-opcoes" role="radiogroup"></div>
+          <button type="button" class="btn btn-primary sim-cta" id="confirmar" disabled>Confirmar resposta</button>
+        </section>
+
+        <!-- 3. Resultado -->
+        <section id="view-result" hidden>
+          <div class="sim-panel">
+            <div class="score-wrap">
+              <div class="score-ring" id="r-anel"><b id="r-nota"></b></div>
+              <div>
+                <p class="verdict-kicker" id="r-kicker"></p>
+                <h2 class="sim-verdict" id="r-veredito"></h2>
+                <p class="score-copy" id="r-resumo"></p>
+              </div>
+            </div>
+            <div class="sim-topics" id="r-temas"></div>
+          </div>
+
+          <div class="sim-cta-book" id="r-livro">
+            <img src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do livro C# Moderno sem Medo">
+            <div>
+              <p class="verdict-kicker">Feche essa lacuna</p>
+              <h3 id="r-livro-cap"></h3>
+              <a class="btn btn-primary" href="https://sales.fernandoparmezani.com.br/csharp-sem-medo/" target="_blank" rel="noopener">Ver o livro · R$ 27,90</a>
+            </div>
+          </div>
+
+          <h2 class="step-title" id="r-revisao-titulo"><span>?</span> O que revisar</h2>
+          <div class="sim-review" id="r-revisao"></div>
+
+          <div class="sim-actions">
+            <button type="button" class="btn btn-secondary" id="compartilhar">Compartilhar resultado</button>
+            <button type="button" class="btn btn-primary" id="refazer">Refazer com outras perguntas</button>
+          </div>
+          <p class="form-error" id="r-share-msg" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead. · <a href="../privacidade.html">Privacidade</a></div>
+  </footer>
+  <script src="../chrome.js"></script>
+  <script>window.Prism = { manual: true };</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script type="module" src="simulador.js?v=3"></script>
+</body>
+</html>

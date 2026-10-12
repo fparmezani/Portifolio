@@ -1,0 +1,142 @@
+[
+  {
+    "id": "c01-copia-struct-class",
+    "capitulo": 1,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "struct Ponto { public int X; }\nclass Caixa { public int X; }\n\nvar p1 = new Ponto { X = 1 };\nvar p2 = p1;\np2.X = 9;\n\nvar c1 = new Caixa { X = 1 };\nvar c2 = c1;\nc2.X = 9;\n\nConsole.WriteLine($\"{p1.X} {c1.X}\");",
+    "alternativas": [
+      { "texto": "1 9", "correta": true },
+      { "texto": "9 9", "porque": "A struct é copiada inteira na atribuição. Mudar p2 não mexe em p1." },
+      { "texto": "1 1", "porque": "A class copia só a referência. c1 e c2 apontam para o mesmo objeto, então c1.X vira 9." },
+      { "texto": "9 1", "porque": "É o contrário: quem compartilha o objeto é a class, não a struct." }
+    ],
+    "explicacao": "Struct é tipo por valor: a atribuição copia o conteúdo. Class é tipo por referência: a atribuição copia o caminho para o mesmo objeto."
+  },
+  {
+    "id": "c02-array-parametro",
+    "capitulo": 2,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Trocar(int[] v)\n{\n    v[0] = 10;\n    v = new[] { 99 };\n}\n\nint[] numeros = { 1 };\nTrocar(numeros);\nConsole.WriteLine(numeros[0]);",
+    "alternativas": [
+      { "texto": "10", "correta": true },
+      { "texto": "1", "porque": "O método recebe uma cópia da referência, que aponta para o mesmo array. v[0] = 10 altera o array original." },
+      { "texto": "99", "porque": "v = new[] { 99 } só troca a cópia local da referência. Quem chamou continua com o array antigo." },
+      { "texto": "Erro de compilação", "porque": "Reatribuir um parâmetro dentro do método é permitido." }
+    ],
+    "explicacao": "Sem ref, o parâmetro recebe uma cópia da referência. Dá para alterar o objeto apontado, mas trocar a referência não afeta quem chamou. Para isso seria preciso ref."
+  },
+  {
+    "id": "c03-null-forgiving",
+    "capitulo": 3,
+    "nivel": "pleno",
+    "pergunta": "Com Nullable Reference Types ligado, o que acontece ao executar este código?",
+    "codigo": "string? nome = null;\nConsole.WriteLine(nome!.Length);",
+    "alternativas": [
+      { "texto": "Lança NullReferenceException em tempo de execução", "correta": true },
+      { "texto": "Imprime 0", "porque": "O ! não cria valor padrão. Ele não muda nada em tempo de execução." },
+      { "texto": "Não compila", "porque": "O ! existe justamente para silenciar o aviso. O código compila." },
+      { "texto": "Imprime uma linha vazia", "porque": "Acessar .Length de null não devolve nada. Lança exceção." }
+    ],
+    "explicacao": "O operador ! (null-forgiving) só desliga o aviso do compilador. Ele não faz checagem nem conversão em tempo de execução. Se o valor for null, a exceção acontece do mesmo jeito."
+  },
+  {
+    "id": "c04-record-with",
+    "capitulo": 4,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Pessoa(string Nome, int Idade);\n\nvar a = new Pessoa(\"Ana\", 30);\nvar b = a with { Idade = 31 };\n\nConsole.WriteLine($\"{a == new Pessoa(\"Ana\", 30)} {ReferenceEquals(a, b)} {a.Idade}\");",
+    "alternativas": [
+      { "texto": "True False 30", "correta": true },
+      { "texto": "False False 30", "porque": "Record compara por valor. Dois records com os mesmos dados são iguais no ==." },
+      { "texto": "True True 31", "porque": "O with cria um novo objeto e não altera o original." },
+      { "texto": "True False 31", "porque": "O with não modifica a. Ele devolve uma cópia com a Idade trocada." }
+    ],
+    "explicacao": "Record tem igualdade por valor e o with gera uma cópia nova com as mudanças, mantendo o original intacto. É a base da imutabilidade em C# moderno."
+  },
+  {
+    "id": "c05-switch-expression",
+    "capitulo": 5,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static string Classificar(object? o) => o switch\n{\n    int n when n < 0 => \"negativo\",\n    int => \"inteiro\",\n    string { Length: 0 } => \"vazio\",\n    string s => $\"texto:{s.Length}\",\n    null => \"nulo\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine(Classificar(\"abc\") + \" \" + Classificar(-5) + \" \" + Classificar(2.5));",
+    "alternativas": [
+      { "texto": "texto:3 negativo outro", "correta": true },
+      { "texto": "texto:3 inteiro outro", "porque": "Os padrões são testados em ordem. -5 cai primeiro em int n when n < 0." },
+      { "texto": "texto:3 negativo inteiro", "porque": "2.5 é double, não int. Nenhum padrão específico casa, então cai no _." },
+      { "texto": "vazio negativo outro", "porque": "\"abc\" tem Length 3, então não casa com string { Length: 0 }." }
+    ],
+    "explicacao": "No switch expression os casos são avaliados de cima para baixo e vale o primeiro que casar. Guardas (when) e property patterns ({ Length: 0 }) refinam o tipo."
+  },
+  {
+    "id": "c06-result-trava-api",
+    "capitulo": 6,
+    "nivel": "pleno",
+    "pergunta": "A API começou a travar quando o tráfego subiu. O que está acontecendo nesta linha?",
+    "codigo": "// OrdersController.cs\nvar pedido = _repo.BuscarAsync(id).Result;",
+    "alternativas": [
+      { "texto": "Ela prende uma thread do pool esperando a Task. Sob carga, faltam threads para atender novas requisições", "correta": true },
+      { "texto": "O .Result cria uma nova thread para cada requisição", "porque": "Ele não cria thread. Ele bloqueia uma que já existe até a Task terminar." },
+      { "texto": "O .Result ignora as exceções lançadas pela Task", "porque": "Ele relança a exceção, embrulhada em AggregateException." },
+      { "texto": "BuscarAsync é executado duas vezes por causa do .Result", "porque": "A Task roda uma vez só. O problema é o bloqueio, não a repetição." }
+    ],
+    "explicacao": "Bloquear com .Result ou .Wait() em código assíncrono segura threads do pool. Com muitas requisições, o pool se esgota e a API para de responder (thread pool starvation). A correção é usar await de ponta a ponta."
+  },
+  {
+    "id": "c07-whenall-tempo",
+    "capitulo": 7,
+    "nivel": "pleno",
+    "pergunta": "Quanto tempo, aproximadamente, este trecho leva para terminar?",
+    "codigo": "await Task.WhenAll(\n    Task.Delay(300),\n    Task.Delay(300),\n    Task.Delay(300));",
+    "alternativas": [
+      { "texto": "Cerca de 300 ms", "correta": true },
+      { "texto": "Cerca de 900 ms", "porque": "As três Tasks já começaram quando foram criadas e correm ao mesmo tempo. WhenAll só espera todas." },
+      { "texto": "Cerca de 100 ms", "porque": "Nenhuma termina antes de 300 ms. WhenAll espera a mais lenta." },
+      { "texto": "Não termina, porque WhenAll trava a thread", "porque": "WhenAll devolve uma Task. Com await, a thread fica livre enquanto espera." }
+    ],
+    "explicacao": "Task.WhenAll espera várias operações que já estão em andamento. O tempo total é o da mais lenta, não a soma. É a forma certa de paralelizar chamadas de I/O independentes."
+  },
+  {
+    "id": "c08-scoped-em-singleton",
+    "capitulo": 8,
+    "nivel": "pleno",
+    "pergunta": "Em uma API ASP.NET Core rodando em Development, o que acontece com este registro?",
+    "codigo": "builder.Services.AddScoped<Carrinho>();\nbuilder.Services.AddSingleton<Relatorio>(); // Relatorio recebe Carrinho no construtor",
+    "alternativas": [
+      { "texto": "A aplicação falha ao subir: não é possível consumir um serviço Scoped a partir de um Singleton", "correta": true },
+      { "texto": "Funciona normalmente, e cada requisição recebe um Carrinho novo", "porque": "O Singleton é criado uma vez só, então guardaria o mesmo Carrinho para sempre. O ASP.NET Core bloqueia isso em Development." },
+      { "texto": "O Carrinho vira Singleton automaticamente", "porque": "O container não muda o tempo de vida. Ele valida e recusa a combinação." },
+      { "texto": "Dá erro só na primeira requisição que usar Relatorio", "porque": "Em Development a validação roda na construção do container, ao subir a aplicação." }
+    ],
+    "explicacao": "Isso se chama captive dependency: um Scoped preso dentro de um Singleton vive para sempre e vaza estado entre requisições. Em Development o ASP.NET Core valida os escopos e recusa a combinação ao subir."
+  },
+  {
+    "id": "c09-httpclient-using",
+    "capitulo": 9,
+    "nivel": "pleno",
+    "pergunta": "Qual o problema de criar o HttpClient assim, a cada chamada, numa API com muito tráfego?",
+    "codigo": "using var client = new HttpClient();\nvar resposta = await client.GetAsync(url);",
+    "alternativas": [
+      { "texto": "Pode esgotar as portas (sockets) do servidor, porque cada instância abre conexões novas que demoram a ser liberadas", "correta": true },
+      { "texto": "Nenhum, o using libera tudo na hora", "porque": "O Dispose fecha o objeto, mas as conexões TCP ficam em TIME_WAIT por um tempo. Com muito tráfego, acumulam." },
+      { "texto": "HttpClient não pode ser usado com await", "porque": "GetAsync é assíncrono e foi feito para ser usado com await." },
+      { "texto": "O HttpClient guarda cache das respostas e devolve dado velho", "porque": "HttpClient não faz cache de resposta por padrão." }
+    ],
+    "explicacao": "Criar e descartar HttpClient a cada chamada causa socket exhaustion. O caminho moderno é IHttpClientFactory (AddHttpClient), que reaproveita as conexões e ainda permite configurar resiliência."
+  },
+  {
+    "id": "c10-linq-execucao-adiada",
+    "capitulo": 10,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var lista = new List<int> { 1, 2, 3 };\nvar pares = lista.Where(n => n % 2 == 0);\n\nlista.Add(4);\n\nConsole.WriteLine(pares.Count());",
+    "alternativas": [
+      { "texto": "2", "correta": true },
+      { "texto": "1", "porque": "O Where não roda na hora. Ele só filtra quando o resultado é consumido, e nesse momento o 4 já está na lista." },
+      { "texto": "4", "porque": "Count() conta só os itens que passam no filtro: 2 e 4." },
+      { "texto": "Lança InvalidOperationException", "porque": "A lista foi alterada antes de ser percorrida, não durante. Não há erro." }
+    ],
+    "explicacao": "LINQ tem execução adiada: Where só monta a consulta. Ela roda quando você consome o resultado (Count, ToList, foreach). Em EF Core é o mesmo princípio, e chamar ToList cedo demais traz a tabela inteira para a memória."
+  }
+]

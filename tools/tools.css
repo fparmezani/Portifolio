@@ -8,7 +8,7 @@
   text-shadow: none;
 }
 .lead { max-width: 640px; color: var(--muted); font-size: 18px; line-height: 1.7; }
-.tool-grid { display: grid; grid-template-columns: 1.4fr .8fr; gap: 18px; margin-top: 36px; }
+.tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
 .tool-card {
   display: flex;
   flex-direction: column;

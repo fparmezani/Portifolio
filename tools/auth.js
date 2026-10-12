@@ -2,6 +2,11 @@
 // Uso: const { user, perfil } = await exigirCadastro({ origem: "simulador" });
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+// O login fica salvo por endereço: tools.fernandoparmezani.com.br vai sempre para o endereço principal.
+if (location.hostname === "tools.fernandoparmezani.com.br") {
+  location.replace("https://fernandoparmezani.com.br/tools" + location.pathname + location.search + location.hash);
+}
+
 const SUPABASE_URL = "https://hrpmoshviubjrudawuuk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Q-B_hBYinXx4cS055Aao0Q_2aUK0OHW";
 const PRIVACIDADE = new URL("privacidade.html", import.meta.url).href;

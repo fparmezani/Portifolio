@@ -1544,5 +1544,3615 @@
       }
     ],
     "explicacao": "Tudo antes do ToList (ou de qualquer materialização) vira SQL. Tudo depois roda em memória. Filtre, conte e projete no IQueryable para o banco fazer o trabalho."
+  },
+  {
+    "id": "c01-array-referencia",
+    "capitulo": 1,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int[] a = { 1, 2 };\nint[] b = a;\nb[0] = 9;\n\nConsole.WriteLine(a[0]);",
+    "alternativas": [
+      {
+        "texto": "9",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "Array é tipo por referência. a e b apontam para o mesmo array."
+      },
+      {
+        "texto": "0",
+        "porque": "Ninguém zera a posição. O valor vira 9."
+      },
+      {
+        "texto": "2",
+        "porque": "A mudança foi em [0], não em [1]."
+      }
+    ],
+    "explicacao": "Array é referência. A atribuição b = a copia o caminho para o mesmo objeto no heap. Alterar b[0] altera a[0]."
+  },
+  {
+    "id": "c01-parametro-int-copia",
+    "capitulo": 1,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Mudar(int n)\n{\n    n = 10;\n}\n\nint x = 1;\nMudar(x);\nConsole.WriteLine(x);",
+    "alternativas": [
+      {
+        "texto": "1",
+        "correta": true
+      },
+      {
+        "texto": "10",
+        "porque": "int é valor. O método recebe uma cópia. Mudar n não mexe em x."
+      },
+      {
+        "texto": "0",
+        "porque": "x continua 1. Nada redefine o valor original para zero."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Atribuir em parâmetro por valor é permitido. Só não afeta quem chamou."
+      }
+    ],
+    "explicacao": "Parâmetro int sem ref/out é cópia. O método altera só a variável local n."
+  },
+  {
+    "id": "c01-campo-classe-null",
+    "capitulo": 1,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "class Pessoa { public string Nome; }\n\nvar p = new Pessoa();\nConsole.WriteLine(p.Nome == null);",
+    "alternativas": [
+      {
+        "texto": "True",
+        "correta": true
+      },
+      {
+        "texto": "False",
+        "porque": "Campo de referência sem inicialização começa null, não string vazia."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Campos de classe têm valor default. Compila (com aviso de nullable, se ligado)."
+      },
+      {
+        "texto": "Lança NullReferenceException",
+        "porque": "Comparar com null não acessa membro da string. Não lança."
+      }
+    ],
+    "explicacao": "Campos de tipo referência em classe começam null. string vazia só aparece se você atribuir \"\"."
+  },
+  {
+    "id": "c01-unboxing-int",
+    "capitulo": 1,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "object o = 10;\nint n = (int)o;\n\nConsole.WriteLine(n);",
+    "alternativas": [
+      {
+        "texto": "10",
+        "correta": true
+      },
+      {
+        "texto": "0",
+        "porque": "O unboxing recupera o valor que foi boxed, não o default de int."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Cast de object para int é permitido quando o boxed é int."
+      },
+      {
+        "texto": "Lança InvalidCastException",
+        "porque": "O tipo boxed é int. O cast para int funciona."
+      }
+    ],
+    "explicacao": "object o = 10 faz boxing. (int)o faz unboxing e devolve a cópia do valor 10."
+  },
+  {
+    "id": "c01-struct-parametro",
+    "capitulo": 1,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "struct Ponto { public int X; }\n\nstatic void Mover(Ponto p)\n{\n    p.X = 99;\n}\n\nvar ponto = new Ponto { X = 1 };\nMover(ponto);\nConsole.WriteLine(ponto.X);",
+    "alternativas": [
+      {
+        "texto": "1",
+        "correta": true
+      },
+      {
+        "texto": "99",
+        "porque": "Struct no parâmetro é cópia. Mover altera só a cópia local."
+      },
+      {
+        "texto": "0",
+        "porque": "ponto.X continua 1. Ninguém zera o original."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Passar struct por valor e mutar o parâmetro é válido."
+      }
+    ],
+    "explicacao": "Sem ref, a struct é copiada na chamada. Mudanças dentro do método não voltam para o chamador."
+  },
+  {
+    "id": "c01-boxing-gettype",
+    "capitulo": 1,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int x = 42;\nobject o = x;\n\nConsole.WriteLine(o.GetType().Name);",
+    "alternativas": [
+      {
+        "texto": "Int32",
+        "correta": true
+      },
+      {
+        "texto": "Object",
+        "porque": "GetType devolve o tipo real do valor boxed, que é Int32."
+      },
+      {
+        "texto": "ValueType",
+        "porque": "ValueType é a base. O tipo runtime do boxed int é Int32."
+      },
+      {
+        "texto": "Int",
+        "porque": "O nome do tipo em runtime é Int32, não Int."
+      }
+    ],
+    "explicacao": "No boxing o valor int vira um objeto no heap, mas o tipo runtime continua Int32."
+  },
+  {
+    "id": "c01-boxing-igualdade",
+    "capitulo": 1,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "object a = 5;\nobject b = 5;\n\nConsole.WriteLine($\"{a == b} {a.Equals(b)}\");",
+    "alternativas": [
+      {
+        "texto": "False True",
+        "correta": true
+      },
+      {
+        "texto": "True True",
+        "porque": "a == b em object compara referência. São dois boxes diferentes."
+      },
+      {
+        "texto": "False False",
+        "porque": "Equals em Int32 boxed compara o valor. 5 é igual a 5."
+      },
+      {
+        "texto": "True False",
+        "porque": "É o contrário: == falha por referência e Equals passa por valor."
+      }
+    ],
+    "explicacao": "Cada boxing cria um objeto novo. == em object olha referência; Equals do int compara o valor."
+  },
+  {
+    "id": "c01-array-de-struct",
+    "capitulo": 1,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "struct Ponto { public int X; }\n\nvar arr = new Ponto[] { new Ponto { X = 1 } };\narr[0].X = 5;\n\nConsole.WriteLine(arr[0].X);",
+    "alternativas": [
+      {
+        "texto": "5",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "Em array, arr[0].X = 5 altera o elemento no lugar. Não é como List, que devolve cópia."
+      },
+      {
+        "texto": "0",
+        "porque": "O elemento foi inicializado com 1 e depois virado 5."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Mutar campo de struct em array é permitido."
+      }
+    ],
+    "explicacao": "Array de struct guarda os valores inline. Indexar e atribuir no campo altera o elemento armazenado."
+  },
+  {
+    "id": "c01-string-null-concat",
+    "capitulo": 1,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "string s = null;\nConsole.WriteLine(s + \"x\");",
+    "alternativas": [
+      {
+        "texto": "x",
+        "correta": true
+      },
+      {
+        "texto": "nullx",
+        "porque": "Na concatenação, null é tratado como string vazia, não como texto \"null\"."
+      },
+      {
+        "texto": "(linha vazia)",
+        "porque": "O \"x\" entra no resultado. Não fica vazio."
+      },
+      {
+        "texto": "Lança NullReferenceException",
+        "porque": "O operador + de string aceita null sem lançar."
+      }
+    ],
+    "explicacao": "Concatenar string null com outra string trata o null como \"\". O resultado é só \"x\"."
+  },
+  {
+    "id": "c01-struct-propriedade-copia",
+    "capitulo": 1,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "struct Contador\n{\n    public int N;\n    public void Inc() => N++;\n}\n\nclass Caixa\n{\n    public Contador C { get; set; }\n}\n\nvar caixa = new Caixa { C = new Contador() };\ncaixa.C.Inc();\nConsole.WriteLine(caixa.C.N);",
+    "alternativas": [
+      {
+        "texto": "0",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "O get da propriedade devolve uma cópia da struct. Inc() muta a cópia e descarta."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Em versões recentes isso pode gerar aviso, mas o padrão clássico compila e roda com N = 0."
+      },
+      {
+        "texto": "Lança exceção",
+        "porque": "Não há exceção. A mutação simplesmente não persiste."
+      }
+    ],
+    "explicacao": "Propriedade de struct devolve cópia. Chamar método mutável nela altera só o temporário. Por isso N continua 0."
+  },
+  {
+    "id": "c01-struct-interface-box",
+    "capitulo": 1,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "interface IBump { void Bump(); }\n\nstruct S : IBump\n{\n    public int N;\n    public void Bump() => N++;\n}\n\nS s = default;\nIBump i = s;\ni.Bump();\n\nConsole.WriteLine(s.N);",
+    "alternativas": [
+      {
+        "texto": "0",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "Atribuir struct a interface faz boxing. Bump altera a cópia boxed, não s."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Struct pode implementar interface. Compila."
+      },
+      {
+        "texto": "Lança InvalidCastException",
+        "porque": "Não há cast inválido aqui. Só boxing silencioso."
+      }
+    ],
+    "explicacao": "Converter struct para interface boxeia. O método roda no objeto boxed. A variável s original fica intacta."
+  },
+  {
+    "id": "c01-boxing-nao-acompanha",
+    "capitulo": 1,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int i = 1;\nobject o = i;\ni = 99;\n\nConsole.WriteLine(o);",
+    "alternativas": [
+      {
+        "texto": "1",
+        "correta": true
+      },
+      {
+        "texto": "99",
+        "porque": "O boxing copia o valor. Depois mudar i não atualiza o objeto o."
+      },
+      {
+        "texto": "0",
+        "porque": "o guarda a cópia 1 feita no boxing."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Atribuir int a object e depois mudar o int é válido."
+      }
+    ],
+    "explicacao": "Boxing copia o valor para o heap. o e i ficam independentes depois disso."
+  },
+  {
+    "id": "c01-referenceequals-int",
+    "capitulo": 1,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Console.WriteLine(object.ReferenceEquals(1, 1));",
+    "alternativas": [
+      {
+        "texto": "False",
+        "correta": true
+      },
+      {
+        "texto": "True",
+        "porque": "Cada argumento int é boxed em um objeto diferente. ReferenceEquals compara essas referências."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Compila. O compilador aceita e boxeia os ints."
+      },
+      {
+        "texto": "Lança exceção",
+        "porque": "Não lança. Só devolve false."
+      }
+    ],
+    "explicacao": "ReferenceEquals espera referências. Passar int provoca boxing de cada lado, em objetos distintos, então dá false."
+  },
+  {
+    "id": "c01-unboxing-tipo-errado",
+    "capitulo": 1,
+    "nivel": "senior",
+    "pergunta": "O que acontece ao executar este código?",
+    "codigo": "object o = 10;\nlong n = (long)o;\nConsole.WriteLine(n);",
+    "alternativas": [
+      {
+        "texto": "Lança InvalidCastException",
+        "correta": true
+      },
+      {
+        "texto": "Imprime 10",
+        "porque": "Unboxing exige o tipo exato. int boxed não vira long direto."
+      },
+      {
+        "texto": "Imprime 0",
+        "porque": "A operação falha com exceção antes de imprimir."
+      },
+      {
+        "texto": "Não compila",
+        "porque": "O cast object para long compila. A falha é em runtime."
+      }
+    ],
+    "explicacao": "Unboxing só aceita o tipo exato do valor boxed. Para obter long, primeiro unbox para int e depois converta: (long)(int)o."
+  },
+  {
+    "id": "c02-ref-modifica",
+    "capitulo": 2,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Somar(ref int n)\n{\n    n += 5;\n}\n\nint x = 10;\nSomar(ref x);\nConsole.WriteLine(x);",
+    "alternativas": [
+      {
+        "texto": "15",
+        "correta": true
+      },
+      {
+        "texto": "10",
+        "porque": "Com ref, o método altera a variável do chamador. x vira 15."
+      },
+      {
+        "texto": "5",
+        "porque": "Foi n += 5 sobre 10, não atribuição para 5."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "A chamada passa ref x e a variável já está inicializada."
+      }
+    ],
+    "explicacao": "ref passa um alias da variável. Alterações dentro do método afetam x diretamente."
+  },
+  {
+    "id": "c02-params-soma",
+    "capitulo": 2,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static int Soma(params int[] xs)\n{\n    var total = 0;\n    foreach (var n in xs) total += n;\n    return total;\n}\n\nConsole.WriteLine(Soma(1, 2, 3));",
+    "alternativas": [
+      {
+        "texto": "6",
+        "correta": true
+      },
+      {
+        "texto": "3",
+        "porque": "params junta 1, 2 e 3 num array. A soma é 6, não a quantidade."
+      },
+      {
+        "texto": "123",
+        "porque": "São inteiros somados, não concatenação de texto."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "params permite passar vários argumentos do mesmo tipo sem montar o array na mão."
+      }
+    ],
+    "explicacao": "params cria o array automaticamente a partir dos argumentos. Soma(1, 2, 3) vira {1,2,3}."
+  },
+  {
+    "id": "c02-extension-basico",
+    "capitulo": 2,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static class Ext\n{\n    public static int Qtd(this string s) => s.Length;\n}\n\nConsole.WriteLine(\"abc\".Qtd());",
+    "alternativas": [
+      {
+        "texto": "3",
+        "correta": true
+      },
+      {
+        "texto": "abc",
+        "porque": "Qtd devolve s.Length, que é 3."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Método de extensão em classe estática com this no primeiro parâmetro é a sintaxe correta."
+      },
+      {
+        "texto": "0",
+        "porque": "\"abc\" tem Length 3."
+      }
+    ],
+    "explicacao": "Extensão é açúcar sintático: \"abc\".Qtd() chama Ext.Qtd(\"abc\")."
+  },
+  {
+    "id": "c02-func-basico",
+    "capitulo": 2,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Func<int, int> dobra = n => n * 2;\n\nConsole.WriteLine(dobra(3));",
+    "alternativas": [
+      {
+        "texto": "6",
+        "correta": true
+      },
+      {
+        "texto": "3",
+        "porque": "A lambda multiplica por 2. 3 vira 6."
+      },
+      {
+        "texto": "9",
+        "porque": "É n * 2, não n * n."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Func<int,int> casa com lambda que recebe int e devolve int."
+      }
+    ],
+    "explicacao": "Func<T,TResult> é um delegate pronto. Aqui recebe int e devolve int; 3 * 2 = 6."
+  },
+  {
+    "id": "c02-out-inicializa",
+    "capitulo": 2,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Definir(out int n)\n{\n    n = 3;\n}\n\nint x;\nDefinir(out x);\nConsole.WriteLine(x);",
+    "alternativas": [
+      {
+        "texto": "3",
+        "correta": true
+      },
+      {
+        "texto": "0",
+        "porque": "out obriga o método a atribuir. Depois da chamada, x vale 3."
+      },
+      {
+        "texto": "Erro de compilação, x não foi inicializado",
+        "porque": "Com out, o compilador aceita x sem valor prévio porque o método vai atribuir."
+      },
+      {
+        "texto": "null",
+        "porque": "int não é null. O valor impresso é 3."
+      }
+    ],
+    "explicacao": "out existe para o método devolver valor pelo parâmetro. x não precisa nascer inicializado."
+  },
+  {
+    "id": "c02-swap-ref",
+    "capitulo": 2,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Swap(ref int a, ref int b)\n{\n    (a, b) = (b, a);\n}\n\nint x = 1, y = 2;\nSwap(ref x, ref y);\nConsole.WriteLine($\"{x},{y}\");",
+    "alternativas": [
+      {
+        "texto": "2,1",
+        "correta": true
+      },
+      {
+        "texto": "1,2",
+        "porque": "Com ref, a troca altera as variáveis do chamador."
+      },
+      {
+        "texto": "1,1",
+        "porque": "A desconstrução troca os dois valores. Não duplica 1."
+      },
+      {
+        "texto": "2,2",
+        "porque": "A troca completa deixa x=2 e y=1."
+      }
+    ],
+    "explicacao": "Dois parâmetros ref apontam para x e y. A troca dentro do método reflete fora."
+  },
+  {
+    "id": "c02-closure-variavel",
+    "capitulo": 2,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int valor = 10;\nFunc<int> ler = () => valor;\nvalor = 20;\n\nConsole.WriteLine(ler());",
+    "alternativas": [
+      {
+        "texto": "20",
+        "correta": true
+      },
+      {
+        "texto": "10",
+        "porque": "Closure captura a variável, não o valor do momento da criação."
+      },
+      {
+        "texto": "0",
+        "porque": "valor foi para 20 antes da chamada. A lambda lê 20."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Capturar variável local em lambda é permitido."
+      }
+    ],
+    "explicacao": "A lambda guarda referência à variável valor. Quando roda, lê o valor atual, que é 20."
+  },
+  {
+    "id": "c02-multicast-action",
+    "capitulo": 2,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Action a = () => Console.Write(\"A\");\na += () => Console.Write(\"B\");\na();\n",
+    "alternativas": [
+      {
+        "texto": "AB",
+        "correta": true
+      },
+      {
+        "texto": "A",
+        "porque": "+= empilha outro handler. Os dois executam na ordem."
+      },
+      {
+        "texto": "B",
+        "porque": "+= não substitui o anterior. A continua na lista."
+      },
+      {
+        "texto": "BA",
+        "porque": "A ordem de invocação segue a ordem de combinação: A depois B."
+      }
+    ],
+    "explicacao": "Delegate multicast chama todos os métodos combinados, na ordem em que foram adicionados."
+  },
+  {
+    "id": "c02-local-function",
+    "capitulo": 2,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static string Montar(int n)\n{\n    string Dentro() => \"L\" + n;\n    return Dentro();\n}\n\nConsole.WriteLine(Montar(3));",
+    "alternativas": [
+      {
+        "texto": "L3",
+        "correta": true
+      },
+      {
+        "texto": "3",
+        "porque": "Dentro prefixa com \"L\". O resultado é L3."
+      },
+      {
+        "texto": "Ln",
+        "porque": "n é capturado com valor 3, não o nome da variável."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Local function pode ser declarada dentro do método e capturar n."
+      }
+    ],
+    "explicacao": "Local function é um método aninhado. Aqui captura n e devolve \"L3\"."
+  },
+  {
+    "id": "c02-func-covariancia",
+    "capitulo": 2,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Func<string> fs = () => \"ok\";\nFunc<object> fo = fs;\n\nConsole.WriteLine(fo());",
+    "alternativas": [
+      {
+        "texto": "ok",
+        "correta": true
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Func é covariante em TResult. Func<string> pode ser tratado como Func<object>."
+      },
+      {
+        "texto": "null",
+        "porque": "fo() chama a mesma lambda e devolve \"ok\"."
+      },
+      {
+        "texto": "Lança InvalidCastException",
+        "porque": "A conversão é segura em compile-time. string é object."
+      }
+    ],
+    "explicacao": "Func<out TResult> é covariante. Quem promete devolver string também serve como quem devolve object."
+  },
+  {
+    "id": "c02-extension-null",
+    "capitulo": 2,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static class Ext\n{\n    public static bool EhNull(this string s) => s is null;\n}\n\nstring s = null;\nConsole.WriteLine(s.EhNull());",
+    "alternativas": [
+      {
+        "texto": "True",
+        "correta": true
+      },
+      {
+        "texto": "False",
+        "porque": "Extensão é chamada estática. s null chega no parâmetro e s is null é true."
+      },
+      {
+        "texto": "Lança NullReferenceException",
+        "porque": "Não é chamada de instância real. O compilador reescreve para Ext.EhNull(s)."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Chamar extensão em expressão tipada como string, mesmo null, é permitido."
+      }
+    ],
+    "explicacao": "Método de extensão não usa callvirt na instância. Por isso pode receber this null sem NullReferenceException."
+  },
+  {
+    "id": "c02-action-contravariancia",
+    "capitulo": 2,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Action<object> ao = o => Console.Write(o);\nAction<string> a = ao;\na(\"x\");",
+    "alternativas": [
+      {
+        "texto": "x",
+        "correta": true
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Action é contravariante em T. Action<object> pode ser usada como Action<string>."
+      },
+      {
+        "texto": "Lança InvalidCastException",
+        "porque": "Passar string para Action<object> é seguro. string é object."
+      },
+      {
+        "texto": "(nada)",
+        "porque": "a(\"x\") executa o handler e escreve x."
+      }
+    ],
+    "explicacao": "Action<in T> é contravariante. Quem aceita object também aceita string."
+  },
+  {
+    "id": "c02-ref-reatribui-array",
+    "capitulo": 2,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static void Trocar(ref int[] v)\n{\n    v = new[] { 99 };\n}\n\nint[] numeros = { 1 };\nTrocar(ref numeros);\nConsole.WriteLine(numeros[0]);",
+    "alternativas": [
+      {
+        "texto": "99",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "Com ref, reatribuir v também troca a variável numeros no chamador."
+      },
+      {
+        "texto": "0",
+        "porque": "numeros passa a apontar para { 99 }."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "ref em array é válido e permite substituir a referência."
+      }
+    ],
+    "explicacao": "Sem ref, trocar a referência local não afeta o chamador. Com ref, numeros passa a ser o novo array."
+  },
+  {
+    "id": "c02-local-captura-mutavel",
+    "capitulo": 2,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int x = 1;\n\nvoid Local()\n{\n    x = 5;\n}\n\nLocal();\nConsole.WriteLine(x);",
+    "alternativas": [
+      {
+        "texto": "5",
+        "correta": true
+      },
+      {
+        "texto": "1",
+        "porque": "Local function captura x por referência e pode atribuir nele."
+      },
+      {
+        "texto": "0",
+        "porque": "x foi para 5 na chamada Local()."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Local function pode ler e escrever variável do escopo externo."
+      }
+    ],
+    "explicacao": "Local function captura variáveis do método. A atribuição x = 5 altera a variável do escopo pai."
+  },
+  {
+    "id": "c03-string-nullable-tipo",
+    "capitulo": 3,
+    "nivel": "junior",
+    "pergunta": "Com Nullable Reference Types ligado, qual declaração aceita null sem aviso?",
+    "codigo": "// A) string nome = null;\n// B) string? nome = null;",
+    "alternativas": [
+      {
+        "texto": "Só B",
+        "correta": true
+      },
+      {
+        "texto": "Só A",
+        "porque": "string sem ? significa \"não deve ser null\". Atribuir null gera aviso."
+      },
+      {
+        "texto": "As duas",
+        "porque": "string? deixa explícito que null é permitido. string sozinha avisa."
+      },
+      {
+        "texto": "Nenhuma: string? só existe para tipos valor",
+        "porque": "string? é anotação de referência anulável, não Nullable<string>."
+      }
+    ],
+    "explicacao": "Com NRT, string e string? são o mesmo tipo em runtime. A diferença é a anotação: string? diz ao compilador que null é esperado."
+  },
+  {
+    "id": "c03-hasvalue-value",
+    "capitulo": 3,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int? n = 7;\nConsole.WriteLine($\"{n.HasValue} {n.Value}\");",
+    "alternativas": [
+      {
+        "texto": "True 7",
+        "correta": true
+      },
+      {
+        "texto": "False 7",
+        "porque": "Como n tem 7, HasValue é true e Value devolve 7."
+      },
+      {
+        "texto": "True null",
+        "porque": "Value devolve o int encapsulado, não null."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "A exceção só acontece se você acessar .Value com HasValue false."
+      }
+    ],
+    "explicacao": "Nullable<T> guarda um bool (HasValue) e o valor. Com valor presente, HasValue é true e Value é seguro."
+  },
+  {
+    "id": "c03-null-condicional-encadeado",
+    "capitulo": 3,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "class Endereco { public string? Cidade; }\nclass Pessoa { public Endereco? Endereco; }\n\nPessoa? p = new Pessoa();\nConsole.WriteLine(p?.Endereco?.Cidade ?? \"sem cidade\");",
+    "alternativas": [
+      {
+        "texto": "sem cidade",
+        "correta": true
+      },
+      {
+        "texto": "Uma linha vazia",
+        "porque": "Endereco é null, então ?.Cidade resulta null e o ?? devolve o padrão."
+      },
+      {
+        "texto": "null",
+        "porque": "O ?? troca o null por \"sem cidade\"."
+      },
+      {
+        "texto": "Lança NullReferenceException",
+        "porque": "O encadeamento ?. evita a exceção em cada passo."
+      }
+    ],
+    "explicacao": "?. pode ser encadeado. Se qualquer elo for null, a expressão inteira vira null sem lançar."
+  },
+  {
+    "id": "c03-coalescencia-vazio",
+    "capitulo": 3,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "string? a = \"\";\nstring? b = null;\nConsole.WriteLine((a ?? \"X\") + (b ?? \"Y\"));",
+    "alternativas": [
+      {
+        "texto": "Y",
+        "correta": true
+      },
+      {
+        "texto": "XY",
+        "porque": "\"\" não é null. O ?? só troca null, então a fica \"\" e b vira \"Y\"."
+      },
+      {
+        "texto": "X",
+        "porque": "a não é null, então não entra o \"X\"."
+      },
+      {
+        "texto": "XY com espaço",
+        "porque": "Não há espaço: é concatenação de \"\" + \"Y\"."
+      }
+    ],
+    "explicacao": "?? trata só null. String vazia é um valor válido e não dispara o lado direito."
+  },
+  {
+    "id": "c03-getvalueordefault",
+    "capitulo": 3,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int? a = null;\nint? b = 4;\nConsole.WriteLine($\"{a.GetValueOrDefault()} {b.GetValueOrDefault(99)}\");",
+    "alternativas": [
+      {
+        "texto": "0 4",
+        "correta": true
+      },
+      {
+        "texto": "0 99",
+        "porque": "Com valor presente, GetValueOrDefault devolve o valor, não o padrão passado."
+      },
+      {
+        "texto": "null 4",
+        "porque": "GetValueOrDefault devolve int, nunca null. Sem argumento usa default(int) = 0."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "É exatamente para evitar a exceção de .Value quando é null."
+      }
+    ],
+    "explicacao": "GetValueOrDefault() usa default(T) quando HasValue é false. Com sobrecarga, o argumento só entra se for null."
+  },
+  {
+    "id": "c03-nullable-t-boxing",
+    "capitulo": 3,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int? n = null;\nobject o = n;\nConsole.WriteLine(o == null);",
+    "alternativas": [
+      {
+        "texto": "True",
+        "correta": true
+      },
+      {
+        "texto": "False",
+        "porque": "Boxing de Nullable<T> sem valor vira null de referência, não um objeto boxed."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "A conversão de int? para object é permitida."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "Não há acesso a .Value. O boxing só produz null."
+      }
+    ],
+    "explicacao": "Regra especial: boxing de Nullable<T> com HasValue false resulta em referência null. Com valor, boxeia o T interno."
+  },
+  {
+    "id": "c03-null-condicional-indice",
+    "capitulo": 3,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int[]? nums = null;\nConsole.WriteLine(nums?[0] ?? -1);",
+    "alternativas": [
+      {
+        "texto": "-1",
+        "correta": true
+      },
+      {
+        "texto": "0",
+        "porque": "nums é null, então ?[0] devolve null e o ?? aplica -1."
+      },
+      {
+        "texto": "Lança NullReferenceException",
+        "porque": "O operador ?[] evita indexar quando a referência é null."
+      },
+      {
+        "texto": "Lança IndexOutOfRangeException",
+        "porque": "Sem array, o índice nem é avaliado."
+      }
+    ],
+    "explicacao": "?[] é o null-condicional para indexadores. Se a coleção for null, o resultado é null sem acessar o índice."
+  },
+  {
+    "id": "c03-atribuicao-coalescente-expressao",
+    "capitulo": 3,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "string? a = null;\nstring? b = null;\nvar r = a ??= b ??= \"ok\";\nConsole.WriteLine($\"{a} {b} {r}\");",
+    "alternativas": [
+      {
+        "texto": "ok ok ok",
+        "correta": true
+      },
+      {
+        "texto": "ok null ok",
+        "porque": "b ??= \"ok\" atribui em b, depois a ??= b atribui esse valor em a. r recebe o resultado."
+      },
+      {
+        "texto": "null null ok",
+        "porque": "??= atribui de fato quando o alvo é null."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "??= é associativo à direita e pode ser encadeado."
+      }
+    ],
+    "explicacao": "a ??= b ??= \"ok\" equivale a a ??= (b ??= \"ok\"). Ambos recebem \"ok\" e a expressão devolve esse valor."
+  },
+  {
+    "id": "c03-nullable-disable-contexto",
+    "capitulo": 3,
+    "nivel": "pleno",
+    "pergunta": "Com #nullable enable no arquivo, o que #nullable disable faz no bloco seguinte?",
+    "codigo": "#nullable enable\nstring a = null; // aviso\n#nullable disable\nstring b = null; // ?",
+    "alternativas": [
+      {
+        "texto": "Desliga a análise de NRT naquele trecho: b = null não gera aviso",
+        "correta": true
+      },
+      {
+        "texto": "Transforma string em string? em todo o projeto",
+        "porque": "O efeito é local ao arquivo/região, não muda o assembly inteiro."
+      },
+      {
+        "texto": "Impede compilar qualquer atribuição null",
+        "porque": "disable desliga avisos; não endurece a regra."
+      },
+      {
+        "texto": "Torna b null em runtime automaticamente",
+        "porque": "Directives de nullable só afetam análise estática."
+      }
+    ],
+    "explicacao": "#nullable enable/disable controla a análise de referências anuláveis por região. Útil em migração gradual de código legado."
+  },
+  {
+    "id": "c03-lifted-igualdade",
+    "capitulo": 3,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int? a = null;\nint? b = null;\nint? c = 0;\nConsole.WriteLine($\"{a == b} {a == c} {a != b}\");",
+    "alternativas": [
+      {
+        "texto": "True False False",
+        "correta": true
+      },
+      {
+        "texto": "False False True",
+        "porque": "Dois null são iguais em Nullable. null == 0 é false. a != b é false porque a == b."
+      },
+      {
+        "texto": "True True False",
+        "porque": "null não é igual a 0."
+      },
+      {
+        "texto": "False True True",
+        "porque": "Igualdade lifted trata null == null como true."
+      }
+    ],
+    "explicacao": "Diferente de >, < etc., == e != em Nullable consideram null == null como true. Ordem com null continua false."
+  },
+  {
+    "id": "c03-null-forgiving-proposito",
+    "capitulo": 3,
+    "nivel": "senior",
+    "pergunta": "Quando o operador ! (null-forgiving) é o uso correto?",
+    "alternativas": [
+      {
+        "texto": "Quando o fluxo garante não-null, mas o compilador não consegue provar",
+        "correta": true
+      },
+      {
+        "texto": "Para converter null em string vazia em runtime",
+        "porque": "! não altera o valor em execução."
+      },
+      {
+        "texto": "Para tornar qualquer string? em string sem risco",
+        "porque": "Se estiver null, ainda lança. Só silencia o aviso."
+      },
+      {
+        "texto": "Só é válido dentro de async",
+        "porque": "Funciona em qualquer contexto de NRT."
+      }
+    ],
+    "explicacao": "O ! é um contrato com o compilador: \"eu garanto\". Use quando a análise estática é limitada (APIs externas, padrões complexos), não para mascarar bug."
+  },
+  {
+    "id": "c03-nullable-anotacao-retorno",
+    "capitulo": 3,
+    "nivel": "senior",
+    "pergunta": "Com NRT ligado, o que [return: MaybeNull] comunica ao compilador?",
+    "codigo": "[return: MaybeNull]\npublic string Buscar() => null;",
+    "alternativas": [
+      {
+        "texto": "O retorno tipado como string pode ser null; quem chama deve tratar",
+        "correta": true
+      },
+      {
+        "texto": "Obriga o método a nunca retornar null",
+        "porque": "MaybeNull relaxa a expectativa de não-null no retorno."
+      },
+      {
+        "texto": "Muda o tipo de retorno para string? no IL",
+        "porque": "É metadado de anotação; o tipo no IL continua string."
+      },
+      {
+        "texto": "Só vale para tipos valor",
+        "porque": "É anotação típica de APIs de referência (ex.: dicionário legado)."
+      }
+    ],
+    "explicacao": "Atributos como MaybeNull, NotNullWhen e AllowNull ajustam a análise quando a assinatura clássica (sem ?) não expressa o contrato real."
+  },
+  {
+    "id": "c03-nullable-notnullwhen",
+    "capitulo": 3,
+    "nivel": "senior",
+    "pergunta": "O que este padrão evita após a chamada?",
+    "codigo": "bool TryParse(string s, [NotNullWhen(true)] out string? result);\n\nif (TryParse(input, out var nome))\n    Console.WriteLine(nome.Length);",
+    "alternativas": [
+      {
+        "texto": "Aviso de null em nome.Length dentro do if true",
+        "correta": true
+      },
+      {
+        "texto": "NullReferenceException em qualquer caso",
+        "porque": "A anotação só informa o compilador; se a API mentir, ainda pode lançar."
+      },
+      {
+        "texto": "Obriga result a ser non-null mesmo quando retorna false",
+        "porque": "NotNullWhen(true) vale só quando o método retorna true."
+      },
+      {
+        "texto": "Converte automaticamente nome em string não anulável no IL",
+        "porque": "É análise estática de fluxo, não transformação de tipo em runtime."
+      }
+    ],
+    "explicacao": "NotNullWhen(true) liga o bool de retorno ao estado do out: no ramo true, o compilador trata a variável como não null."
+  },
+  {
+    "id": "c03-lifted-incremento",
+    "capitulo": 3,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int? n = null;\nn++;\nint? m = 2;\nm++;\nConsole.WriteLine($\"{n.HasValue} {m}\");",
+    "alternativas": [
+      {
+        "texto": "False 3",
+        "correta": true
+      },
+      {
+        "texto": "True 3",
+        "porque": "Incrementar null em Nullable deixa null (HasValue false)."
+      },
+      {
+        "texto": "False 2",
+        "porque": "m tinha 2 e o ++ aplica o operador lifted, resultando 3."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "Operadores lifted em null não lançam; produzem null."
+      }
+    ],
+    "explicacao": "++, -- e aritmética em T? são lifted: operandos null geram resultado null. Só o valor presente é incrementado."
+  },
+  {
+    "id": "c04-class-vs-struct-copia",
+    "capitulo": 4,
+    "nivel": "junior",
+    "pergunta": "Qual afirmação é verdadeira?",
+    "alternativas": [
+      {
+        "texto": "class é tipo por referência; struct é tipo por valor (cópia na atribuição)",
+        "correta": true
+      },
+      {
+        "texto": "struct sempre vive no heap",
+        "porque": "Structs costumam ficar na stack ou embutidas; boxing é o caso que vai ao heap."
+      },
+      {
+        "texto": "class não pode ter construtor",
+        "porque": "Classes têm construtores normalmente."
+      },
+      {
+        "texto": "struct permite herança de outras structs",
+        "porque": "Structs são seladas: não há herança entre elas."
+      }
+    ],
+    "explicacao": "A escolha class vs struct muda semântica de cópia, igualdade padrão e custo de passagem. Structs pequenas e imutáveis são o caso típico."
+  },
+  {
+    "id": "c04-record-class-padrao",
+    "capitulo": 4,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Pessoa(string Nome);\nvar a = new Pessoa(\"Ana\");\nvar b = new Pessoa(\"Ana\");\nConsole.WriteLine(a == b);",
+    "alternativas": [
+      {
+        "texto": "True",
+        "correta": true
+      },
+      {
+        "texto": "False",
+        "porque": "Record (record class) compara por valor das propriedades, não por referência."
+      },
+      {
+        "texto": "Erro de compilação: falta Equals",
+        "porque": "O compilador gera igualdade para records."
+      },
+      {
+        "texto": "True só se ReferenceEquals(a, b)",
+        "porque": "Igualdade de record não exige a mesma instância."
+      }
+    ],
+    "explicacao": "record sem modificador é record class: referência no heap, mas == usa igualdade estrutural gerada."
+  },
+  {
+    "id": "c04-required-membro",
+    "capitulo": 4,
+    "nivel": "junior",
+    "pergunta": "O que acontece com este código?",
+    "codigo": "class Usuario\n{\n    public required string Email { get; init; }\n}\n\nvar u = new Usuario();",
+    "alternativas": [
+      {
+        "texto": "Erro de compilação: Email é required e não foi inicializado",
+        "correta": true
+      },
+      {
+        "texto": "Compila e Email fica null",
+        "porque": "required exige atribuição no inicializador do objeto ou no construtor marcado."
+      },
+      {
+        "texto": "Compila e Email vira string.Empty",
+        "porque": "O compilador não inventa valor; ele exige a propriedade."
+      },
+      {
+        "texto": "Lança exceção em runtime",
+        "porque": "A checagem é em tempo de compilação."
+      }
+    ],
+    "explicacao": "required força o chamador a fornecer o membro na criação. Combina bem com init para modelos imutáveis."
+  },
+  {
+    "id": "c04-init-vs-set",
+    "capitulo": 4,
+    "nivel": "junior",
+    "pergunta": "Qual a diferença prática entre get; set; e get; init;?",
+    "alternativas": [
+      {
+        "texto": "init só permite atribuição na construção; set permite mudar depois",
+        "correta": true
+      },
+      {
+        "texto": "init só funciona em records",
+        "porque": "init existe em class e struct também."
+      },
+      {
+        "texto": "set é imutável; init é mutável",
+        "porque": "É o contrário: init restringe mutação após a criação."
+      },
+      {
+        "texto": "Não há diferença após o C# 10",
+        "porque": "Continuam sendo contratos distintos de mutabilidade."
+      }
+    ],
+    "explicacao": "init permite object initializer e construtor, mas bloqueia atribuição posterior — meio-termo entre set aberto e só get."
+  },
+  {
+    "id": "c04-primary-ctor-class",
+    "capitulo": 4,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "class Conta(string titular)\n{\n    public string Titular { get; } = titular;\n}\n\nvar c = new Conta(\"Ana\");\nConsole.WriteLine(c.Titular);",
+    "alternativas": [
+      {
+        "texto": "Ana",
+        "correta": true
+      },
+      {
+        "texto": "Erro de compilação: primary constructor só em record",
+        "porque": "Desde C# 12, class e struct também aceitam primary constructor."
+      },
+      {
+        "texto": "null",
+        "porque": "O parâmetro titular alimenta a propriedade no inicializador."
+      },
+      {
+        "texto": "Conta",
+        "porque": "Imprime o valor da propriedade Titular, não o nome do tipo."
+      }
+    ],
+    "explicacao": "Primary constructor declara parâmetros no cabeçalho do tipo. Em class, eles não viram propriedades automaticamente como no record posicional."
+  },
+  {
+    "id": "c04-record-struct-igualdade",
+    "capitulo": 4,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record struct Ponto(int X, int Y);\nvar a = new Ponto(1, 2);\nvar b = a;\nb.X = 9;\nConsole.WriteLine($\"{a.X} {a == new Ponto(1, 2)}\");",
+    "alternativas": [
+      {
+        "texto": "1 True",
+        "correta": true
+      },
+      {
+        "texto": "9 True",
+        "porque": "record struct é valor: b é cópia. Mudar b.X não altera a."
+      },
+      {
+        "texto": "1 False",
+        "porque": "Igualdade de record struct também é por valor dos membros."
+      },
+      {
+        "texto": "Erro: record struct é imutável",
+        "porque": "Sem readonly, as propriedades posicionais de record struct são mutáveis."
+      }
+    ],
+    "explicacao": "record struct une semântica de valor com igualdade gerada. Para imutabilidade, use readonly record struct."
+  },
+  {
+    "id": "c04-with-record-struct",
+    "capitulo": 4,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "readonly record struct Medida(int Valor);\nvar a = new Medida(10);\nvar b = a with { Valor = 20 };\nConsole.WriteLine($\"{a.Valor} {b.Valor}\");",
+    "alternativas": [
+      {
+        "texto": "10 20",
+        "correta": true
+      },
+      {
+        "texto": "20 20",
+        "porque": "with cria uma cópia com o membro alterado; o original permanece."
+      },
+      {
+        "texto": "10 10",
+        "porque": "b recebe Valor = 20 na expressão with."
+      },
+      {
+        "texto": "Erro de compilação: with só em record class",
+        "porque": "with funciona em record class e record struct."
+      }
+    ],
+    "explicacao": "with funciona com records (class ou struct). Em readonly record struct, é o caminho idiomático para \"alterar\" sem mutar."
+  },
+  {
+    "id": "c04-igualdade-record-heranca",
+    "capitulo": 4,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Animal(string Nome);\nrecord Cachorro(string Nome, string Raca) : Animal(Nome);\n\nAnimal a = new Cachorro(\"Rex\", \"SRD\");\nAnimal b = new Cachorro(\"Rex\", \"SRD\");\nConsole.WriteLine(a == b);",
+    "alternativas": [
+      {
+        "texto": "True",
+        "correta": true
+      },
+      {
+        "texto": "False",
+        "porque": "Records com o mesmo tipo de execução e mesmos dados são iguais, mesmo via variável base."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Herança entre record class é permitida."
+      },
+      {
+        "texto": "True só se ambos forem tipados como Cachorro",
+        "porque": "A igualdade usa o tipo runtime e os membros; o tipo da variável não impede."
+      }
+    ],
+    "explicacao": "Igualdade de record considera o tipo concreto e o estado. Dois Cachorro com os mesmos valores são iguais mesmo comparados como Animal."
+  },
+  {
+    "id": "c04-required-init-objeto",
+    "capitulo": 4,
+    "nivel": "pleno",
+    "pergunta": "Qual criação compila?",
+    "codigo": "class Produto\n{\n    public required string Nome { get; init; }\n    public int Estoque { get; init; }\n}",
+    "alternativas": [
+      {
+        "texto": "new Produto { Nome = \"Teclado\" }",
+        "correta": true
+      },
+      {
+        "texto": "new Produto()",
+        "porque": "Falta o membro required Nome."
+      },
+      {
+        "texto": "new Produto { Estoque = 3 }",
+        "porque": "Estoque não é required; Nome é obrigatório."
+      },
+      {
+        "texto": "Nenhuma: required exige construtor explícito",
+        "porque": "Object initializer basta para satisfazer required."
+      }
+    ],
+    "explicacao": "Só os membros required precisam ser atribuídos na inicialização. Os demais continuam opcionais."
+  },
+  {
+    "id": "c04-imutabilidade-superficial",
+    "capitulo": 4,
+    "nivel": "senior",
+    "pergunta": "Por que um record com List<T> nas propriedades não é imutável de verdade?",
+    "alternativas": [
+      {
+        "texto": "A referência da lista não muda, mas o conteúdo da lista ainda pode ser alterado",
+        "correta": true
+      },
+      {
+        "texto": "Record nunca gera propriedades readonly",
+        "porque": "Propriedades posicionais de record class são init-only; o problema é o objeto referenciado."
+      },
+      {
+        "texto": "with sempre clona coleções profundamente",
+        "porque": "with faz cópia rasa: compartilha a mesma List."
+      },
+      {
+        "texto": "List em record vira ImmutableList automaticamente",
+        "porque": "Não há conversão automática; você precisa escolher coleções imutáveis."
+      }
+    ],
+    "explicacao": "Imutabilidade de record é superficial. Para estado estável, use tipos imutáveis (ImmutableArray, records aninhados, etc.)."
+  },
+  {
+    "id": "c04-readonly-struct-defensiva",
+    "capitulo": 4,
+    "nivel": "senior",
+    "pergunta": "O que o compilador faz ao chamar método de instância em struct NÃO-readonly guardada em campo readonly?",
+    "alternativas": [
+      {
+        "texto": "Copia a struct para um temporário antes da chamada (cópia defensiva)",
+        "correta": true
+      },
+      {
+        "texto": "Altera o campo readonly in-place",
+        "porque": "Campo readonly de struct não pode ser mutado; daí a cópia."
+      },
+      {
+        "texto": "Gera erro de compilação sempre",
+        "porque": "Compila, mas com cópia defensiva que pode custar performance."
+      },
+      {
+        "texto": "Converte a struct em class automaticamente",
+        "porque": "O tipo continua struct; só há cópia local."
+      }
+    ],
+    "explicacao": "Sem readonly struct, o compilador assume que o método pode mutar e copia. Marcar readonly struct elimina essas cópias desnecessárias."
+  },
+  {
+    "id": "c04-record-tostring-deconstruct",
+    "capitulo": 4,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Par(int A, int B);\nvar p = new Par(1, 2);\nvar (x, y) = p;\nConsole.WriteLine($\"{x}:{y}:{p}\");",
+    "alternativas": [
+      {
+        "texto": "1:2:Par { A = 1, B = 2 }",
+        "correta": true
+      },
+      {
+        "texto": "1:2:Par",
+        "porque": "Records geram ToString com nome do tipo e propriedades."
+      },
+      {
+        "texto": "Erro: falta Deconstruct manual",
+        "porque": "Record posicional gera Deconstruct automaticamente."
+      },
+      {
+        "texto": "0:0:Par { A = 1, B = 2 }",
+        "porque": "A desconstrução copia A e B para x e y."
+      }
+    ],
+    "explicacao": "Record posicional gera construtor, igualdade, ToString e Deconstruct. Por isso desconstrução e impressão legível funcionam de graça."
+  },
+  {
+    "id": "c04-class-record-referencia",
+    "capitulo": 4,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Pessoa(string Nome);\nvar a = new Pessoa(\"Ana\");\nvar b = a;\n// se fosse class mutável, mudaria o mesmo objeto;\n// em record posicional, Nome é init-only\nConsole.WriteLine(ReferenceEquals(a, b) + \" \" + (a == new Pessoa(\"Ana\")));",
+    "alternativas": [
+      {
+        "texto": "True True",
+        "correta": true
+      },
+      {
+        "texto": "False True",
+        "porque": "a e b são a mesma referência; == com outro Pessoa(\"Ana\") ainda é true por valor."
+      },
+      {
+        "texto": "True False",
+        "porque": "Igualdade estrutural faz a == new Pessoa(\"Ana\") ser true."
+      },
+      {
+        "texto": "False False",
+        "porque": "Atribuição de record class copia a referência; ReferenceEquals é true."
+      }
+    ],
+    "explicacao": "record class continua sendo referência: atribuir compartilha instância. A diferença da class clássica é a igualdade por valor e os membros gerados."
+  },
+  {
+    "id": "c04-primary-ctor-captura",
+    "capitulo": 4,
+    "nivel": "senior",
+    "pergunta": "Em class com primary constructor, o que acontece com o parâmetro não armazenado em campo/propriedade?",
+    "codigo": "class Logger(string prefixo)\n{\n    public void Log(string msg) => Console.WriteLine($\"{prefixo}:{msg}\");\n}",
+    "alternativas": [
+      {
+        "texto": "O compilador captura prefixo num campo gerado para o método usar",
+        "correta": true
+      },
+      {
+        "texto": "Erro: parâmetros de primary constructor não podem ser usados em métodos",
+        "porque": "Podem; a captura é implícita quando referenciados em membros."
+      },
+      {
+        "texto": "prefixo vira propriedade pública automática",
+        "porque": "Em class, diferente do record posicional, não cria propriedade automática."
+      },
+      {
+        "texto": "Só existe durante o construtor e depois some",
+        "porque": "Se um método usa o parâmetro, ele é promovido a estado do objeto."
+      }
+    ],
+    "explicacao": "Primary constructor em class captura parâmetros usados em membros como campos ocultos. Se quiser API pública, declare propriedades explicitamente."
+  },
+  {
+    "id": "c05-property-pattern",
+    "capitulo": 5,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var p = new { Nome = \"Ana\", Idade = 30 };\n\nvar r = p switch\n{\n    { Idade: < 18 } => \"menor\",\n    { Nome: \"Ana\", Idade: >= 18 } => \"ana adulta\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine(r);",
+    "alternativas": [
+      {
+        "texto": "ana adulta",
+        "correta": true
+      },
+      {
+        "texto": "menor",
+        "porque": "Idade 30 não casa com < 18."
+      },
+      {
+        "texto": "outro",
+        "porque": "O segundo padrão casa: Nome é Ana e Idade >= 18."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Property patterns com relacionais são válidos em switch expression."
+      }
+    ],
+    "explicacao": "Property pattern testa propriedades do objeto. Dá para combinar nome, faixa etária e outros campos sem if encadeado."
+  },
+  {
+    "id": "c05-discard-pattern",
+    "capitulo": 5,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "object? x = \"oi\";\n\nvar r = x switch\n{\n    int => \"número\",\n    string => \"texto\",\n    null => \"nulo\",\n    _ => \"resto\"\n};\n\nConsole.WriteLine(r);",
+    "alternativas": [
+      {
+        "texto": "texto",
+        "correta": true
+      },
+      {
+        "texto": "resto",
+        "porque": "string casa com o padrão string antes do _."
+      },
+      {
+        "texto": "nulo",
+        "porque": "x não é null; guarda a string \"oi\"."
+      },
+      {
+        "texto": "número",
+        "porque": "\"oi\" não é int."
+      }
+    ],
+    "explicacao": "O discard _ é o caso padrão: só chega nele se nenhum padrão anterior casar. Aqui string casa primeiro."
+  },
+  {
+    "id": "c05-type-pattern-switch",
+    "capitulo": 5,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static string Descrever(object o) => o switch\n{\n    int n => $\"int:{n}\",\n    double d => $\"double:{d}\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine(Descrever(3) + \" \" + Descrever(3.0));",
+    "alternativas": [
+      {
+        "texto": "int:3 double:3",
+        "correta": true
+      },
+      {
+        "texto": "int:3 int:3",
+        "porque": "3.0 é double (literal double), não int."
+      },
+      {
+        "texto": "double:3 double:3",
+        "porque": "O literal 3 sem ponto é int."
+      },
+      {
+        "texto": "outro outro",
+        "porque": "Ambos casam com padrões de tipo específicos."
+      }
+    ],
+    "explicacao": "Type pattern casa pelo tipo em tempo de execução. 3 é int; 3.0 é double. O switch expression declara a variável já tipada."
+  },
+  {
+    "id": "c05-and-or-pattern",
+    "capitulo": 5,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static string Nota(char c) => c switch\n{\n    >= 'A' and <= 'C' => \"alta\",\n    'D' or 'E' => \"média\",\n    _ => \"baixa\"\n};\n\nConsole.WriteLine($\"{Nota('B')} {Nota('E')} {Nota('F')}\");",
+    "alternativas": [
+      {
+        "texto": "alta média baixa",
+        "correta": true
+      },
+      {
+        "texto": "alta baixa baixa",
+        "porque": "'E' casa com 'D' or 'E'."
+      },
+      {
+        "texto": "média média baixa",
+        "porque": "'B' está em >= 'A' and <= 'C'."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "and e or em padrões existem desde o C# 9."
+      }
+    ],
+    "explicacao": "Padrões lógicos and/or combinam condições no próprio case. Evitam when longos para faixas e conjuntos pequenos."
+  },
+  {
+    "id": "c05-var-pattern",
+    "capitulo": 5,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "object o = 10;\n\nif (o is var x)\n    Console.WriteLine($\"{x} {x is int}\");\nelse\n    Console.WriteLine(\"não\");",
+    "alternativas": [
+      {
+        "texto": "10 True",
+        "correta": true
+      },
+      {
+        "texto": "não",
+        "porque": "var pattern sempre casa; x recebe o valor de o."
+      },
+      {
+        "texto": "10 False",
+        "porque": "o guarda um boxed int; x is int é verdadeiro."
+      },
+      {
+        "texto": "Erro de compilação: var não pode no is",
+        "porque": "var pattern é permitido e sempre sucesso (exceto se o próprio match falhar por outros motivos — sozinho, casa)."
+      }
+    ],
+    "explicacao": "O padrão var sempre casa e captura o valor na variável. Útil com when, ou quando você só quer nomear o valor sem filtrar o tipo."
+  },
+  {
+    "id": "c05-list-slice-capture",
+    "capitulo": 5,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "int[] v = { 10, 20, 30, 40 };\n\nvar r = v switch\n{\n    [var primeiro, .., var ultimo] => $\"{primeiro}-{ultimo}\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine(r);",
+    "alternativas": [
+      {
+        "texto": "10-40",
+        "correta": true
+      },
+      {
+        "texto": "10-20",
+        "porque": "O .. engole o meio; ultimo é o último elemento, 40."
+      },
+      {
+        "texto": "outro",
+        "porque": "O padrão casa: primeiro=10, ultimo=40."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Capturar com var nas pontas do list pattern é válido no C# 11+."
+      }
+    ],
+    "explicacao": "List pattern com slice (..) captura início e fim sem copiar o meio. Útil para validar formatos de sequência."
+  },
+  {
+    "id": "c05-readonlyspan-imutavel",
+    "capitulo": 5,
+    "nivel": "pleno",
+    "pergunta": "O que acontece com este código?",
+    "codigo": "ReadOnlySpan<char> s = \"abc\";\ns[0] = 'z';",
+    "alternativas": [
+      {
+        "texto": "Não compila: ReadOnlySpan<T> não permite escrita pelo indexador",
+        "correta": true
+      },
+      {
+        "texto": "Compila e muda a string para \"zbc\"",
+        "porque": "String é imutável e ReadOnlySpan bloqueia escrita em tempo de compilação."
+      },
+      {
+        "texto": "Compila e lança exceção em tempo de execução",
+        "porque": "O erro é de compilação, não de execução."
+      },
+      {
+        "texto": "Compila e não altera nada",
+        "porque": "A atribuição nem é aceita pelo compilador."
+      }
+    ],
+    "explicacao": "ReadOnlySpan<T> é a visão só leitura. Para mutar use Span<T> sobre memória mutável (array, stackalloc), não sobre string."
+  },
+  {
+    "id": "c05-stackalloc-span",
+    "capitulo": 5,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Span<int> buffer = stackalloc int[3];\nbuffer[0] = 1;\nbuffer[1] = 2;\nbuffer[2] = 3;\n\nint soma = 0;\nforeach (var n in buffer)\n    soma += n;\n\nConsole.WriteLine(soma);",
+    "alternativas": [
+      {
+        "texto": "6",
+        "correta": true
+      },
+      {
+        "texto": "0",
+        "porque": "Os três elementos foram preenchidos; a soma é 1+2+3."
+      },
+      {
+        "texto": "Erro de compilação: stackalloc só com byte",
+        "porque": "stackalloc funciona com qualquer tipo não gerenciado; int é válido."
+      },
+      {
+        "texto": "Lança StackOverflowException",
+        "porque": "Três ints na stack são irrisórios; não estoura."
+      }
+    ],
+    "explicacao": "stackalloc aloca na stack e o resultado moderno é Span<T>. Evita alocação no heap para buffers pequenos e temporários."
+  },
+  {
+    "id": "c05-switch-when-guard",
+    "capitulo": 5,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static string Rotulo(int n) => n switch\n{\n    int x when x % 2 == 0 => \"par\",\n    int x when x > 0 => \"ímpar positivo\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine($\"{Rotulo(4)} {Rotulo(3)} {Rotulo(-1)}\");",
+    "alternativas": [
+      {
+        "texto": "par ímpar positivo outro",
+        "correta": true
+      },
+      {
+        "texto": "par outro outro",
+        "porque": "3 é ímpar e > 0, então casa com o segundo when."
+      },
+      {
+        "texto": "par ímpar positivo ímpar positivo",
+        "porque": "-1 não é > 0; cai no _."
+      },
+      {
+        "texto": "Erro de compilação: int x repetido",
+        "porque": "Cada braço tem seu próprio escopo; redeclarar x é permitido."
+      }
+    ],
+    "explicacao": "A guarda when refina o padrão. A ordem importa: 4 casa no primeiro (par) antes de testar ímpar positivo."
+  },
+  {
+    "id": "c05-ref-struct-restricao",
+    "capitulo": 5,
+    "nivel": "senior",
+    "pergunta": "Por que este código não compila?",
+    "codigo": "Span<int> Criar()\n{\n    Span<int> local = stackalloc int[8];\n    return local;\n}",
+    "alternativas": [
+      {
+        "texto": "Não se pode devolver um Span que aponta para memória da stack local; ela morre ao sair do método",
+        "correta": true
+      },
+      {
+        "texto": "Span nunca pode ser tipo de retorno",
+        "porque": "Pode, se a memória apontada viver mais que o método (ex.: fatia de um array recebido)."
+      },
+      {
+        "texto": "stackalloc só funciona em Main",
+        "porque": "stackalloc funciona em qualquer método, com as regras de tempo de vida."
+      },
+      {
+        "texto": "Falta unsafe no método",
+        "porque": "Span + stackalloc moderno não exige unsafe; o problema é o tempo de vida."
+      }
+    ],
+    "explicacao": "ref struct e Span ligados a stackalloc não podem escapar do escopo da stack. Devolver essa fatia apontaria para memória inválida."
+  },
+  {
+    "id": "c05-memory-vs-span",
+    "capitulo": 5,
+    "nivel": "senior",
+    "pergunta": "Qual a diferença prática principal entre Memory<T> e Span<T>?",
+    "alternativas": [
+      {
+        "texto": "Memory<T> pode ser armazenado em campos e atravessar await; Span<T> é ref struct e fica restrito à stack",
+        "correta": true
+      },
+      {
+        "texto": "Memory<T> é só leitura e Span<T> é só escrita",
+        "porque": "Existem Memory/ReadOnlyMemory e Span/ReadOnlySpan. O eixo principal é onde podem viver."
+      },
+      {
+        "texto": "Span<T> aloca no heap; Memory<T> não",
+        "porque": "Os dois são visões. Span evita heap por ser ref struct; Memory pode referenciar heap."
+      },
+      {
+        "texto": "São sinônimos desde o .NET 6",
+        "porque": "Continuam tipos distintos com regras diferentes."
+      }
+    ],
+    "explicacao": "Use Span para trabalhar na stack sem alocar. Use Memory quando precisa guardar a fatia, passar por async ou guardar em campo. Na hora de usar, .Span vira Span."
+  },
+  {
+    "id": "c05-span-clear-fill",
+    "capitulo": 5,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var dados = new[] { 1, 2, 3, 4 };\nSpan<int> s = dados;\ns.Clear();\ns.Fill(7);\n\nConsole.WriteLine(string.Join(',', dados));",
+    "alternativas": [
+      {
+        "texto": "7,7,7,7",
+        "correta": true
+      },
+      {
+        "texto": "0,0,0,0",
+        "porque": "Clear zera, mas Fill(7) preenche tudo com 7 em seguida."
+      },
+      {
+        "texto": "1,2,3,4",
+        "porque": "Span altera o array subjacente; não é cópia."
+      },
+      {
+        "texto": "7,2,3,4",
+        "porque": "Fill preenche todos os elementos da fatia, não só o primeiro."
+      }
+    ],
+    "explicacao": "Clear e Fill operam in-place sobre a memória vista pelo Span. Como s cobre o array inteiro, o array original muda."
+  },
+  {
+    "id": "c05-nested-property-pattern",
+    "capitulo": 5,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "record Endereco(string Cidade);\nrecord Pessoa(string Nome, Endereco End);\n\nvar p = new Pessoa(\"Lia\", new Endereco(\"Curitiba\"));\n\nvar r = p switch\n{\n    { End: { Cidade: \"São Paulo\" } } => \"sp\",\n    { End.Cidade: \"Curitiba\" } => \"cwb\",\n    _ => \"outro\"\n};\n\nConsole.WriteLine(r);",
+    "alternativas": [
+      {
+        "texto": "cwb",
+        "correta": true
+      },
+      {
+        "texto": "sp",
+        "porque": "A cidade é Curitiba, não São Paulo."
+      },
+      {
+        "texto": "outro",
+        "porque": "O padrão End.Cidade: \"Curitiba\" (ou aninhado) casa."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "Property patterns aninhados e a forma End.Cidade existem no C# moderno."
+      }
+    ],
+    "explicacao": "Property patterns aninham propriedades (End: { Cidade: ... }) ou usam a forma Extended property (End.Cidade). Evitam navegar manualmente com null checks verbosos."
+  },
+  {
+    "id": "c05-span-slice-bounds",
+    "capitulo": 5,
+    "nivel": "senior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var arr = new[] { 1, 2, 3, 4, 5 };\nSpan<int> s = arr.AsSpan(2, 2);\n\nConsole.WriteLine($\"{s.Length} {s[0]} {s[^1]}\");",
+    "alternativas": [
+      {
+        "texto": "2 3 4",
+        "correta": true
+      },
+      {
+        "texto": "2 2 3",
+        "porque": "AsSpan(2, 2) começa no índice 2 (valor 3), comprimento 2."
+      },
+      {
+        "texto": "5 3 4",
+        "porque": "Length da fatia é 2, não o tamanho do array."
+      },
+      {
+        "texto": "Lança ArgumentOutOfRangeException",
+        "porque": "Índice 2 com comprimento 2 cabe em um array de 5."
+      }
+    ],
+    "explicacao": "AsSpan(start, length) cria a janela sem copiar. s[^1] é o último da fatia (índice 1 da Span), que é 4."
+  },
+  {
+    "id": "c06-task-delay-basico",
+    "capitulo": 6,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "Console.Write(\"1\");\nawait Task.Delay(1);\nConsole.Write(\"2\");",
+    "alternativas": [
+      {
+        "texto": "12",
+        "correta": true
+      },
+      {
+        "texto": "21",
+        "porque": "1 é escrito antes do await; 2 depois que o Delay completa."
+      },
+      {
+        "texto": "1",
+        "porque": "Após o Delay a continuação roda e imprime 2."
+      },
+      {
+        "texto": "Nada, porque Delay trava o processo",
+        "porque": "Delay é assíncrono: libera a thread enquanto espera."
+      }
+    ],
+    "explicacao": "await Task.Delay espera sem bloquear a thread. O código após o await só roda quando a espera termina."
+  },
+  {
+    "id": "c06-task-status-ran",
+    "capitulo": 6,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var t = Task.FromResult(42);\nConsole.WriteLine($\"{t.IsCompleted} {t.Result}\");",
+    "alternativas": [
+      {
+        "texto": "True 42",
+        "correta": true
+      },
+      {
+        "texto": "False 42",
+        "porque": "FromResult já entrega uma Task completa."
+      },
+      {
+        "texto": "True 0",
+        "porque": "O resultado embutido é 42."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "Ler .Result de Task já completa e bem-sucedida é seguro."
+      }
+    ],
+    "explicacao": "Task.FromResult cria uma Task já finalizada com o valor. Útil em mocks e caminhos síncronos que precisam devolver Task."
+  },
+  {
+    "id": "c06-await-exception",
+    "capitulo": 6,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static async Task Falhar()\n{\n    await Task.Yield();\n    throw new InvalidOperationException(\"boom\");\n}\n\ntry\n{\n    await Falhar();\n}\ncatch (InvalidOperationException)\n{\n    Console.WriteLine(\"pegou\");\n}",
+    "alternativas": [
+      {
+        "texto": "pegou",
+        "correta": true
+      },
+      {
+        "texto": "Nada; a exceção some",
+        "porque": "await propaga a exceção da Task para o catch do chamador."
+      },
+      {
+        "texto": "AggregateException não tratada",
+        "porque": "Com await a exceção original é desembrulhada; não vem AggregateException."
+      },
+      {
+        "texto": "Erro de compilação",
+        "porque": "throw em método async Task é válido e vira falha da Task."
+      }
+    ],
+    "explicacao": "Exceção em método async Task falha a Task. await relança a exceção original (não AggregateException), então o catch tipado funciona."
+  },
+  {
+    "id": "c06-cancellation-basico",
+    "capitulo": 6,
+    "nivel": "junior",
+    "pergunta": "O que acontece se o token já estiver cancelado antes do Delay?",
+    "codigo": "using var cts = new CancellationTokenSource();\ncts.Cancel();\nawait Task.Delay(1000, cts.Token);",
+    "alternativas": [
+      {
+        "texto": "Lança TaskCanceledException (ou OperationCanceledException) sem esperar 1 segundo",
+        "correta": true
+      },
+      {
+        "texto": "Espera 1 segundo e depois cancela",
+        "porque": "Com token já cancelado, a operação falha na hora."
+      },
+      {
+        "texto": "Ignora o cancelamento e completa normalmente",
+        "porque": "Delay respeita o CancellationToken."
+      },
+      {
+        "texto": "Trava a thread para sempre",
+        "porque": "Cancela; não bloqueia indefinidamente."
+      }
+    ],
+    "explicacao": "CancellationToken avisa operações cooperativas para parar. Se já estiver cancelado, APIs como Delay falham imediatamente com exceção de cancelamento."
+  },
+  {
+    "id": "c06-async-task-retorno",
+    "capitulo": 6,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "static async Task<int> Dobrar(int n)\n{\n    await Task.Yield();\n    return n * 2;\n}\n\nvar t = Dobrar(5);\nConsole.WriteLine(await t);",
+    "alternativas": [
+      {
+        "texto": "10",
+        "correta": true
+      },
+      {
+        "texto": "5",
+        "porque": "O return n * 2 vira o Result da Task<int>."
+      },
+      {
+        "texto": "0",
+        "porque": "await t espera e devolve 10."
+      },
+      {
+        "texto": "Erro: não se pode await duas vezes",
+        "porque": "Aqui só há um await em t. Task pode ser awaited uma vez pelo fluxo normal."
+      }
+    ],
+    "explicacao": "async Task<T> empacota o return em uma Task. await desembrulha o T. Yield só força um ponto assíncrono real."
+  },
+  {
+    "id": "c06-deadlock-sync-context",
+    "capitulo": 6,
+    "nivel": "pleno",
+    "pergunta": "Em um app WinForms/WPF (com SynchronizationContext), por que este padrão pode deadlockar?",
+    "codigo": "// na UI thread\nvar resultado = BuscarAsync().Result;",
+    "alternativas": [
+      {
+        "texto": "A UI thread fica bloqueada no .Result, e a continuação do async tenta voltar para essa mesma thread",
+        "correta": true
+      },
+      {
+        "texto": "Porque .Result sempre cria deadlock em qualquer ambiente",
+        "porque": "Em ASP.NET Core moderno sem SyncContext o risco clássico muda; o problema clássico é UI + SyncContext."
+      },
+      {
+        "texto": "Porque BuscarAsync roda duas vezes",
+        "porque": "Roda uma vez; o deadlock é de sincronização de contexto."
+      },
+      {
+        "texto": "Porque Task.Result é proibido pelo compilador em UI",
+        "porque": "Compila; o perigo aparece em runtime."
+      }
+    ],
+    "explicacao": "Deadlock clássico: thread de UI bloqueia esperando a Task, e a Task precisa da UI para continuar. Solução: async/await de ponta a ponta (e ConfigureAwait(false) em bibliotecas)."
+  },
+  {
+    "id": "c06-whenall-exception",
+    "capitulo": 6,
+    "nivel": "pleno",
+    "pergunta": "O que acontece ao await Task.WhenAll quando uma das tasks falha?",
+    "codigo": "var t1 = Task.FromResult(1);\nvar t2 = Task.FromException<int>(new Exception(\"x\"));\nawait Task.WhenAll(t1, t2);",
+    "alternativas": [
+      {
+        "texto": "WhenAll espera as duas; o await relança a exceção original (não AggregateException)",
+        "correta": true
+      },
+      {
+        "texto": "Cancela t1 imediatamente",
+        "porque": "WhenAll não cancela as outras; só espera todas terminarem."
+      },
+      {
+        "texto": "Ignora a falha e devolve só o 1",
+        "porque": "Se qualquer task falhar, WhenAll falha."
+      },
+      {
+        "texto": "O await sempre lança AggregateException",
+        "porque": "AggregateException aparece com .Wait()/.Result. O await desembrulha e relança a interna."
+      }
+    ],
+    "explicacao": "WhenAll completa quando todas terminam. Se houver falha, a Task agregada falha; await propaga a exceção original. Use .Exception na Task se precisar de todas as falhas."
+  },
+  {
+    "id": "c06-whenany-primeiro",
+    "capitulo": 6,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var lenta = Task.Delay(200).ContinueWith(_ => \"lenta\");\nvar rapida = Task.Delay(10).ContinueWith(_ => \"rapida\");\nvar primeira = await Task.WhenAny(lenta, rapida);\nConsole.WriteLine(await primeira);",
+    "alternativas": [
+      {
+        "texto": "rapida",
+        "correta": true
+      },
+      {
+        "texto": "lenta",
+        "porque": "WhenAny devolve a que terminar primeiro; Delay(10) vence."
+      },
+      {
+        "texto": "lenta rapida",
+        "porque": "WhenAny retorna uma única Task, a vencedora."
+      },
+      {
+        "texto": "Cancela a lenta automaticamente",
+        "porque": "WhenAny não cancela as outras; elas continuam em background."
+      }
+    ],
+    "explicacao": "Task.WhenAny completa quando a primeira task termina e devolve essa task. As demais não são canceladas sozinhas."
+  },
+  {
+    "id": "c06-exception-nao-observada",
+    "capitulo": 6,
+    "nivel": "pleno",
+    "pergunta": "Qual o risco deste código?",
+    "codigo": "_ = FazTrabalhoPerigosoAsync(); // fire-and-forget sem await",
+    "alternativas": [
+      {
+        "texto": "Se a Task falhar, a exceção pode ficar não observada e ser difícil de diagnosticar",
+        "correta": true
+      },
+      {
+        "texto": "O compilador impede descartar a Task",
+        "porque": "Descartar com _ compila; o problema é de runtime/observabilidade."
+      },
+      {
+        "texto": "A Task nunca começa a executar",
+        "porque": "O método async começa ao ser chamado; o _ só joga fora a referência."
+      },
+      {
+        "texto": "Sempre causa deadlock",
+        "porque": "Fire-and-forget não é o padrão clássico de deadlock de SyncContext."
+      }
+    ],
+    "explicacao": "Sem await/ContinueWith que observe a Task, falhas podem passar batido. Prefira await, ou trate a Task explicitamente se o fire-and-forget for inevitável."
+  },
+  {
+    "id": "c06-valuetask-await-duas-vezes",
+    "capitulo": 6,
+    "nivel": "senior",
+    "pergunta": "Por que não se deve await a mesma ValueTask duas vezes?",
+    "codigo": "ValueTask<int> vt = ObterCachedAsync();\nvar a = await vt;\nvar b = await vt; // problema",
+    "alternativas": [
+      {
+        "texto": "ValueTask pode representar um recurso de uso único; await duplicado é indefinido/inválido",
+        "correta": true
+      },
+      {
+        "texto": "Porque ValueTask sempre lança na segunda vez por design documentado como exceção garantida em todos os casos",
+        "porque": "O contrato diz que não se deve; o comportamento não é o modelo seguro de Task."
+      },
+      {
+        "texto": "Porque a segunda await bloqueia a thread",
+        "porque": "O problema é reutilização inválida, não bloqueio."
+      },
+      {
+        "texto": "Não há problema; ValueTask é igual a Task",
+        "porque": "Task pode ser observada múltiplas vezes; ValueTask não oferece a mesma garantia."
+      }
+    ],
+    "explicacao": "ValueTask é otimização, não substituto geral de Task. Await uma vez, ou converta com AsTask() se precisar compartilhar/observar de novo."
+  },
+  {
+    "id": "c06-configureawait-biblioteca",
+    "capitulo": 6,
+    "nivel": "senior",
+    "pergunta": "Em uma biblioteca NuGet reutilizável, por que costuma-se usar ConfigureAwait(false)?",
+    "alternativas": [
+      {
+        "texto": "Para não capturar o SyncContext do consumidor (UI etc.), evitando deadlock e retomadas caras desnecessárias",
+        "correta": true
+      },
+      {
+        "texto": "Porque é obrigatório pelo compilador em class libraries",
+        "porque": "Não é obrigatório; é convenção de performance/segurança de contexto."
+      },
+      {
+        "texto": "Para cancelar a operação automaticamente",
+        "porque": "Cancelamento é CancellationToken."
+      },
+      {
+        "texto": "Para forçar a continuação na thread de UI",
+        "porque": "É o oposto: false evita forçar o contexto capturado."
+      }
+    ],
+    "explicacao": "Bibliotecas não sabem se o chamador tem SyncContext. ConfigureAwait(false) evita voltar a esse contexto e reduz risco de deadlock quando o app mistura sync-over-async."
+  },
+  {
+    "id": "c06-task-wait-vs-await",
+    "capitulo": 6,
+    "nivel": "senior",
+    "pergunta": "Qual a diferença principal entre task.Wait() e await task quanto a exceções?",
+    "alternativas": [
+      {
+        "texto": "Wait() envolve em AggregateException; await desembrulha e relança a exceção original",
+        "correta": true
+      },
+      {
+        "texto": "WAIT engole a exceção e await sempre crasha o processo",
+        "porque": "Os dois propagam; muda o tipo/embrulho."
+      },
+      {
+        "texto": "São idênticos em comportamento de exceção",
+        "porque": "Não: AggregateException vs exceção original é diferença clássica."
+      },
+      {
+        "texto": "await não propaga exceção de Task",
+        "porque": "await propaga; por isso o try/catch funciona."
+      }
+    ],
+    "explicacao": "APIs bloqueantes (.Result/.Wait) expõem AggregateException. await foi feito para parecer código síncrono e relança a exceção interna."
+  },
+  {
+    "id": "c06-async-void-evento",
+    "capitulo": 6,
+    "nivel": "senior",
+    "pergunta": "Por que async void ainda é aceitável em event handlers de UI?",
+    "alternativas": [
+      {
+        "texto": "Porque a assinatura do evento é void; async Task não encaixa no delegate do handler",
+        "correta": true
+      },
+      {
+        "texto": "Porque async void captura exceções melhor que async Task",
+        "porque": "É o contrário: async void é pior para exceções."
+      },
+      {
+        "texto": "Porque a UI exige async void em todo método",
+        "porque": "Só a assinatura do evento força void; o resto do app deve usar Task."
+      },
+      {
+        "texto": "Não é aceitável em nenhum cenário",
+        "porque": "Event handlers são a exceção documentada à regra."
+      }
+    ],
+    "explicacao": "Delegates de evento retornam void. async void existe para esse caso. Fora disso, prefira async Task e trate erros dentro do handler."
+  },
+  {
+    "id": "c06-cancellation-token-encadear",
+    "capitulo": 6,
+    "nivel": "senior",
+    "pergunta": "Em ASP.NET Core, de onde vem o CancellationToken que você costuma passar para queries e HTTP calls?",
+    "alternativas": [
+      {
+        "texto": "Do HttpContext.RequestAborted (ou parâmetro CancellationToken no endpoint), disparado se o cliente desconecta",
+        "correta": true
+      },
+      {
+        "texto": "De um token global estático da aplicação",
+        "porque": "Cada request tem seu próprio token ligado ao ciclo da requisição."
+      },
+      {
+        "texto": "Só do Task.Delay; controllers não têm token",
+        "porque": "O framework injeta/expõe o token da requisição."
+      },
+      {
+        "texto": "Do GC, quando a memória baixa",
+        "porque": "Cancelamento de request não tem relação com GC."
+      }
+    ],
+    "explicacao": "Propagar RequestAborted evita trabalho inútil quando o cliente abandona a chamada. Passe o token até EF, HttpClient e Delay quando fizer sentido."
+  },
+  {
+    "id": "c07-race-contador",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "Duas threads executam este código ao mesmo tempo. Qual o risco?",
+    "codigo": "_contador = _contador + 1;",
+    "alternativas": [
+      {
+        "texto": "Condição de corrida: uma das incrementações pode se perder",
+        "correta": true
+      },
+      {
+        "texto": "Nenhum, int é sempre thread-safe",
+        "porque": "Ler, somar e gravar não é atômico. Duas threads podem ler o mesmo valor."
+      },
+      {
+        "texto": "O programa trava em deadlock",
+        "porque": "Não há lock aqui. O problema é perda de atualização, não travamento."
+      },
+      {
+        "texto": "Só falha se o contador for long",
+        "porque": "O tipo não resolve. O problema é a operação composta sem sincronização."
+      }
+    ],
+    "explicacao": "Condição de corrida acontece quando o resultado depende da ordem das threads. Proteja com lock, Interlocked ou estruturas concorrentes."
+  },
+  {
+    "id": "c07-lock-objeto",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "Qual é a forma correta de escolher o objeto do lock?",
+    "codigo": "lock (???)\n{\n    // estado compartilhado\n}",
+    "alternativas": [
+      {
+        "texto": "Um objeto privado e dedicado, criado só para travar",
+        "correta": true
+      },
+      {
+        "texto": "this",
+        "porque": "Outro código pode travar no mesmo this e causar deadlock ou contenção inesperada."
+      },
+      {
+        "texto": "typeof(MinhaClasse)",
+        "porque": "É um objeto global da aplicação. Qualquer código pode competir pela mesma trava."
+      },
+      {
+        "texto": "string.Intern(\"trava\")",
+        "porque": "Strings interning são compartilhadas. Outros componentes podem travar na mesma chave."
+      }
+    ],
+    "explicacao": "Use um campo privado readonly object _trava = new(); exclusivo da classe. Nunca lock em this, Type ou string."
+  },
+  {
+    "id": "c07-parallel-for-basico",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "O que Parallel.For faz de diferente de um for comum?",
+    "codigo": "Parallel.For(0, 100, i => Processar(i));",
+    "alternativas": [
+      {
+        "texto": "Divide as iterações entre várias threads do pool para processar em paralelo",
+        "correta": true
+      },
+      {
+        "texto": "Garante que as iterações rodem em ordem, sem condição de corrida",
+        "porque": "A ordem não é garantida e estado compartilhado ainda precisa de sincronização."
+      },
+      {
+        "texto": "Cria exatamente 100 threads novas",
+        "porque": "Usa o ThreadPool e decide o grau de paralelismo; não abre uma thread por item."
+      },
+      {
+        "texto": "Só funciona com async/await dentro do lambda",
+        "porque": "Parallel.For é síncrono. async dentro dele costuma ser armadilha."
+      }
+    ],
+    "explicacao": "Parallel.For serve para CPU-bound em coleções. Para I/O assíncrono, prefira Task.WhenAll ou Channel."
+  },
+  {
+    "id": "c07-concurrent-dictionary-getoradd",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "Por que ConcurrentDictionary é preferível a Dictionary + lock manual em leituras frequentes?",
+    "alternativas": [
+      {
+        "texto": "Foi feito para acesso concorrente e permite leituras sem bloquear tudo com um único lock",
+        "correta": true
+      },
+      {
+        "texto": "Dictionary já é thread-safe; ConcurrentDictionary só muda a API",
+        "porque": "Dictionary não é thread-safe. Escrita e leitura concorrentes podem corromper a estrutura."
+      },
+      {
+        "texto": "ConcurrentDictionary impede qualquer condição de corrida na lógica de negócio",
+        "porque": "Ele protege a estrutura. A lógica em volta (check-then-act) ainda pode precisar de cuidado."
+      },
+      {
+        "texto": "Só funciona em ASP.NET Core",
+        "porque": "É do System.Collections.Concurrent e serve em qualquer app .NET."
+      }
+    ],
+    "explicacao": "ConcurrentDictionary oferece operações atômicas como TryAdd e GetOrAdd. Continua sendo preciso pensar em race na regra de negócio."
+  },
+  {
+    "id": "c07-cancellation-token-basico",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "O que acontece ao await Task.Delay com um token já cancelado?",
+    "codigo": "var cts = new CancellationTokenSource();\ncts.Cancel();\nawait Task.Delay(1000, cts.Token);",
+    "alternativas": [
+      {
+        "texto": "Lança OperationCanceledException (ou TaskCanceledException)",
+        "correta": true
+      },
+      {
+        "texto": "Espera 1000 ms normalmente",
+        "porque": "Com token cancelado, Delay falha de imediato sem esperar."
+      },
+      {
+        "texto": "Retorna sem fazer nada e sem exceção",
+        "porque": "APIs que respeitam o token sinalizam cancelamento via exceção de cancelamento."
+      },
+      {
+        "texto": "Trava a thread para sempre",
+        "porque": "O contrário: encerra cedo por cancelamento."
+      }
+    ],
+    "explicacao": "CancellationToken é cooperativo. APIs do framework observam o token e lançam OperationCanceledException quando canceladas."
+  },
+  {
+    "id": "c07-channel-basico",
+    "capitulo": 7,
+    "nivel": "junior",
+    "pergunta": "Para que serve System.Threading.Channels.Channel na prática?",
+    "alternativas": [
+      {
+        "texto": "Fila assíncrona thread-safe entre produtores e consumidores",
+        "correta": true
+      },
+      {
+        "texto": "Abrir um socket TCP entre dois processos",
+        "porque": "Channel é in-process. Não é rede."
+      },
+      {
+        "texto": "Substituir async/await em qualquer método",
+        "porque": "Channel coordena fluxo de dados; não substitui o modelo async."
+      },
+      {
+        "texto": "Só existe no ASP.NET Core Minimal APIs",
+        "porque": "É biblioteca do runtime .NET, útil em workers, pipelines e background services."
+      }
+    ],
+    "explicacao": "Channel<T> desacopla quem produz de quem consome com WriteAsync/ReadAsync, sem lock manual de fila."
+  },
+  {
+    "id": "c07-concurrent-tryadd",
+    "capitulo": 7,
+    "nivel": "pleno",
+    "pergunta": "O que este código imprime com duas threads chamando Registrar ao mesmo tempo com a mesma chave?",
+    "codigo": "var mapa = new ConcurrentDictionary<string, int>();\n\nbool Registrar(string chave)\n{\n    return mapa.TryAdd(chave, 1);\n}",
+    "alternativas": [
+      {
+        "texto": "Só uma das chamadas retorna true; a outra false",
+        "correta": true
+      },
+      {
+        "texto": "As duas retornam true e a chave fica duplicada",
+        "porque": "TryAdd é atômico: no máximo uma inserção vence."
+      },
+      {
+        "texto": "Lança exceção de chave duplicada",
+        "porque": "TryAdd não lança; devolve false se a chave já existe."
+      },
+      {
+        "texto": "As duas travam em deadlock",
+        "porque": "Não há lock explícito cruzado. TryAdd é operação segura."
+      }
+    ],
+    "explicacao": "TryAdd evita o padrão clássico ContainsKey + Add, que tem race. A checagem e a inserção acontecem de forma atômica."
+  },
+  {
+    "id": "c07-channel-bounded",
+    "capitulo": 7,
+    "nivel": "pleno",
+    "pergunta": "Qual diferença prática de um Channel limitado (Bounded) frente a um ilimitado?",
+    "codigo": "var canal = Channel.CreateBounded<int>(10);",
+    "alternativas": [
+      {
+        "texto": "Quando enche, WriteAsync espera (backpressure) em vez de crescer sem limite",
+        "correta": true
+      },
+      {
+        "texto": "Bounded só aceita tipos valor",
+        "porque": "Aceita qualquer T. O limite é de capacidade, não de tipo."
+      },
+      {
+        "texto": "Bounded descarta itens antigos automaticamente sempre",
+        "porque": "O comportamento ao encher depende da FullMode; o padrão é esperar, não descartar."
+      },
+      {
+        "texto": "Bounded só pode ter um consumidor",
+        "porque": "Dá para configurar múltiplos leitores/escritores. Capacidade e concorrência são eixos separados."
+      }
+    ],
+    "explicacao": "Channel bounded aplica backpressure: o produtor desacelera quando o consumidor não acompanha, evitando estouro de memória."
+  },
+  {
+    "id": "c07-async-enumerable-cancel",
+    "capitulo": 7,
+    "nivel": "pleno",
+    "pergunta": "Como passar cancelamento corretamente para um IAsyncEnumerable?",
+    "codigo": "async IAsyncEnumerable<int> Gerar(\n    [EnumeratorCancellation] CancellationToken ct = default)\n{\n    while (!ct.IsCancellationRequested)\n    {\n        yield return 1;\n        await Task.Delay(100, ct);\n    }\n}",
+    "alternativas": [
+      {
+        "texto": "Marcar o token com [EnumeratorCancellation] e usar await foreach com WithCancellation",
+        "correta": true
+      },
+      {
+        "texto": "Só funciona se o token for static",
+        "porque": "O token vem de quem consome o stream, tipicamente por requisição."
+      },
+      {
+        "texto": "IAsyncEnumerable não aceita cancelamento",
+        "porque": "Aceita via EnumeratorCancellation e WithCancellation."
+      },
+      {
+        "texto": "Basta um bool externo sem token",
+        "porque": "Não integra com APIs do framework nem com o pipeline ASP.NET Core."
+      }
+    ],
+    "explicacao": "O atributo EnumeratorCancellation liga o token do await foreach (WithCancellation) ao parâmetro do método iterador."
+  },
+  {
+    "id": "c07-sync-context-configureawait",
+    "capitulo": 7,
+    "nivel": "senior",
+    "pergunta": "Em uma biblioteca de classe reutilizável (não UI), por que ConfigureAwait(false) ainda aparece em discussões?",
+    "codigo": "await AlgoAsync().ConfigureAwait(false);",
+    "alternativas": [
+      {
+        "texto": "Evita capturar o SynchronizationContext do chamador e reduz risco de deadlock em cenários clássicos",
+        "correta": true
+      },
+      {
+        "texto": "Torna o await síncrono",
+        "porque": "Continua assíncrono. Só muda se a continuação volta no contexto original."
+      },
+      {
+        "texto": "É obrigatório em todo código ASP.NET Core moderno",
+        "porque": "No ASP.NET Core não há SyncContext clássico. Em libs gerais ainda é hábito defensivo."
+      },
+      {
+        "texto": "Só serve para acelerar Task.Delay",
+        "porque": "Não é otimização de Delay. É sobre contexto de sincronização."
+      }
+    ],
+    "explicacao": "Em UI (WinForms/WPF) o SyncContext marshalla de volta à thread UI. Em libs, ConfigureAwait(false) evita depender desse contexto. Em ASP.NET Core o ganho é menor."
+  },
+  {
+    "id": "c07-race-check-then-act",
+    "capitulo": 7,
+    "nivel": "senior",
+    "pergunta": "Qual o problema deste padrão com Dictionary compartilhado entre threads?",
+    "codigo": "if (!_cache.ContainsKey(chave))\n{\n    _cache[chave] = Carregar(chave);\n}",
+    "alternativas": [
+      {
+        "texto": "Há race entre ContainsKey e a escrita; duas threads podem carregar e gravar a mesma chave",
+        "correta": true
+      },
+      {
+        "texto": "Nenhum, ContainsKey é atômico com a atribuição",
+        "porque": "São duas operações separadas. Outra thread pode entrar no meio."
+      },
+      {
+        "texto": "Só falha se a chave for null",
+        "porque": "O problema é concorrência, não null."
+      },
+      {
+        "texto": "Dictionary lança se duas threads só lerem",
+        "porque": "Leituras concorrentes sem escrita podem ocorrer, mas aqui há escrita. O padrão check-then-act é o foco."
+      }
+    ],
+    "explicacao": "Check-then-act precisa de sincronização ou de API atômica (ConcurrentDictionary.GetOrAdd / AddOrUpdate)."
+  },
+  {
+    "id": "c07-parallel-async-armadilha",
+    "capitulo": 7,
+    "nivel": "senior",
+    "pergunta": "Por que este uso de Parallel.For com async é problemático?",
+    "codigo": "Parallel.For(0, itens.Length, async i =>\n{\n    await ProcessarAsync(itens[i]);\n});",
+    "alternativas": [
+      {
+        "texto": "Parallel.For não espera o async; as Tasks disparam e o For pode terminar cedo demais",
+        "correta": true
+      },
+      {
+        "texto": "async não pode ser usado com array",
+        "porque": "Pode. O problema é o Parallel.For não aguardar delegates async."
+      },
+      {
+        "texto": "Funciona igual a Task.WhenAll",
+        "porque": "WhenAll espera todas as Tasks. Este padrão não."
+      },
+      {
+        "texto": "Só falha se Length for ímpar",
+        "porque": "O problema é estrutural, independente do tamanho."
+      }
+    ],
+    "explicacao": "Para I/O paralelo use Task.WhenAll, Parallel.ForEachAsync (.NET 6+) ou Channel. Parallel.For é para trabalho síncrono de CPU."
+  },
+  {
+    "id": "c07-interlocked-compareexchange",
+    "capitulo": 7,
+    "nivel": "senior",
+    "pergunta": "O que Interlocked.CompareExchange faz neste trecho?",
+    "codigo": "int original = Interlocked.CompareExchange(ref _flag, 1, 0);",
+    "alternativas": [
+      {
+        "texto": "Se _flag for 0, troca para 1 atomicamente e devolve o valor anterior",
+        "correta": true
+      },
+      {
+        "texto": "Sempre grava 1 em _flag",
+        "porque": "Só grava se o valor atual for igual ao comparando (0)."
+      },
+      {
+        "texto": "Espera em spin até _flag virar 0",
+        "porque": "CompareExchange tenta uma vez. Loop de spin seria código à parte."
+      },
+      {
+        "texto": "É equivalente a lock (_flag)",
+        "porque": "Não dá lock em int. É operação atômica de CPU, sem monitor."
+      }
+    ],
+    "explicacao": "CompareExchange é a base de locks otimistas e flags de inicialização única: compara e troca numa só instrução atômica."
+  },
+  {
+    "id": "c07-cts-linked",
+    "capitulo": 7,
+    "nivel": "senior",
+    "pergunta": "Quando usar CancellationTokenSource.CreateLinkedTokenSource?",
+    "alternativas": [
+      {
+        "texto": "Quando a operação deve cancelar se qualquer um de dois tokens cancelar (ex.: timeout + RequestAborted)",
+        "correta": true
+      },
+      {
+        "texto": "Para clonar um token e impedir cancelamento",
+        "porque": "O linked cancela junto. Não isola contra cancelamento."
+      },
+      {
+        "texto": "Só existe no .NET Framework, não no .NET moderno",
+        "porque": "É API padrão e muito usada em ASP.NET Core e workers."
+      },
+      {
+        "texto": "Substitui Task.WhenAll",
+        "porque": "É sobre cancelamento, não sobre esperar várias Tasks."
+      }
+    ],
+    "explicacao": "Linked token combina sinais (cliente desistiu OU timeout interno). Lembre de dar Dispose no CTS linked."
+  },
+  {
+    "id": "c08-transient-vs-scoped",
+    "capitulo": 8,
+    "nivel": "junior",
+    "pergunta": "Qual a diferença principal entre Transient e Scoped no DI do ASP.NET Core?",
+    "alternativas": [
+      {
+        "texto": "Transient: nova instância a cada injeção; Scoped: uma por requisição (escopo)",
+        "correta": true
+      },
+      {
+        "texto": "São sinônimos no Minimal API",
+        "porque": "São tempos de vida distintos em qualquer hosting ASP.NET Core."
+      },
+      {
+        "texto": "Transient vive para sempre; Scoped morre a cada minuto",
+        "porque": "Quem vive para sempre é Singleton. Scoped acompanha o escopo da requisição."
+      },
+      {
+        "texto": "Scoped só funciona com DbContext",
+        "porque": "Qualquer serviço pode ser Scoped. DbContext só é o exemplo mais comum."
+      }
+    ],
+    "explicacao": "Na mesma requisição, dois Transient no construtor são duas instâncias; dois Scoped são a mesma."
+  },
+  {
+    "id": "c08-mapget-basico",
+    "capitulo": 8,
+    "nivel": "junior",
+    "pergunta": "O que este Minimal API faz?",
+    "codigo": "app.MapGet(\"/ping\", () => \"pong\");",
+    "alternativas": [
+      {
+        "texto": "Responde GET /ping com o texto pong",
+        "correta": true
+      },
+      {
+        "texto": "Só responde se houver controller PingController",
+        "porque": "MapGet registra o endpoint direto, sem controller."
+      },
+      {
+        "texto": "Cria um WebSocket em /ping",
+        "porque": "É HTTP GET simples, não WebSocket."
+      },
+      {
+        "texto": "Exige autenticação automaticamente",
+        "porque": "Sem RequireAuthorization, o endpoint é anônimo."
+      }
+    ],
+    "explicacao": "Minimal APIs mapeiam rota + método HTTP a um delegate. Ideal para endpoints pequenos e APIs enxutas."
+  },
+  {
+    "id": "c08-singleton-basico",
+    "capitulo": 8,
+    "nivel": "junior",
+    "pergunta": "Quando faz sentido registrar um serviço como Singleton?",
+    "alternativas": [
+      {
+        "texto": "Quando a instância é thread-safe e pode ser compartilhada por toda a aplicação",
+        "correta": true
+      },
+      {
+        "texto": "Sempre que o serviço acessar banco de dados",
+        "porque": "DbContext e repositórios com estado costumam ser Scoped."
+      },
+      {
+        "texto": "Só para middlewares",
+        "porque": "Middleware e DI são conceitos diferentes. Qualquer serviço pode ser Singleton."
+      },
+      {
+        "texto": "Quando precisar de uma instância nova por requisição",
+        "porque": "Isso é Scoped, não Singleton."
+      }
+    ],
+    "explicacao": "Singleton é uma instância para o app. Bom para cache sem estado mutável inseguro, clientes HTTP tipados via factory, etc."
+  },
+  {
+    "id": "c08-middleware-run",
+    "capitulo": 8,
+    "nivel": "junior",
+    "pergunta": "O que app.Run faz no pipeline de middlewares?",
+    "codigo": "app.Run(async context =>\n{\n    await context.Response.WriteAsync(\"fim\");\n});",
+    "alternativas": [
+      {
+        "texto": "Registra um middleware terminal: não chama o próximo",
+        "correta": true
+      },
+      {
+        "texto": "Inicia o servidor Kestrel",
+        "porque": "Quem sobe o host é app.Run() sem delegate (ou RunAsync). Aqui é overload de middleware."
+      },
+      {
+        "texto": "É igual a app.Use e sempre chama next",
+        "porque": "Run não recebe RequestDelegate next. Encerra o pipeline."
+      },
+      {
+        "texto": "Só funciona em controllers MVC",
+        "porque": "É API do pipeline genérico do ASP.NET Core."
+      }
+    ],
+    "explicacao": "Use/UseWhen podem chamar next; Map desvia o branch; Run termina. A ordem de registro define a ordem de execução."
+  },
+  {
+    "id": "c08-ioptions-basico",
+    "capitulo": 8,
+    "nivel": "junior",
+    "pergunta": "Para que serve IOptions<T> no ASP.NET Core?",
+    "codigo": "builder.Services.Configure<SmtpOptions>(\n    builder.Configuration.GetSection(\"Smtp\"));",
+    "alternativas": [
+      {
+        "texto": "Injetar configuração tipada (Options pattern) com validação e binding de seção",
+        "correta": true
+      },
+      {
+        "texto": "Abrir conexão SMTP automaticamente",
+        "porque": "Só configura e injeta opções. Quem usa o SMTP é o seu código."
+      },
+      {
+        "texto": "Substituir appsettings.json por variáveis estáticas",
+        "porque": "Lê do Configuration (appsettings, env, etc.), de forma tipada."
+      },
+      {
+        "texto": "Só funciona com Singleton",
+        "porque": "IOptions<T> é registrado como Singleton e pode ser injetado em qualquer lifetime."
+      }
+    ],
+    "explicacao": "Options pattern evita espalhar strings mágicas de configuração. IOptions<T>.Value dá o objeto tipado."
+  },
+  {
+    "id": "c08-filter-minimal",
+    "capitulo": 8,
+    "nivel": "pleno",
+    "pergunta": "O que um endpoint filter faz em Minimal APIs?",
+    "codigo": "app.MapGet(\"/itens\", handler)\n   .AddEndpointFilter(async (ctx, next) =>\n   {\n       // antes\n       var result = await next(ctx);\n       // depois\n       return result;\n   });",
+    "alternativas": [
+      {
+        "texto": "Intercepta a invocação do endpoint (antes/depois), parecido com action filter do MVC",
+        "correta": true
+      },
+      {
+        "texto": "Substitui o middleware pipeline inteiro",
+        "porque": "Filters rodam depois do roteamento, no endpoint. Middleware continua existindo."
+      },
+      {
+        "texto": "Só valida JWT",
+        "porque": "Pode fazer logging, validação, medição, etc. Não é exclusivo de auth."
+      },
+      {
+        "texto": "Obriga o uso de controllers",
+        "porque": "É recurso nativo de Minimal APIs."
+      }
+    ],
+    "explicacao": "Endpoint filters são o gancho fino por rota/grupo. Para cross-cutting global, middleware ainda é o caminho."
+  },
+  {
+    "id": "c08-route-group",
+    "capitulo": 8,
+    "nivel": "pleno",
+    "pergunta": "Qual o efeito deste MapGroup?",
+    "codigo": "var api = app.MapGroup(\"/api/v1\")\n    .RequireAuthorization();\napi.MapGet(\"/pedidos\", ListarPedidos);",
+    "alternativas": [
+      {
+        "texto": "Expõe GET /api/v1/pedidos e exige autenticação/autorização no grupo",
+        "correta": true
+      },
+      {
+        "texto": "Cria a rota /pedidos sem o prefixo",
+        "porque": "MapGroup prefixa todas as rotas do grupo."
+      },
+      {
+        "texto": "RequireAuthorization só vale para controllers MVC",
+        "porque": "Funciona em Minimal APIs e groups."
+      },
+      {
+        "texto": "Gera automaticamente um cliente HTTP",
+        "porque": "Só organiza rotas e metadados no servidor."
+      }
+    ],
+    "explicacao": "MapGroup agrupa prefixo, filters e políticas. Evita repetir /api/v1 e RequireAuthorization em cada MapGet."
+  },
+  {
+    "id": "c08-ioptions-snapshot",
+    "capitulo": 8,
+    "nivel": "pleno",
+    "pergunta": "Qual a diferença entre IOptionsSnapshot<T> e IOptions<T>?",
+    "alternativas": [
+      {
+        "texto": "Snapshot recarrega a cada escopo/requisição; IOptions fica com o valor inicial",
+        "correta": true
+      },
+      {
+        "texto": "Snapshot é Singleton; IOptions é Scoped",
+        "porque": "É o contrário na prática de uso: Snapshot é Scoped; IOptions é Singleton."
+      },
+      {
+        "texto": "Não há diferença",
+        "porque": "A diferença de recarga e lifetime cai em entrevista justamente por isso."
+      },
+      {
+        "texto": "Snapshot só funciona com XML",
+        "porque": "Funciona com qualquer Configuration provider (JSON, env, etc.)."
+      }
+    ],
+    "explicacao": "Use Snapshot quando a config pode mudar e o serviço é Scoped. Em Singleton, use IOptionsMonitor."
+  },
+  {
+    "id": "c08-middleware-ordem-excecao",
+    "capitulo": 8,
+    "nivel": "pleno",
+    "pergunta": "Por que o middleware de tratamento de exceção costuma ser um dos primeiros no pipeline?",
+    "codigo": "app.UseExceptionHandler(\"/erro\");\n// outros middlewares...",
+    "alternativas": [
+      {
+        "texto": "Porque precisa envolver os demais para capturar exceções que eles lançarem",
+        "correta": true
+      },
+      {
+        "texto": "Porque o Kestrel só aceita ExceptionHandler na primeira linha",
+        "porque": "Não é limitação do Kestrel. É composição do pipeline."
+      },
+      {
+        "texto": "Para rodar depois de UseEndpoints e substituir 404",
+        "porque": "Se ficar depois, não envolve quem já executou. O ponto é envolver o restante."
+      },
+      {
+        "texto": "Porque autenticação depende dele",
+        "porque": "Auth não depende de ExceptionHandler. A ordem é sobre captura de erros."
+      }
+    ],
+    "explicacao": "Middlewares formam uma cebola. Quem registra primeiro envolve os seguintes. Exception/logging cedo = cobrem o resto."
+  },
+  {
+    "id": "c08-hosting-lifetime",
+    "capitulo": 8,
+    "nivel": "senior",
+    "pergunta": "Para que serve IHostApplicationLifetime em um Worker/API?",
+    "alternativas": [
+      {
+        "texto": "Reagir a eventos do host (Started, Stopping, Stopped) e pedir shutdown gracioso",
+        "correta": true
+      },
+      {
+        "texto": "Criar escopos de DI por requisição",
+        "porque": "Escopo de requisição é do IServiceScope / HttpContext, não do Lifetime."
+      },
+      {
+        "texto": "Substituir CancellationToken em todos os métodos",
+        "porque": "ApplicationStopping é um token do host, mas não substitui tokens de operação."
+      },
+      {
+        "texto": "Só existe no .NET Framework com IIS clássico",
+        "porque": "É API do Generic Host moderna (.NET Core+)."
+      }
+    ],
+    "explicacao": "Com Lifetime você encerra loops de background, libera recursos e coordena shutdown sem matar o processo no susto."
+  },
+  {
+    "id": "c08-dbcontext-factory",
+    "capitulo": 8,
+    "nivel": "senior",
+    "pergunta": "Quando preferir IDbContextFactory<T> em vez de injetar DbContext Scoped direto?",
+    "alternativas": [
+      {
+        "texto": "Em código paralelo, Singleton ou background service que precisa criar DbContexts de curta duração",
+        "correta": true
+      },
+      {
+        "texto": "Sempre; Scoped DbContext está obsoleto",
+        "porque": "Scoped continua o padrão em APIs request/response simples."
+      },
+      {
+        "texto": "Só para bancos NoSQL",
+        "porque": "É padrão do EF Core, independente do provedor."
+      },
+      {
+        "texto": "Para transformar DbContext em Singleton com segurança",
+        "porque": "A factory cria instâncias novas. Não torna o mesmo DbContext thread-safe."
+      }
+    ],
+    "explicacao": "A factory resolve o caso em que você não pode (ou não deve) depender do escopo HTTP. Crie, use e dispose o contexto."
+  },
+  {
+    "id": "c08-captive-manual-scope",
+    "capitulo": 8,
+    "nivel": "senior",
+    "pergunta": "Como um Singleton pode usar um serviço Scoped sem captive dependency?",
+    "codigo": "// dentro de um serviço Singleton\nusing var scope = _scopeFactory.CreateScope();\nvar scoped = scope.ServiceProvider.GetRequiredService<MeuScoped>();",
+    "alternativas": [
+      {
+        "texto": "Criar um escopo curto com IServiceScopeFactory e resolver o Scoped dentro dele",
+        "correta": true
+      },
+      {
+        "texto": "Injetar o Scoped no construtor do Singleton",
+        "porque": "Isso é exatamente a captive dependency que o container bloqueia em Development."
+      },
+      {
+        "texto": "Registrar o Scoped como Singleton também",
+        "porque": "Muda a semântica e pode vazar estado entre requisições."
+      },
+      {
+        "texto": "Usar static para o Scoped",
+        "porque": "static foge do container e piora o compartilhamento de estado."
+      }
+    ],
+    "explicacao": "IServiceScopeFactory é Singleton seguro. Você abre escopo, resolve, usa e dispose. Comum em IHostedService."
+  },
+  {
+    "id": "c08-ioptions-monitor-onchange",
+    "capitulo": 8,
+    "nivel": "senior",
+    "pergunta": "Além de CurrentValue, qual recurso importante o IOptionsMonitor<T> oferece?",
+    "alternativas": [
+      {
+        "texto": "OnChange para reagir quando a configuração tipada muda em runtime",
+        "correta": true
+      },
+      {
+        "texto": "Salvar automaticamente o appsettings.json no banco",
+        "porque": "Ele notifica mudança; não persiste configuração sozinho."
+      },
+      {
+        "texto": "Só funciona se o serviço for Transient",
+        "porque": "Foi feito para uso em Singleton justamente por ser seguro nesse lifetime."
+      },
+      {
+        "texto": "Substitui completamente IConfiguration",
+        "porque": "Options se apoia no Configuration; não elimina o abstrato de configuração."
+      }
+    ],
+    "explicacao": "OnChange permite invalidar cache, religar clientes ou ajustar feature flags sem restart. Guarde o IDisposable da assinatura se necessário."
+  },
+  {
+    "id": "c08-minimal-results",
+    "capitulo": 8,
+    "nivel": "senior",
+    "pergunta": "Neste Minimal API, qual status HTTP Result.NotFound() devolve?",
+    "codigo": "app.MapGet(\"/clientes/{id:int}\", async (int id, IClienteRepo repo) =>\n{\n    var c = await repo.BuscarAsync(id);\n    return c is null ? Results.NotFound() : Results.Ok(c);\n});",
+    "alternativas": [
+      {
+        "texto": "404",
+        "correta": true
+      },
+      {
+        "texto": "204",
+        "porque": "204 é NoContent. NotFound é 404."
+      },
+      {
+        "texto": "400",
+        "porque": "400 seria BadRequest. Recurso inexistente é 404."
+      },
+      {
+        "texto": "500",
+        "porque": "Não há exceção aqui. É resposta controlada de ausência."
+      }
+    ],
+    "explicacao": "Results.* padroniza IResult com status e corpo. Combina com restrições de rota (:int) e injeção de dependências no handler."
+  },
+  {
+    "id": "c09-status-404",
+    "capitulo": 9,
+    "nivel": "junior",
+    "pergunta": "Um GET /pedidos/99 não encontra o recurso. Qual status é o mais adequado?",
+    "alternativas": [
+      {
+        "texto": "404 Not Found",
+        "correta": true
+      },
+      {
+        "texto": "400 Bad Request",
+        "porque": "400 indica pedido malformado. Aqui o caminho é válido; o recurso é que não existe."
+      },
+      {
+        "texto": "204 No Content",
+        "porque": "204 é sucesso sem corpo. Não achar o recurso não é sucesso."
+      },
+      {
+        "texto": "500 Internal Server Error",
+        "porque": "500 é falha do servidor. Recurso inexistente é esperado e responde 404."
+      }
+    ],
+    "explicacao": "404 comunica que a URI aponta para algo que não existe. Em Minimal APIs: Results.NotFound() ou TypedResults.NotFound()."
+  },
+  {
+    "id": "c09-header-content-type",
+    "capitulo": 9,
+    "nivel": "junior",
+    "pergunta": "Ao enviar JSON no corpo de um POST com HttpClient, qual header o servidor costuma exigir?",
+    "codigo": "var conteudo = new StringContent(json);\nawait client.PostAsync(\"/pedidos\", conteudo);",
+    "alternativas": [
+      {
+        "texto": "Content-Type: application/json",
+        "correta": true
+      },
+      {
+        "texto": "Accept: text/html",
+        "porque": "Accept diz o que o cliente quer receber, não o formato do corpo enviado."
+      },
+      {
+        "texto": "Location: /pedidos",
+        "porque": "Location é resposta de criação (201), não header de envio."
+      },
+      {
+        "texto": "Retry-After: 0",
+        "porque": "Retry-After vem do servidor pedindo espera, não do cliente no POST."
+      }
+    ],
+    "explicacao": "Sem Content-Type certo, a API pode rejeitar ou interpretar o corpo errado. Prefira JsonContent.Create(objeto) ou new StringContent(json, Encoding.UTF8, \"application/json\")."
+  },
+  {
+    "id": "c09-ihttpclientfactory",
+    "capitulo": 9,
+    "nivel": "junior",
+    "pergunta": "Para que serve o IHttpClientFactory no ASP.NET Core?",
+    "alternativas": [
+      {
+        "texto": "Criar e gerenciar instâncias de HttpClient reutilizando conexões, sem o risco de esgotar sockets",
+        "correta": true
+      },
+      {
+        "texto": "Substituir o HttpClient por uma API síncrona",
+        "porque": "Continua sendo HttpClient assíncrono. O factory só cuida do ciclo de vida."
+      },
+      {
+        "texto": "Fazer cache automático de todas as respostas HTTP",
+        "porque": "Não há cache de resposta por padrão. Só gestão de handlers e clientes."
+      },
+      {
+        "texto": "Converter automaticamente JSON em XML",
+        "porque": "Isso não é papel do factory."
+      }
+    ],
+    "explicacao": "Registre com builder.Services.AddHttpClient() (ou AddHttpClient(\"nome\")). Injete IHttpClientFactory e chame CreateClient. Assim as conexões são reaproveitadas com segurança."
+  },
+  {
+    "id": "c09-problemdetails-basico",
+    "capitulo": 9,
+    "nivel": "junior",
+    "pergunta": "O que é ProblemDetails numa API ASP.NET Core?",
+    "alternativas": [
+      {
+        "texto": "Um formato padrão (RFC 7807) para descrever erros HTTP com type, title, status e detail",
+        "correta": true
+      },
+      {
+        "texto": "Um middleware que faz retry automático",
+        "porque": "Retry é resiliência (Polly). ProblemDetails é só o formato da resposta de erro."
+      },
+      {
+        "texto": "Um status code especial além dos HTTP",
+        "porque": "Usa os status HTTP normais; só padroniza o corpo JSON do erro."
+      },
+      {
+        "texto": "Um cliente tipado do HttpClient",
+        "porque": "Clientes tipados são outro recurso do IHttpClientFactory."
+      }
+    ],
+    "explicacao": "Em vez de { \"erro\": \"falhou\" } ad hoc, a API devolve um contrato previsível. No .NET moderno, AddProblemDetails() e Results.Problem(...) facilitam isso."
+  },
+  {
+    "id": "c09-accept-header",
+    "capitulo": 9,
+    "nivel": "junior",
+    "pergunta": "Qual a diferença entre os headers Content-Type e Accept?",
+    "alternativas": [
+      {
+        "texto": "Content-Type descreve o formato do corpo que você envia; Accept diz o formato que você quer receber",
+        "correta": true
+      },
+      {
+        "texto": "São sinônimos; o servidor trata os dois iguais",
+        "porque": "Têm papéis distintos no contrato HTTP."
+      },
+      {
+        "texto": "Accept só existe em respostas; Content-Type só em requisições",
+        "porque": "Content-Type também aparece na resposta. Accept é da requisição."
+      },
+      {
+        "texto": "Accept define o status code da resposta",
+        "porque": "Status code é outra coisa. Accept influencia negociação de conteúdo."
+      }
+    ],
+    "explicacao": "Num POST JSON: Content-Type: application/json no corpo enviado e Accept: application/json se o cliente espera JSON de volta. Confundir os dois é erro clássico de integração."
+  },
+  {
+    "id": "c09-named-client",
+    "capitulo": 9,
+    "nivel": "pleno",
+    "pergunta": "Com este registro, como obter o cliente já configurado com a BaseAddress certa?",
+    "codigo": "builder.Services.AddHttpClient(\"Pagamentos\", c =>\n{\n    c.BaseAddress = new Uri(\"https://pagamentos.interno/\");\n});",
+    "alternativas": [
+      {
+        "texto": "factory.CreateClient(\"Pagamentos\")",
+        "correta": true
+      },
+      {
+        "texto": "new HttpClient(\"Pagamentos\")",
+        "porque": "O construtor de HttpClient não recebe nome de registro do DI."
+      },
+      {
+        "texto": "factory.CreateClient() sem nome, que pega o último registrado",
+        "porque": "CreateClient() sem nome devolve o cliente padrão, não o nomeado."
+      },
+      {
+        "texto": "HttpClient.Default.BaseAddress = ...",
+        "porque": "Não existe esse atalho global seguro para multi-serviço."
+      }
+    ],
+    "explicacao": "Clientes nomeados isolam BaseAddress, headers e políticas por integração. A alternativa tipada (AddHttpClient<PagamentosClient>()) injeta a classe direto, sem string mágica."
+  },
+  {
+    "id": "c09-ensure-success",
+    "capitulo": 9,
+    "nivel": "pleno",
+    "pergunta": "O que acontece se a API responder 500 e o código chamar EnsureSuccessStatusCode?",
+    "codigo": "var resposta = await client.GetAsync(url);\nresposta.EnsureSuccessStatusCode();\nvar json = await resposta.Content.ReadAsStringAsync();",
+    "alternativas": [
+      {
+        "texto": "Lança HttpRequestException e o ReadAsStringAsync abaixo não roda",
+        "correta": true
+      },
+      {
+        "texto": "Ignora o 500 e lê o corpo normalmente",
+        "porque": "EnsureSuccessStatusCode exige status 2xx. Fora disso, lança."
+      },
+      {
+        "texto": "Converte o 500 em 200 automaticamente",
+        "porque": "Não altera o status. Só valida e lança se falhou."
+      },
+      {
+        "texto": "Retorna null no Content",
+        "porque": "O conteúdo continua lá; a exceção interrompe antes da leitura."
+      }
+    ],
+    "explicacao": "HttpClient não lança sozinho em 4xx/5xx. Sem EnsureSuccessStatusCode (ou checagem de IsSuccessStatusCode), você pode ler um corpo de erro achando que é sucesso."
+  },
+  {
+    "id": "c09-default-headers-shared",
+    "capitulo": 9,
+    "nivel": "pleno",
+    "pergunta": "Por que é perigoso alterar DefaultRequestHeaders a cada requisição num HttpClient compartilhado?",
+    "codigo": "_client.DefaultRequestHeaders.Authorization =\n    new AuthenticationHeaderValue(\"Bearer\", tokenDoUsuario);\nvar r = await _client.GetAsync(\"/me\");",
+    "alternativas": [
+      {
+        "texto": "Headers padrão são compartilhados: outra requisição concorrente pode ver ou sobrescrever o token",
+        "correta": true
+      },
+      {
+        "texto": "DefaultRequestHeaders só funciona com POST",
+        "porque": "Funciona com qualquer verbo. O risco é concorrência e vazamento."
+      },
+      {
+        "texto": "O HttpClient descarta Authorization automaticamente",
+        "porque": "Não descarta. O header fica no cliente até alguém mudar."
+      },
+      {
+        "texto": "Bearer tokens não podem ir em header",
+        "porque": "Authorization: Bearer é o padrão. O problema é onde configurar."
+      }
+    ],
+    "explicacao": "Num cliente reutilizado (factory), coloque headers por requisição no HttpRequestMessage, não em DefaultRequestHeaders mutáveis. Token de usuário misturado entre requests é falha de segurança."
+  },
+  {
+    "id": "c09-retry-backoff",
+    "capitulo": 9,
+    "nivel": "pleno",
+    "pergunta": "Numa política de retry com Polly (ou Microsoft.Extensions.Http.Resilience), por que usar espera exponencial com jitter?",
+    "alternativas": [
+      {
+        "texto": "Evita que todos os clientes retomem juntos e sobrecarreguem de novo o serviço que acabou de falhar",
+        "correta": true
+      },
+      {
+        "texto": "Porque o HttpClient só aceita retry com jitter",
+        "porque": "HttpClient não exige isso. É escolha de resiliência."
+      },
+      {
+        "texto": "Para transformar POST em GET automaticamente",
+        "porque": "Retry não muda o verbo HTTP."
+      },
+      {
+        "texto": "Para zerar o Timeout do HttpClient",
+        "porque": "Backoff e Timeout são controles diferentes."
+      }
+    ],
+    "explicacao": "Retry sem espaçamento cria tempestade de requisições. Exponencial aumenta a espera; jitter espalha as tentativas no tempo. Combine com circuit breaker para parar de insistir quando o serviço está fora."
+  },
+  {
+    "id": "c09-pooled-connection-lifetime",
+    "capitulo": 9,
+    "nivel": "senior",
+    "pergunta": "Por que o IHttpClientFactory configura PooledConnectionLifetime (em torno de 2 minutos) nos handlers?",
+    "alternativas": [
+      {
+        "texto": "Para renovar conexões e pegar mudanças de DNS/IP do host, em vez de grudar num endereço velho",
+        "correta": true
+      },
+      {
+        "texto": "Para forçar HTTPS em toda chamada",
+        "porque": "Lifetime não muda o esquema. Só o tempo de vida do socket no pool."
+      },
+      {
+        "texto": "Para limpar o body das respostas do cache",
+        "porque": "Não há cache de body envolvido nisso."
+      },
+      {
+        "texto": "Para limitar o tamanho máximo do JSON",
+        "porque": "Isso seria MaxResponseContentBufferSize ou limites de Kestrel."
+      }
+    ],
+    "explicacao": "HttpClient longo demais pode segurar DNS antigo após deploy/blue-green. O factory gira handlers periodicamente. Em clientes manuais long-lived, configure SocketsHttpHandler.PooledConnectionLifetime."
+  },
+  {
+    "id": "c09-timeout-vs-cancellation",
+    "capitulo": 9,
+    "nivel": "senior",
+    "pergunta": "Como combinar timeout do HttpClient com cancelamento do request ASP.NET Core?",
+    "codigo": "// dentro de um endpoint\nvar resposta = await _client.GetAsync(url, cancellationToken);",
+    "alternativas": [
+      {
+        "texto": "Repassar HttpContext.RequestAborted (ou o token do endpoint) para GetAsync; o Timeout do client continua como teto adicional",
+        "correta": true
+      },
+      {
+        "texto": "Ignorar o token e confiar só no Timeout de 100s",
+        "porque": "Se o cliente desistiu, você continua gastando thread/conexão à toa."
+      },
+      {
+        "texto": "Usar Thread.Abort quando o token cancelar",
+        "porque": "Abort não é suportado. Cancelamento é cooperativo via token."
+      },
+      {
+        "texto": "Timeout e CancellationToken não podem coexistir",
+        "porque": "Podem e devem: o que disparar primeiro cancela a operação."
+      }
+    ],
+    "explicacao": "Em Minimal APIs/controllers o token já vem no método. Em pipelines com resiliência, configure AttemptTimeout e TotalRequestTimeout além do token da requisição entrante."
+  },
+  {
+    "id": "c09-circuit-half-open",
+    "capitulo": 9,
+    "nivel": "senior",
+    "pergunta": "No circuit breaker, o que é o estado half-open (meio aberto)?",
+    "alternativas": [
+      {
+        "texto": "Após o tempo de aberto, deixa passar poucas chamadas de teste; se forem bem, fecha de novo; se falharem, reabre",
+        "correta": true
+      },
+      {
+        "texto": "O circuito fica aberto para sempre até restart do processo",
+        "porque": "Há transição: aberto → half-open → fechado (ou de volta a aberto)."
+      },
+      {
+        "texto": "Significa que o retry está desligado",
+        "porque": "Half-open é do breaker, não do retry."
+      },
+      {
+        "texto": "É o estado inicial antes de qualquer chamada",
+        "porque": "O estado inicial é fechado (closed): chamadas passam normalmente."
+      }
+    ],
+    "explicacao": "Closed: fluxo normal. Open: falha rápido sem chamar o dependency. Half-open: sonda controlada para ver se recuperou. Sem isso, ou você martela o serviço caído ou nunca tenta voltar."
+  },
+  {
+    "id": "c09-problemdetails-validation",
+    "capitulo": 9,
+    "nivel": "senior",
+    "pergunta": "Em APIs com validação de modelo, qual formato de erro o ASP.NET Core costuma usar com ProblemDetails?",
+    "alternativas": [
+      {
+        "texto": "ValidationProblemDetails (application/problem+json) com status 400 e dicionário errors por campo",
+        "correta": true
+      },
+      {
+        "texto": "Sempre 500 com stack trace no body",
+        "porque": "Erro de validação do cliente é 400, sem expor stack."
+      },
+      {
+        "texto": "202 Accepted com lista de warnings",
+        "porque": "Validação falha não aceita o processamento."
+      },
+      {
+        "texto": "204 sem corpo, porque não criou nada",
+        "porque": "204 é sucesso. Validação inválida precisa explicar o que falhou."
+      }
+    ],
+    "explicacao": "Results.ValidationProblem(errors) / ValidationProblemDetails padroniza erros de input. Clientes e SDKs conseguem mapear campo → mensagens sem parser ad hoc."
+  },
+  {
+    "id": "c09-resilience-pipeline",
+    "capitulo": 9,
+    "nivel": "senior",
+    "pergunta": "Ao montar um pipeline de resiliência HTTP, qual ordem costuma fazer mais sentido?",
+    "alternativas": [
+      {
+        "texto": "Timeout por tentativa dentro do retry, e circuit breaker envolvendo as tentativas para abrir quando o dependency está ruim",
+        "correta": true
+      },
+      {
+        "texto": "Só retry infinito sem timeout",
+        "porque": "Sem teto de tempo, threads e conexões ficam presas."
+      },
+      {
+        "texto": "Circuit breaker depois de materializar a resposta em string",
+        "porque": "O breaker precisa agir na chamada, não depois do I/O já pago."
+      },
+      {
+        "texto": "Desligar logging em falhas para não atrapalhar o Polly",
+        "porque": "Logging e resiliência se complementam; falhas precisam de telemetria."
+      }
+    ],
+    "explicacao": "AddStandardResilienceHandler() no IHttpClientFactory já empacota timeout, retry, circuit breaker e rate limiter com defaults sensatos. Ajuste por serviço: o que é crítico não pode ter o mesmo retry de um cache opcional."
+  },
+  {
+    "id": "c10-tolist-materializa",
+    "capitulo": 10,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var lista = new List<int> { 1, 2, 3 };\nvar dobra = lista.Select(n => n * 2).ToList();\nlista.Add(4);\nConsole.WriteLine(dobra.Count);",
+    "alternativas": [
+      {
+        "texto": "3",
+        "correta": true
+      },
+      {
+        "texto": "4",
+        "porque": "ToList materializa na hora. O 4 entra depois e não entra em dobra."
+      },
+      {
+        "texto": "0",
+        "porque": "ToList já executou o Select sobre 1, 2 e 3."
+      },
+      {
+        "texto": "Lança InvalidOperationException",
+        "porque": "Não há enumeração concorrente aqui."
+      }
+    ],
+    "explicacao": "ToList, ToArray, Count, Sum etc. forçam execução imediata. Diferente de Where/Select puros, que só montam a consulta (execução adiada)."
+  },
+  {
+    "id": "c10-single-vs-first",
+    "capitulo": 10,
+    "nivel": "junior",
+    "pergunta": "Qual a diferença prática entre First e Single?",
+    "codigo": "var nums = new[] { 1, 2, 2, 3 };\n// First(n => n == 2)  vs  Single(n => n == 2)",
+    "alternativas": [
+      {
+        "texto": "First devolve o primeiro 2; Single lança porque há mais de um 2",
+        "correta": true
+      },
+      {
+        "texto": "Os dois se comportam igual neste caso",
+        "porque": "Single exige exatamente um elemento que satisfaça o predicado."
+      },
+      {
+        "texto": "Single devolve uma lista com os dois 2",
+        "porque": "Single devolve um único T, não uma coleção."
+      },
+      {
+        "texto": "First lança e Single devolve 2",
+        "porque": "É o contrário: First aceita vários e pega o primeiro."
+      }
+    ],
+    "explicacao": "Use First quando \"o primeiro que servir\" basta. Use Single quando a regra de negócio exige unicidade (ex.: e-mail no banco) e achar dois é um bug."
+  },
+  {
+    "id": "c10-all-short-circuit",
+    "capitulo": 10,
+    "nivel": "junior",
+    "pergunta": "Quantas vezes o predicado roda neste All?",
+    "codigo": "int hits = 0;\nvar ok = new[] { 2, 4, 5, 8 }.All(n =>\n{\n    hits++;\n    return n % 2 == 0;\n});\nConsole.WriteLine($\"{ok} {hits}\");",
+    "alternativas": [
+      {
+        "texto": "False 3",
+        "correta": true
+      },
+      {
+        "texto": "False 4",
+        "porque": "All para no primeiro falso (o 5). Não precisa olhar o 8."
+      },
+      {
+        "texto": "True 4",
+        "porque": "Há um ímpar; o resultado é false."
+      },
+      {
+        "texto": "True 3",
+        "porque": "O 5 falha o predicado."
+      }
+    ],
+    "explicacao": "All e Any fazem short-circuit: param assim que o resultado já está decidido. Por isso costumam ser mais baratos que contar tudo."
+  },
+  {
+    "id": "c10-string-concat-poucas",
+    "capitulo": 10,
+    "nivel": "junior",
+    "pergunta": "Para juntar três pedaços de texto conhecidos, qual opção é simples e eficiente o bastante?",
+    "codigo": "var nome = \"Ana\";\nvar sobrenome = \"Silva\";",
+    "alternativas": [
+      {
+        "texto": "string.Concat ou interpolação $\"{nome} {sobrenome}\" — o compilador otimiza bem poucas concatenações",
+        "correta": true
+      },
+      {
+        "texto": "Obrigatoriamente StringBuilder, senão o código não compila",
+        "porque": "Compila com +. StringBuilder brilha em laços com muitas voltas."
+      },
+      {
+        "texto": "Só Span<char> resolve",
+        "porque": "Span é útil em hot path, mas exagero para montar um nome."
+      },
+      {
+        "texto": "Só string.Join com array de 100 itens",
+        "porque": "Join é ótimo para coleções; aqui interpolação/Concat bastam."
+      }
+    ],
+    "explicacao": "Regra prática: poucas concatenações → + ou interpolação; laço grande → StringBuilder ou string.Join. Otimizar cedo com Span sem necessidade só complica."
+  },
+  {
+    "id": "c10-where-select-leitura",
+    "capitulo": 10,
+    "nivel": "junior",
+    "pergunta": "O que este código imprime?",
+    "codigo": "var nomes = new[] { \"Ana\", \"Bruno\", \"Bia\" };\nvar resultado = nomes\n    .Where(n => n.StartsWith(\"B\"))\n    .Select(n => n.ToUpper())\n    .ToList();\nConsole.WriteLine(string.Join(\",\", resultado));",
+    "alternativas": [
+      {
+        "texto": "BRUNO,BIA",
+        "correta": true
+      },
+      {
+        "texto": "ANA,BRUNO,BIA",
+        "porque": "Where remove Ana antes do Select."
+      },
+      {
+        "texto": "Bruno,Bia",
+        "porque": "O Select aplica ToUpper nos filtrados."
+      },
+      {
+        "texto": "B,B",
+        "porque": "Select transforma a string inteira, não só a primeira letra."
+      }
+    ],
+    "explicacao": "Where filtra, Select projeta. A ordem na cadeia define o pipeline: primeiro sobram Bruno e Bia, depois viram maiúsculas."
+  },
+  {
+    "id": "c10-where-antes-select",
+    "capitulo": 10,
+    "nivel": "pleno",
+    "pergunta": "Em termos de performance, por que Preferir Where antes de Select costuma ser melhor?",
+    "codigo": "// A\nfonte.Select(x => TransformarCaro(x)).Where(x => x.Ativo)\n// B\nfonte.Where(x => x.Ativo).Select(x => TransformarCaro(x))",
+    "alternativas": [
+      {
+        "texto": "B: filtra primeiro e evita TransformarCaro nos itens que seriam descartados",
+        "correta": true
+      },
+      {
+        "texto": "A: o Select sempre é mais barato que Where",
+        "porque": "Select com trabalho caro pago em item descartado depois é desperdício."
+      },
+      {
+        "texto": "Tanto faz: o LINQ reordena sozinho sempre",
+        "porque": "Em IEnumerable o LINQ não reordena operadores por você."
+      },
+      {
+        "texto": "Where depois de Select é obrigatório no EF Core",
+        "porque": "No EF Core os dois podem traduzir; ainda assim filtrar cedo reduz trabalho."
+      }
+    ],
+    "explicacao": "Empurre predicados baratos para cima da cadeia. Em IQueryable, filtrar cedo também reduz o que o SQL precisa projetar e trazer."
+  },
+  {
+    "id": "c10-asenumerable-trap",
+    "capitulo": 10,
+    "nivel": "pleno",
+    "pergunta": "Qual o efeito de AsEnumerable neste trecho com EF Core?",
+    "codigo": "var q = db.Pedidos\n    .Where(p => p.Ano == 2024)\n    .AsEnumerable()\n    .Where(p => p.Total > 1000);",
+    "alternativas": [
+      {
+        "texto": "O primeiro Where vira SQL; depois do AsEnumerable o segundo Where roda em memória no cliente",
+        "correta": true
+      },
+      {
+        "texto": "Os dois Where viram um único SQL otimizado",
+        "porque": "AsEnumerable corta a árvore IQueryable. O que vem depois é LINQ to Objects."
+      },
+      {
+        "texto": "AsEnumerable executa a query imediatamente como ToList",
+        "porque": "Ainda é adiado, mas a enumeração futura usa IEnumerable em memória (após materializar ao iterar)."
+      },
+      {
+        "texto": "Gera erro de compilação",
+        "porque": "Compila. O custo aparece em runtime/performance."
+      }
+    ],
+    "explicacao": "AsEnumerable é a fronteira explícita: útil quando você precisa de lógica que o provider não traduz. Sem querer, vira puxar muitos pedidos de 2024 para filtrar Total na memória."
+  },
+  {
+    "id": "c10-span-vs-string",
+    "capitulo": 10,
+    "nivel": "pleno",
+    "pergunta": "Quando Span<char> (ou ReadOnlySpan<char>) é preferível a criar substrings?",
+    "codigo": "var linha = \"id=42;nome=Ana\";\n// Substring vs fatiar com Span",
+    "alternativas": [
+      {
+        "texto": "Em parsing quente: Span fatia sem alocar novas strings a cada pedaço",
+        "correta": true
+      },
+      {
+        "texto": "Sempre, inclusive para guardar o resultado em campo da entidade",
+        "porque": "Span é ref struct: não pode ir para heap/campo de classe facilmente."
+      },
+      {
+        "texto": "Nunca: Span é mais lento que string",
+        "porque": "No hot path, evita alocações e costuma ser mais rápido."
+      },
+      {
+        "texto": "Só funciona com arquivos, não com string",
+        "porque": "string tem AsSpan() e APIs de Parse que aceitam Span."
+      }
+    ],
+    "explicacao": "Substring aloca. Span/Memory trabalham sobre memória existente. Use em parsers, protocolo e loops críticos; para APIs de domínio, string continua sendo o tipo natural."
+  },
+  {
+    "id": "c10-iqueryable-ienumerable",
+    "capitulo": 10,
+    "nivel": "pleno",
+    "pergunta": "Qual afirmação descreve melhor IQueryable versus IEnumerable no EF Core?",
+    "alternativas": [
+      {
+        "texto": "IQueryable guarda expressão para traduzir em SQL; IEnumerable enumera objetos já em memória",
+        "correta": true
+      },
+      {
+        "texto": "São o mesmo tipo com nomes diferentes",
+        "porque": "IQueryable herda IEnumerable, mas carrega Expression e provider."
+      },
+      {
+        "texto": "IEnumerable sempre vai ao banco; IQueryable nunca",
+        "porque": "É o contrário na prática do EF: IQueryable compõe SQL."
+      },
+      {
+        "texto": "IQueryable só funciona com List<T>",
+        "porque": "List é IEnumerable. IQueryable vem de DbSet/providers."
+      }
+    ],
+    "explicacao": "Enquanto você permanece em IQueryable, o EF pode traduzir Where/Select/Count. Ao cair para IEnumerable (ToList, AsEnumerable, método que só aceita IEnumerable), o restante é C# em memória."
+  },
+  {
+    "id": "c10-select-closure-alloc",
+    "capitulo": 10,
+    "nivel": "senior",
+    "pergunta": "Por que este padrão pode alocar mais do que o esperado num hot path?",
+    "codigo": "decimal taxa = ObterTaxa();\nvar precos = itens.Select(i => i.Preco * taxa).ToArray();",
+    "alternativas": [
+      {
+        "texto": "O lambda captura taxa e o compilador pode criar um objeto de closure no heap",
+        "correta": true
+      },
+      {
+        "texto": "Select nunca aloca, por definição",
+        "porque": "Além do array final, iterators/delegates podem alocar."
+      },
+      {
+        "texto": "ToArray é proibido com decimal",
+        "porque": "Funciona. A questão é custo de alocação da closure."
+      },
+      {
+        "texto": "LINQ boxa todo decimal automaticamente em object",
+        "porque": "decimal aqui permanece valor; o ponto é a captura no delegate."
+      }
+    ],
+    "explicacao": "Em código extremamente quente, preferem-se loops for, variáveis locais e às vezes Span para eliminar closures e enumerators. Em código de aplicação normal, a clareza do LINQ costuma valer o custo."
+  },
+  {
+    "id": "c10-count-ienumerable-list",
+    "capitulo": 10,
+    "nivel": "senior",
+    "pergunta": "Por que pedidos.Count() e pedidos.Count podem ter custos diferentes?",
+    "codigo": "IEnumerable<Pedido> pedidos = lista; // lista é List<Pedido>\nvar a = pedidos.Count(); // extensão LINQ\nvar b = lista.Count;     // propriedade",
+    "alternativas": [
+      {
+        "texto": "A propriedade Count é O(1) na List; Count() em IEnumerable genérico pode ter de enumerar, embora otimize se detectar ICollection",
+        "correta": true
+      },
+      {
+        "texto": "Count() é sempre O(1) para qualquer IEnumerable",
+        "porque": "Num yield/iterator puro, Count() percorre tudo."
+      },
+      {
+        "texto": "A propriedade Count sempre percorre a lista",
+        "porque": "List.Count é campo mantido pela coleção."
+      },
+      {
+        "texto": "Os dois compilam para o mesmo IL sempre",
+        "porque": "São membros diferentes: propriedade vs método de extensão."
+      }
+    ],
+    "explicacao": "Enumerable.Count() tenta atalho via ICollection/ICollection<T>, mas a intenção fica mais clara com lista.Count ou pedidos.Count (EF) quando você já sabe o tipo. Para \"existe algum?\", continue preferindo Any()."
+  },
+  {
+    "id": "c10-chunk-buffer",
+    "capitulo": 10,
+    "nivel": "senior",
+    "pergunta": "Você precisa processar 1 milhão de linhas sem carregar tudo. Qual abordagem encaixa melhor?",
+    "alternativas": [
+      {
+        "texto": "Enumerar em streaming (IAsyncEnumerable/foreach) ou Chunk para lotes, sem ToList da fonte inteira",
+        "correta": true
+      },
+      {
+        "texto": "ToList() na query completa e depois Parallel.ForEach",
+        "porque": "Materializar tudo pressiona memória antes do processamento."
+      },
+      {
+        "texto": "OrderByDescending em memória em toda a coleção sempre",
+        "porque": "Ordenar 1M em RAM é caro; se precisar, faça no banco/paginado."
+      },
+      {
+        "texto": "string += linha para montar o arquivo final",
+        "porque": "Concatenação em laço gigante explode alocações; use Stream/StringBuilder."
+      }
+    ],
+    "explicacao": "Performance de dados grandes é sobre não materializar cedo. Chunk (.NET 6+), canais e IAsyncEnumerable mantêm a pressão de memória estável."
+  },
+  {
+    "id": "c10-ef-select-projecao",
+    "capitulo": 10,
+    "nivel": "senior",
+    "pergunta": "Qual consulta é melhor para listar só nome e e-mail de clientes ativos no EF Core?",
+    "codigo": "// A\ndb.Clientes.Where(c => c.Ativo).ToList()\n    .Select(c => new { c.Nome, c.Email });\n// B\ndb.Clientes.Where(c => c.Ativo)\n    .Select(c => new { c.Nome, c.Email }).ToList();",
+    "alternativas": [
+      {
+        "texto": "B: o Select no IQueryable vira projeção SQL e traz só as colunas necessárias",
+        "correta": true
+      },
+      {
+        "texto": "A: ToList cedo ajuda o EF a otimizar",
+        "porque": "ToList cedo hidrata entidades inteiras e só depois projeta em memória."
+      },
+      {
+        "texto": "Tanto faz: o SQL gerado é idêntico",
+        "porque": "Em A o SELECT puxa todas as colunas mapeadas do Cliente."
+      },
+      {
+        "texto": "A é obrigatória porque anonymous types não traduzem",
+        "porque": "Anonymous/DTO no Select traduzem normalmente."
+      }
+    ],
+    "explicacao": "Projete no IQueryable (Select para DTO/anonymous) antes de materializar. Menos dados na rede, menos tracking e menos memória — ganho clássico de performance em APIs."
+  },
+  {
+    "id": "c10-value-task-enumerable",
+    "capitulo": 10,
+    "nivel": "senior",
+    "pergunta": "Em um loop que soma milhões de itens já em memória, qual tendência é mais saudável?",
+    "codigo": "long total = 0;\nforeach (var n in numeros) // numeros: int[]\n    total += n;",
+    "alternativas": [
+      {
+        "texto": "O foreach em array/Span costuma ser tão bom quanto for indexado e evita overhead de delegates do LINQ Aggregate",
+        "correta": true
+      },
+      {
+        "texto": "Sempre usar numeros.Aggregate((a, b) => a + b) porque o JIT remove o delegate",
+        "porque": "Aggregate com lambda ainda tem custo de delegate/abstração vs loop simples."
+      },
+      {
+        "texto": "Converter para IQueryable antes de somar",
+        "porque": "IQueryable é para providers (EF). Em array, só adiciona complexidade."
+      },
+      {
+        "texto": "Chamar Count() antes de cada soma para \"esquentar\" o cache",
+        "porque": "Count extra só adiciona trabalho."
+      }
+    ],
+    "explicacao": "LINQ é excelente para clareza. Em micro-hot-path (parse, serialization, engines), loops e Span vencem. Meça com BenchmarkDotNet antes de reescrever tudo."
   }
 ]

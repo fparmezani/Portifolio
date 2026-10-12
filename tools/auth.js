@@ -18,8 +18,11 @@ const ERROS = {
   "User already registered": "Esse e-mail já tem conta. Use a aba Entrar.",
   "Email not confirmed": "Confirme seu e-mail pelo link que enviamos antes de entrar.",
   "Password should be at least 6 characters.": "A senha precisa ter pelo menos 8 caracteres.",
+  same_password: "A nova senha precisa ser diferente da atual.",
+  "New password should be different from the old password.": "A nova senha precisa ser diferente da atual.",
 };
-const traduzir = (erro) => ERROS[erro?.message] ?? "Não deu certo agora. Tente de novo em instantes.";
+const traduzir = (erro) =>
+  ERROS[erro?.code] ?? ERROS[erro?.message] ?? "Não deu certo agora. Tente de novo em instantes.";
 const urlDeVolta = () => location.origin + location.pathname;
 // Se o Supabase devolver a pessoa para /tools/, a página de Ferramentas usa isto para mandá-la de volta à ferramenta.
 const lembrarVolta = () => { try { localStorage.setItem("auth:voltar", location.pathname); } catch { /* modo privado */ } };
@@ -146,7 +149,11 @@ function telaNovaSenha(raiz, aoTerminar) {
     const msg = card.querySelector(".auth-msg");
     if (senha.length < 8) { msg.textContent = "A senha precisa ter pelo menos 8 caracteres."; return; }
     const { error } = await supabase.auth.updateUser({ password: senha });
-    if (error) { msg.textContent = traduzir(error); return; }
+    // same_password = a senha digitada já é a atual. O link de recuperação já autenticou; segue.
+    if (error && error.code !== "same_password" && !/different from the old password/i.test(error.message || "")) {
+      msg.textContent = traduzir(error);
+      return;
+    }
     aoTerminar();
   });
 }

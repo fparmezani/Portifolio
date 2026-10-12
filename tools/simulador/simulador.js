@@ -317,7 +317,7 @@ function montarResultado() {
 const { user } = await exigirCadastro({ origem: "simulador" });
 barraDoUsuario(user);
 estado.userId = user.id;
-const resposta = await fetch("perguntas.json?v=1");
+const resposta = await fetch("perguntas.json?v=2");
 estado.perguntas = await resposta.json();
 await carregarVistas();
 montarSetup();

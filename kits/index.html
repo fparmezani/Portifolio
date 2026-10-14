@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kits | Fernando Parmezani</title>
+  <meta name="description" content="Kits gratuitos: skills, prompts e projetos de IA. Cadastro com e-mail e WhatsApp libera o download." />
+  <meta name="theme-color" content="#020814" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
+  <link rel="stylesheet" href="kits.css?v=1" />
+</head>
+<body>
+  <script>
+    // Voltou de confirmação de e-mail para /kits/: segue para o kit de origem.
+    (function () {
+      if (!/access_token=|error_description=|[?&]code=/.test(location.hash + location.search)) return;
+      var destino = "/kits/reel-tecnico/";
+      try { destino = localStorage.getItem("auth:voltar") || destino; } catch (e) {}
+      // No subdomínio kits, o path não tem prefixo /kits
+      if (location.hostname === "kits.fernandoparmezani.com.br" && destino.indexOf("/kits/") === 0) {
+        destino = destino.replace(/^\/kits/, "") || "/";
+      }
+      location.replace(destino + location.search + location.hash);
+    })();
+  </script>
+  <div class="site-bg" aria-hidden="true"></div>
+  <header class="header">
+    <a class="brand" href="https://fernandoparmezani.com.br/">
+      <img src="https://fernandoparmezani.com.br/assets/logotipo.png" alt="Fernando Parmezani" class="brand-logo">
+      <span>Fernando Parmezani</span>
+    </a>
+    <nav class="nav" aria-label="Navegação">
+      <a href="https://fernandoparmezani.com.br/">Início</a>
+      <a href="https://fernandoparmezani.com.br/tools/">Ferramentas</a>
+      <a href="./" aria-current="page">Kits</a>
+      <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
+    </nav>
+  </header>
+
+  <main class="kits-main">
+    <div class="container">
+      <p class="eyebrow"><span class="pulse-dot"></span> Kits grátis</p>
+      <h1>Kits<br><strong>do site</strong></h1>
+      <p class="lead">Skills, prompts e projetos de IA. Cadastro com e-mail e WhatsApp libera o download.</p>
+
+      <div class="kit-grid">
+        <a class="kit-card" href="reel-tecnico/">
+          <img class="kit-cover" src="assets/reel-tecnico.jpg" alt="Kit Reel técnico com Claude" width="480" height="480" loading="lazy">
+          <div class="kit-body">
+            <span class="kit-badge">Skill</span>
+            <h2>Reel técnico com <span class="hl">Claude</span></h2>
+            <p>Pacote de skill de edição de vídeo para Cursor e Claude — o fluxo que uso nos meus Reels.</p>
+            <div class="meta-row">
+              <span>Skill</span>
+              <span>ZIP</span>
+              <span>Grátis</span>
+            </div>
+            <span class="btn btn-primary">Desbloquear kit</span>
+          </div>
+        </a>
+
+        <a class="kit-card is-soon" href="#" aria-disabled="true" tabindex="-1">
+          <img class="kit-cover" src="assets/entrevista-csharp.jpg" alt="Kit Entrevista C#" width="480" height="480" loading="lazy">
+          <div class="kit-body">
+            <span class="kit-badge">Prompts</span>
+            <h2>Entrevista <span class="hl">C#</span></h2>
+            <p>12 prompts de entrevista para desenvolvedores C# e .NET. Em breve.</p>
+            <div class="meta-row">
+              <span>12 prompts</span>
+              <span>Claude</span>
+              <span>Em breve</span>
+            </div>
+            <span class="btn btn-primary">Em breve</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead.</div>
+  </footer>
+  <script src="chrome.js"></script>
+</body>
+</html>

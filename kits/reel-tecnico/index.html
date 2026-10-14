@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kit: Reel técnico com Claude | Fernando Parmezani</title>
+  <meta name="description" content="Skill de edição de vídeo para Cursor e Claude. Cadastro com e-mail e WhatsApp libera o download." />
+  <meta name="theme-color" content="#020814" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
+  <link rel="stylesheet" href="../kits.css?v=1" />
+  <link rel="stylesheet" href="../auth.css?v=1" />
+</head>
+<body>
+  <div class="site-bg" aria-hidden="true"></div>
+  <header class="header">
+    <a class="brand" href="https://fernandoparmezani.com.br/">
+      <img src="https://fernandoparmezani.com.br/assets/logotipo.png" alt="Fernando Parmezani" class="brand-logo">
+      <span>Fernando Parmezani</span>
+    </a>
+    <nav class="nav" aria-label="Navegação">
+      <a href="https://fernandoparmezani.com.br/">Início</a>
+      <a href="https://fernandoparmezani.com.br/tools/">Ferramentas</a>
+      <a href="../">Kits</a>
+      <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
+    </nav>
+  </header>
+
+  <main class="kits-main">
+    <div class="container">
+      <p class="crumb"><a href="../">Kits</a> · Reel técnico</p>
+
+      <div class="kit-hero">
+        <img class="kit-hero-cover" src="../assets/reel-tecnico.jpg" alt="Capa do kit Reel técnico" width="480" height="480">
+        <div class="kit-hero-copy">
+          <span class="kit-badge">Skill</span>
+          <h1>Reel técnico com <strong>Claude</strong></h1>
+          <p class="lead">O fluxo que uso para transformar um take cru em Reel pronto: transcrição, cortes, legendas, cenas e render. Versão pública da skill, pronta para colar no Cursor ou no Claude Code.</p>
+          <ul class="kit-list">
+            <li><code>SKILL.md</code> — skill instalável</li>
+            <li>Regras de corte ensináveis (regravação, pausa, muleta)</li>
+            <li>Prompts de diretor de edição e legendas</li>
+            <li>README com instalação passo a passo</li>
+          </ul>
+          <div class="kit-actions" style="margin-top: 22px">
+            <button type="button" class="btn btn-primary" id="btn-desbloquear">Desbloquear kit</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="app" class="kit-unlocked" hidden>
+        <section class="kit-panel">
+          <h2>Seu kit está liberado</h2>
+          <p>Baixe o pacote. Conta a mesma das ferramentas do site.</p>
+          <div class="kit-actions">
+            <a class="btn btn-primary" href="pack/SKILL.md" download="SKILL-reel-tecnico.md">Baixar SKILL.md</a>
+            <a class="btn btn-secondary" href="pack/README.md" download>Baixar README</a>
+            <a class="btn btn-secondary" href="pack/prompts.md" download>Baixar prompts</a>
+          </div>
+        </section>
+
+        <section class="kit-panel">
+          <h2>Como instalar no Cursor</h2>
+          <p>1. Crie a pasta <code>.claude/skills/editar-video-reel/</code> no seu projeto.<br>
+          2. Cole o <code>SKILL.md</code> dentro dela.<br>
+          3. Peça ao agente: “edita esse vídeo seguindo a skill de reel técnico”.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="auth-gate" hidden></div>
+
+  <footer class="footer">
+    <div class="container">© <span id="year"></span> Fernando Parmezani.</div>
+  </footer>
+  <script src="../chrome.js"></script>
+  <script type="module">
+    import { exigirCadastro, barraDoUsuario, registrarUso, supabase } from "../auth.js";
+
+    const app = document.querySelector("#app");
+    const gate = document.querySelector("#auth-gate");
+    const btn = document.querySelector("#btn-desbloquear");
+
+    async function liberar() {
+      const { user } = await exigirCadastro({ origem: "kit-reel-tecnico" });
+      barraDoUsuario(user);
+      registrarUso("kit-reel-tecnico", "desbloqueou");
+      btn.hidden = true;
+      app.hidden = false;
+      app.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Já logado: libera na hora. Senão: popup ao clicar (e também se voltou do e-mail).
+    const { data } = await supabase.auth.getSession();
+    const voltouAuth = /access_token=|error_description=|[?&]code=|type=recovery/.test(location.hash + location.search);
+    if (data.session || voltouAuth) {
+      await liberar();
+    } else {
+      btn.addEventListener("click", () => liberar());
+    }
+  </script>
+</body>
+</html>

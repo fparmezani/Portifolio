@@ -7,9 +7,12 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   atualizarSaldoBarra,
-} from "../auth.js?v=5";
+} from "../auth.js?v=7";
 
 const POR_SIMULADO = 10;
+const MINUTOS_PADRAO = 8;
+const MINUTOS_MIN = 3;
+const MINUTOS_MAX = 30;
 const LIVRO = "C# Moderno sem Medo";
 const CAPITULOS = {
   1: { curto: "Valor x referência", titulo: "Como o C# guarda e movimenta dados" },
@@ -27,7 +30,31 @@ const NIVEIS = { junior: "Júnior", pleno: "Pleno", senior: "Sênior" };
 const CHAVE_VISTAS = "simulador:vistas";
 
 const $ = (s) => document.querySelector(s);
-const estado = { userId: null, nivel: "pleno", temas: new Set(Object.keys(CAPITULOS).map(Number)), perguntas: [], vistas: new Set() };
+const estado = {
+  userId: null,
+  nivel: "pleno",
+  minutos: MINUTOS_PADRAO,
+  temas: new Set(Object.keys(CAPITULOS).map(Number)),
+  perguntas: [],
+  vistas: new Set(),
+};
+
+function formatarMmSs(totalSeg) {
+  const s = Math.max(0, Math.floor(totalSeg));
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+}
+
+function sincronizarMinutos() {
+  estado.minutos = Math.min(MINUTOS_MAX, Math.max(MINUTOS_MIN, estado.minutos));
+  const app = $("#app");
+  if (app) app.dataset.minutos = String(estado.minutos);
+  const valor = $("#tempo-valor");
+  if (valor) valor.textContent = `${estado.minutos} min`;
+  const menos = $("#tempo-menos");
+  const mais = $("#tempo-mais");
+  if (menos) menos.disabled = estado.minutos <= MINUTOS_MIN;
+  if (mais) mais.disabled = estado.minutos >= MINUTOS_MAX;
+}
 
 function embaralhar(lista) {
   const a = [...lista];
@@ -121,6 +148,15 @@ function montarSetup() {
       estado.nivel = b.dataset.nivel;
       document.querySelectorAll("[data-nivel]").forEach((x) => x.setAttribute("aria-checked", String(x === b)));
     }));
+  $("#tempo-mais").addEventListener("click", () => {
+    estado.minutos += 1;
+    sincronizarMinutos();
+  });
+  $("#tempo-menos").addEventListener("click", () => {
+    estado.minutos -= 1;
+    sincronizarMinutos();
+  });
+  sincronizarMinutos();
   $("#comecar").addEventListener("click", () => {
     if (!estado.temas.size) { $("#setup-erro").textContent = "Escolha pelo menos um tema."; return; }
     $("#setup-erro").textContent = "";
@@ -152,13 +188,21 @@ async function iniciar() {
   erro.textContent = "";
 
   const perguntas = sortear();
-  rodada = { perguntas, atual: 0, respostas: [], inicio: Date.now() };
+  const limiteSeg = estado.minutos * 60;
+  rodada = { perguntas, atual: 0, respostas: [], inicio: Date.now(), minutos: estado.minutos, limiteSeg };
   clearInterval(relogio);
-  relogio = setInterval(() => {
-    const s = Math.floor((Date.now() - rodada.inicio) / 1000);
-    $("#q-timer").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-  }, 1000);
-  registrarUso("simulador", "iniciou", { nivel: estado.nivel, temas: [...estado.temas], total: perguntas.length });
+  const tick = () => {
+    const decorrido = Math.floor((Date.now() - rodada.inicio) / 1000);
+    $("#q-timer").textContent = formatarMmSs(rodada.limiteSeg - decorrido);
+  };
+  tick();
+  relogio = setInterval(tick, 1000);
+  registrarUso("simulador", "iniciou", {
+    nivel: estado.nivel,
+    temas: [...estado.temas],
+    total: perguntas.length,
+    minutos: estado.minutos,
+  });
   mostrar("#view-quiz");
   renderPergunta();
   btn.disabled = false;
@@ -241,7 +285,8 @@ function finalizar() {
   const [titulo, texto] = veredito(pct, estado.nivel);
   $("#r-kicker").textContent = temLacuna ? `Lacuna principal: ${CAPITULOS[pior[0]].curto}` : "Nenhuma lacuna nesta rodada";
   $("#r-veredito").textContent = titulo;
-  $("#r-resumo").textContent = texto;
+  const minutosAlvo = rodada.minutos || estado.minutos;
+  $("#r-resumo").textContent = `${texto} · ~${minutosAlvo} min`;
 
   const temas = $("#r-temas");
   temas.replaceChildren();

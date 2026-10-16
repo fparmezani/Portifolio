@@ -10,11 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="../tools.css?v=11" />
-  <link rel="stylesheet" href="../auth.css?v=3" />
+  <link rel="stylesheet" href="../tools.css?v=14" />
+  <link rel="stylesheet" href="../auth.css?v=5" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-  <link rel="stylesheet" href="simulador.css?v=4" />
+  <link rel="stylesheet" href="simulador.css?v=5" />
 </head>
 <body>
   <div class="site-bg" aria-hidden="true"></div>
@@ -43,27 +43,112 @@
 
       <div id="auth-gate" hidden></div>
 
-      <div id="app" hidden>
+      <div id="app" hidden data-minutos="8">
         <!-- 1. Montar a entrevista -->
-        <section id="view-setup" class="sim-panel" hidden>
-          <h2>Qual vaga você quer passar?</h2>
-          <div>
-            <p class="sim-label">Nível</p>
-            <div class="sim-seg" role="radiogroup" aria-label="Nível">
-              <button type="button" role="radio" data-nivel="junior" aria-checked="false">Júnior</button>
-              <button type="button" role="radio" data-nivel="pleno" aria-checked="true">Pleno</button>
-              <button type="button" role="radio" data-nivel="senior" aria-checked="false">Sênior</button>
+        <section id="view-setup" class="sim-setup" hidden>
+          <div class="sim-setup-grid">
+            <div class="sim-panel sim-setup-left">
+              <h2>Qual vaga você quer passar?</h2>
+              <div class="sim-niveis" role="radiogroup" aria-label="Nível da vaga">
+                <button type="button" role="radio" data-nivel="junior" aria-checked="false" aria-label="Júnior">
+                  <span class="sim-nivel-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#1e3a5f"/>
+                      <circle cx="32" cy="28" r="12" fill="#f5c6a0"/>
+                      <ellipse cx="32" cy="18" rx="14" ry="10" fill="#3b82f6"/>
+                      <circle cx="27" cy="27" r="1.8" fill="#1e293b"/>
+                      <circle cx="37" cy="27" r="1.8" fill="#1e293b"/>
+                      <path d="M28 33c1.5 2 4.5 2 6 0" stroke="#c4785a" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M18 48c3-8 9-12 14-12s11 4 14 12" fill="#3b82f6"/>
+                    </svg>
+                  </span>
+                  <span class="sim-nivel-label">Júnior</span>
+                </button>
+                <button type="button" role="radio" data-nivel="pleno" aria-checked="true" aria-label="Pleno">
+                  <span class="sim-nivel-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#1e3a5f"/>
+                      <circle cx="32" cy="26" r="11" fill="#e8b896"/>
+                      <path d="M21 22c2-8 8-11 11-11s9 3 11 11c-2 1-5 2-11 2s-9-1-11-2z" fill="#1e293b"/>
+                      <rect x="22" y="24" width="20" height="5" rx="2.5" fill="#64748b" opacity=".85"/>
+                      <circle cx="27" cy="27" r="1.6" fill="#1e293b"/>
+                      <circle cx="37" cy="27" r="1.6" fill="#1e293b"/>
+                      <path d="M28 32c1.2 1.8 4.8 1.8 6 0" stroke="#c4785a" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M16 52c2-10 8-14 16-14s14 4 16 14" fill="#2563eb"/>
+                      <path d="M28 38h8v6c0 2-2 3-4 3s-4-1-4-3v-6z" fill="#e8b896"/>
+                    </svg>
+                  </span>
+                  <span class="sim-nivel-label">Pleno</span>
+                </button>
+                <button type="button" role="radio" data-nivel="senior" aria-checked="false" aria-label="Sênior">
+                  <span class="sim-nivel-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#1e3a5f"/>
+                      <circle cx="32" cy="26" r="11" fill="#e0b090"/>
+                      <path d="M20 24c1-9 7-13 12-13s11 4 12 13c-3 1-7 2-12 2s-9-1-12-2z" fill="#cbd5e1"/>
+                      <rect x="22" y="24" width="20" height="5" rx="2.5" fill="#475569" opacity=".9"/>
+                      <circle cx="27" cy="27" r="1.6" fill="#1e293b"/>
+                      <circle cx="37" cy="27" r="1.6" fill="#1e293b"/>
+                      <path d="M28 32.5c1.2 1.6 4.8 1.6 6 0" stroke="#a86b52" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M16 52c2-10 8-14 16-14s14 4 16 14" fill="#334155"/>
+                      <path d="M28 38h8v5c0 2-2 3-4 3s-4-1-4-3v-5z" fill="#e0b090"/>
+                    </svg>
+                  </span>
+                  <span class="sim-nivel-label">Sênior</span>
+                </button>
+              </div>
+              <div class="sim-setup-temas">
+                <p class="sim-label sim-label-temas">
+                  <svg class="sim-label-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M2 3h12v1.5H2zm0 4h12v1.5H2zm0 4h8V12.5H2z"/></svg>
+                  Temas
+                </p>
+                <div class="sim-chips" id="temas"></div>
+                <button type="button" class="sim-mini-link" id="todos-temas">Marcar todos</button>
+              </div>
+            </div>
+
+            <div class="sim-panel sim-setup-right">
+              <div class="sim-ready">
+                <span class="sim-ready-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#0d6efd"/><path d="M7 12.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <div>
+                  <h2>Sua entrevista está pronta para começar</h2>
+                  <p class="sim-ready-sub">Configure o tempo e use seu crédito para iniciar.</p>
+                </div>
+              </div>
+
+              <div class="sim-tempo">
+                <p class="sim-label sim-label-temas">
+                  <svg class="sim-label-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 3a.75.75 0 01.75.75v3.69l2.28 1.32a.75.75 0 11-.75 1.3l-2.66-1.54A.75.75 0 017.25 8V3.75A.75.75 0 018 3z"/></svg>
+                  Tempo padrão
+                </p>
+                <div class="sim-tempo-box">
+                  <span class="sim-tempo-valor" id="tempo-valor">8 min</span>
+                  <div class="sim-tempo-btns">
+                    <button type="button" id="tempo-mais" aria-label="Aumentar tempo">+</button>
+                    <button type="button" id="tempo-menos" aria-label="Diminuir tempo">−</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-credito" aria-label="1 crédito será debitado">
+                <span class="sim-credito-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="7" rx="8" ry="3.2" fill="#d4a017"/><path d="M4 7v3.5c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7" stroke="#b8860b" stroke-width="1.4"/><path d="M4 10.5V14c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2v-3.5" stroke="#b8860b" stroke-width="1.4"/><path d="M4 14v3.5c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V14" stroke="#b8860b" stroke-width="1.4"/><ellipse cx="12" cy="7" rx="8" ry="3.2" stroke="#f0d060" stroke-width="1.2"/></svg>
+                </span>
+                <div>
+                  <strong>1 crédito</strong>
+                  <span>Será debitado do seu saldo</span>
+                </div>
+              </div>
+
+              <p class="form-error" id="setup-erro" role="alert"></p>
+              <button type="button" class="btn btn-primary sim-cta" id="comecar">
+                <svg class="sim-cta-play" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2.5v11l10-5.5L4 2.5z"/></svg>
+                Começar entrevista
+              </button>
             </div>
           </div>
-          <div>
-            <p class="sim-label">Temas · os 10 capítulos do livro</p>
-            <div class="sim-chips" id="temas"></div>
-            <button type="button" class="sim-mini-link" id="todos-temas">Marcar todos</button>
-          </div>
-          <p class="sim-tip"><b>1 crédito</b> por entrevista · o sorteio prioriza perguntas que você ainda não viu.</p>
-          <p class="sim-meta"><span><b>10</b> perguntas</span><span><b>~8</b> min</span><span><b>1 crédito</b></span></p>
-          <p class="form-error" id="setup-erro" role="alert"></p>
-          <button type="button" class="btn btn-primary sim-cta" id="comecar">Começar entrevista</button>
         </section>
 
         <!-- 2. Responder -->
@@ -124,6 +209,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script type="module" src="simulador.js?v=7"></script>
+  <script type="module" src="simulador.js?v=8"></script>
 </body>
 </html>

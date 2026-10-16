@@ -49,7 +49,9 @@
   padding: 11px 14px;
 }
 .auth-form input::placeholder { color: #94a3b8; }
-.auth-form .auth-check { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; color: var(--muted); line-height: 1.45; }
+.auth-aceite { display: grid; gap: 10px; margin: 2px 0 4px; }
+.auth-aceite .auth-check,
+.auth-form .auth-check { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; color: var(--muted); line-height: 1.45; font-size: 13px; }
 .auth-check input { width: 18px; height: 18px; margin-top: 1px; flex: none; accent-color: var(--blue); }
 .auth-check a { color: var(--link); }
 .auth-form .btn { width: 100%; justify-content: center; }
@@ -67,18 +69,37 @@
   font: 700 12px/1.2 Inter, sans-serif;
   white-space: nowrap;
 }
+/* Conta é irmã do .nav no .header — brand | links | conta (direita) */
+.header.has-auth-account {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+}
+.header.has-auth-account .nav {
+  margin-left: auto;
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+.header.has-auth-account .auth-account {
+  flex: 0 0 auto;
+  align-self: center;
+}
 .auth-account { position: relative; }
 .auth-account-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  max-width: min(100%, 280px);
-  padding: 6px 10px;
+  max-width: min(240px, 38vw);
+  min-height: 40px;
+  padding: 8px 12px;
   border: 1px solid rgba(59, 130, 246, .28);
   border-radius: 999px;
   background: rgba(8, 20, 38, .72);
   color: #e2e8f0;
-  font: 700 13px/1 Inter, sans-serif;
+  font: 700 13px/1.2 Inter, sans-serif;
   cursor: pointer;
 }
 .auth-account-btn:hover { border-color: rgba(96, 165, 250, .55); }
@@ -87,6 +108,28 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 9ch;
+}
+/* Notebook ~1051–1440: compactar nav e manter conta alinhada à direita */
+@media (max-width: 1440px) and (min-width: 1051px) {
+  .header.has-auth-account {
+    gap: 12px;
+    padding-left: max(16px, calc((100vw - 1180px) / 2));
+    padding-right: max(16px, calc((100vw - 1180px) / 2));
+  }
+  .header.has-auth-account .brand { gap: 8px; font-size: 16px; }
+  .header.has-auth-account .brand-logo { height: 34px; max-width: 44px; }
+  .header.has-auth-account .nav { gap: 14px; font-size: 13px; }
+  .auth-account-btn { font-size: 12px; padding: 7px 10px; max-width: 200px; min-height: 36px; }
+  .auth-credits { font-size: 11px; padding: 3px 8px; }
+}
+@media (max-width: 1200px) and (min-width: 1051px) {
+  .header.has-auth-account .nav { gap: 10px; font-size: 12px; }
+  .header.has-auth-account .brand span {
+    max-width: 9.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .auth-account-menu {
   position: absolute;

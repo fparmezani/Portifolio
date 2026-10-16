@@ -15,8 +15,65 @@ if (location.hostname === "kits.fernandoparmezani.com.br") {
 const SUPABASE_URL = "https://hrpmoshviubjrudawuuk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Q-B_hBYinXx4cS055Aao0Q_2aUK0OHW";
 const PRIVACIDADE = new URL("privacidade.html", import.meta.url).href;
+const ACEITE_KEY = "auth:aceite";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function salvarAceiteLocal({ termos, ofertas }) {
+  try {
+    localStorage.setItem(ACEITE_KEY, JSON.stringify({
+      termos: Boolean(termos),
+      ofertas: Boolean(ofertas),
+      ts: Date.now(),
+    }));
+  } catch { /* modo privado */ }
+}
+
+function lerAceiteLocal() {
+  try {
+    const raw = localStorage.getItem(ACEITE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data?.termos) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function limparAceiteLocal() {
+  try { localStorage.removeItem(ACEITE_KEY); } catch { /* modo privado */ }
+}
+
+/** Aplica aceite salvo no localStorage via RPC. Retorna true se perfil ficou com aceite. */
+async function aplicarAceitePendente() {
+  const pendente = lerAceiteLocal();
+  if (!pendente?.termos) return false;
+  const { error } = await supabase.rpc("registrar_aceite", { ofertas: Boolean(pendente.ofertas) });
+  if (error) return false;
+  limparAceiteLocal();
+  return true;
+}
+
+function htmlAceiteChecks(exigirWhatsapp) {
+  const ofertasTxt = exigirWhatsapp
+    ? "Quero receber novos kits e materiais por e-mail e WhatsApp. Dá para sair quando quiser."
+    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser.";
+  return `
+    <div class="auth-aceite" data-aceite>
+      <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
+      <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${ofertasTxt}</span></label>
+    </div>`;
+}
+
+function lerChecksAceite(raiz) {
+  const box = raiz.querySelector("[data-aceite]");
+  if (!box) return { termos: false, ofertas: false };
+  return {
+    termos: Boolean(box.querySelector('input[name="termos"]')?.checked),
+    ofertas: Boolean(box.querySelector('input[name="ofertas"]')?.checked),
+  };
+}
 
 const ERROS = {
   "Invalid login credentials": "E-mail ou senha incorretos.",
@@ -213,6 +270,7 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
       <p class="auth-sub">${exigirWhatsapp
     ? "Uma conta vale para kits e ferramentas do site. Usamos o WhatsApp só para avisos de novos materiais, se você quiser."
     : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X ou simulado usa 1. Kits não consomem crédito."}</p>
+      ${htmlAceiteChecks(exigirWhatsapp)}
       <button type="button" class="auth-google" data-google>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Continuar com Google
@@ -227,10 +285,6 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
         ${exigirWhatsapp ? '<label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>' : ""}
         <label>Senha<input name="senha" type="password" autocomplete="new-password" minlength="8" required placeholder="mínimo 8 caracteres"></label>
-        <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-        <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${exigirWhatsapp
-    ? "Quero receber novos kits e materiais por e-mail e WhatsApp. Dá para sair quando quiser."
-    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser."}</span></label>
         <button class="btn btn-primary" type="submit">${exigirWhatsapp ? "Criar conta e desbloquear" : "Criar conta e começar"}</button>
       </form>
       <form class="auth-form" data-form="entrar" hidden novalidate>
@@ -255,6 +309,9 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
     }));
 
   card.querySelector("[data-google]").addEventListener("click", async () => {
+    const aceite = lerChecksAceite(card);
+    if (!aceite.termos) return avisar("Para continuar com Google, aceite a Política de Privacidade.");
+    salvarAceiteLocal(aceite);
     lembrarVolta();
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: urlDeVolta() } });
     if (error) avisar(traduzir(error));
@@ -268,11 +325,13 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
     const email = String(f.get("email")).trim();
     const senha = String(f.get("senha"));
     const whatsapp = String(f.get("whatsapp") || "").trim();
+    const aceite = lerChecksAceite(card);
     if (!nome || !email.includes("@")) return avisar("Preencha nome e e-mail.");
     if (exigirWhatsapp && !whatsappValido(whatsapp)) return avisar("Informe um WhatsApp válido com DDD, ex.: (11) 99999-9999.");
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
-    if (!f.get("termos")) return avisar("Para criar a conta, aceite a Política de Privacidade.");
+    if (!aceite.termos) return avisar("Para criar a conta, aceite a Política de Privacidade.");
     ocupado(criar, true);
+    salvarAceiteLocal(aceite);
     lembrarVolta();
     const whatsappLimpo = exigirWhatsapp ? normalizarWhatsapp(whatsapp) : "";
     const { data, error } = await supabase.auth.signUp({
@@ -284,7 +343,7 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
           nome,
           ...(whatsappLimpo ? { whatsapp: whatsappLimpo } : {}),
           aceite_termos: true,
-          aceite_ofertas: Boolean(f.get("ofertas")),
+          aceite_ofertas: aceite.ofertas,
           origem: raiz.dataset.origem,
         },
       },
@@ -434,7 +493,12 @@ export function exigirCadastro({ origem, exigirWhatsapp = false }) {
       if (liberado || !session) return;
       liberado = true;
       let perfil = await lerPerfil(session.user.id);
+      if (!perfil?.aceite_termos_em) {
+        const ok = await aplicarAceitePendente();
+        if (ok) perfil = await lerPerfil(session.user.id);
+      }
       if (perfil && !perfil.aceite_termos_em) {
+        // Fallback raro: OAuth sem localStorage (modo privado / aba diferente)
         app.hidden = true;
         raiz.hidden = false;
         await telaAceite(raiz, perfil, { exigirWhatsapp });
@@ -533,8 +597,10 @@ async function abrirHistorico() {
  * Dropdown: saldo, comprar, histórico, sair (e-mail só dentro do menu).
  */
 export function barraDoUsuario(user, perfilHint = null) {
-  const nav = document.querySelector(".nav");
-  if (!nav || nav.querySelector(".auth-account")) return;
+  const header = document.querySelector(".header");
+  if (!header || header.querySelector(".auth-account")) return;
+  // Migra conta que ficou dentro do .nav em versões antigas
+  document.querySelector(".nav > .auth-account")?.remove();
 
   const item = el(`
     <div class="auth-account">
@@ -582,7 +648,8 @@ export function barraDoUsuario(user, perfilHint = null) {
     fecharMenu();
     abrirHistorico();
   });
-  nav.append(item);
+  header.append(item);
+  header.classList.add("has-auth-account");
 
   const params = new URLSearchParams(location.search);
   if (params.get("credits") === "ok") {

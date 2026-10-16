@@ -337,8 +337,26 @@ button.btn.btn-secondary[disabled] {
   .tool-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 1050px) {
-  .header { height: auto; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
-  .nav { display: flex; position: static; width: 100%; gap: 16px; padding: 8px 0 0; background: transparent; max-height: none; }
+  .header { height: auto; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; align-items: center; }
+  .header.has-auth-account { gap: 10px 12px; }
+  .header.has-auth-account .brand { flex: 1 1 auto; min-width: 0; }
+  .header.has-auth-account .auth-account { margin-left: auto; order: 2; }
+  .header.has-auth-account .nav,
+  .nav {
+    display: flex;
+    position: static;
+    width: 100%;
+    order: 3;
+    margin-left: 0;
+    gap: 16px;
+    padding: 8px 0 0;
+    background: transparent;
+    max-height: none;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 768px) {
+  .header.has-auth-account { padding-right: 52px; }
 }
 @media (max-width: 800px) {
   .tool-grid, .result-grid, .gate-card, .close-sale, .context-grid, .block-list, .verdict-cols { grid-template-columns: 1fr; }

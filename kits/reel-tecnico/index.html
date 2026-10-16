@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kit: Reel técnico com Claude | Fernando Parmezani</title>
-  <meta name="description" content="Skill de edição de vídeo para Cursor e Claude. Cadastro com e-mail e WhatsApp libera o download." />
+  <meta name="description" content="Skill de edição de vídeo para Cursor e Claude. Crie uma conta e baixe na hora." />
   <meta name="theme-color" content="#020814" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
   <link rel="stylesheet" href="../kits.css?v=3" />
-  <link rel="stylesheet" href="../auth.css?v=5" />
+  <link rel="stylesheet" href="../auth.css?v=6" />
 </head>
 <body>
   <div class="site-bg" aria-hidden="true"></div>
@@ -44,9 +44,6 @@
             <li>Prompts de diretor de edição e legendas</li>
             <li>README com instalação passo a passo</li>
           </ul>
-          <div class="kit-actions" style="margin-top: 22px">
-            <button type="button" class="btn btn-primary" id="btn-desbloquear">Desbloquear kit</button>
-          </div>
         </div>
       </div>
 
@@ -78,29 +75,13 @@
   </footer>
   <script src="../chrome.js"></script>
   <script type="module">
-    import { exigirCadastro, barraDoUsuario, registrarUso, supabase } from "../auth.js";
+    import { exigirCadastro, barraDoUsuario, registrarUso } from "../auth.js";
 
-    const app = document.querySelector("#app");
-    const gate = document.querySelector("#auth-gate");
-    const btn = document.querySelector("#btn-desbloquear");
-
-    async function liberar() {
-      const { user } = await exigirCadastro({ origem: "kit-reel-tecnico" });
-      barraDoUsuario(user);
-      registrarUso("kit-reel-tecnico", "desbloqueou");
-      btn.hidden = true;
-      app.hidden = false;
-      app.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    // Já logado: libera na hora. Senão: popup ao clicar (e também se voltou do e-mail).
-    const { data } = await supabase.auth.getSession();
-    const voltouAuth = /access_token=|error_description=|[?&]code=|type=recovery/.test(location.hash + location.search);
-    if (data.session || voltouAuth) {
-      await liberar();
-    } else {
-      btn.addEventListener("click", () => liberar());
-    }
+    // Hub → esta página: se logado, downloads na hora; senão, um único popup e liberou.
+    const { user } = await exigirCadastro({ origem: "kit-reel-tecnico" });
+    barraDoUsuario(user);
+    registrarUso("kit-reel-tecnico", "desbloqueou");
+    document.querySelector("#app")?.scrollIntoView({ behavior: "smooth", block: "start" });
   </script>
 </body>
 </html>

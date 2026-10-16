@@ -264,3 +264,7 @@
   font: 500 15px/1.5 Inter, sans-serif;
   padding: 11px 14px;
 }
+.auth-opcional {
+  font-weight: 500;
+  color: var(--soft, #94a3b8);
+}

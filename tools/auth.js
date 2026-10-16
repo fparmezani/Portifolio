@@ -1,6 +1,7 @@
 // Cadastro único (Supabase Auth) + créditos — compartilhado por Tools e Kits.
 // Uso: const { user, perfil } = await exigirCadastro({ origem: "simulador" });
-// Kits: await exigirCadastro({ origem: "kit-…", exigirWhatsapp: true });
+// Kits: await exigirCadastro({ origem: "kit-…", contexto: "kit" });
+// WhatsApp nunca bloqueia desbloqueio; opcional só no form de e-mail dos kits.
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 // O login fica salvo por endereço: tools.* e kits.* vão para o domínio principal.
@@ -55,14 +56,14 @@ async function aplicarAceitePendente() {
   return true;
 }
 
-function htmlAceiteChecks(exigirWhatsapp) {
-  const ofertasTxt = exigirWhatsapp
-    ? "Quero receber novos kits e materiais por e-mail e WhatsApp. Dá para sair quando quiser."
+function htmlAceiteChecks(ehKit) {
+  const ofertasTxt = ehKit
+    ? "Quero receber novos kits e materiais por e-mail. Dá para sair quando quiser."
     : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser.";
   return `
     <div class="auth-aceite" data-aceite>
       <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-      <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${ofertasTxt}</span></label>
+      <label class="auth-check"><input name="ofertas" type="checkbox" ${ehKit ? "checked" : ""}> <span>${ofertasTxt}</span></label>
     </div>`;
 }
 
@@ -251,6 +252,16 @@ function whatsappValido(valor) {
   return n.length >= 12 && n.length <= 13 && n.startsWith("55");
 }
 
+/** Máscara (11) 99999-9999 enquanto digita. */
+function formatarWhatsappDigitando(valor) {
+  let d = String(valor || "").replace(/\D/g, "");
+  if (d.startsWith("55") && d.length > 11) d = d.slice(2);
+  d = d.slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
 async function salvarWhatsapp(userId, whatsapp) {
   const limpo = normalizarWhatsapp(whatsapp);
   if (!limpo) return;
@@ -262,15 +273,16 @@ async function salvarWhatsapp(userId, whatsapp) {
   } catch { /* coluna pode ainda não existir */ }
 }
 
-function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
+function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
+  const ehKit = contexto === "kit";
   const card = el(`
     <section class="auth-card" aria-labelledby="auth-title">
-      <p class="eyebrow"><span class="pulse-dot"></span> ${exigirWhatsapp ? "Kit gratuito" : "10 créditos para começar"}</p>
-      <h2 id="auth-title">${exigirWhatsapp ? "Desbloqueie com e-mail e WhatsApp" : "Crie sua conta para começar"}</h2>
-      <p class="auth-sub">${exigirWhatsapp
-    ? "Uma conta vale para kits e ferramentas do site. Usamos o WhatsApp só para avisos de novos materiais, se você quiser."
+      <p class="eyebrow"><span class="pulse-dot"></span> ${ehKit ? "Kit gratuito" : "10 créditos para começar"}</p>
+      <h2 id="auth-title">${ehKit ? "Desbloqueie o kit" : "Crie sua conta para começar"}</h2>
+      <p class="auth-sub">${ehKit
+    ? "Uma conta vale para kits e ferramentas do site. Aceite a privacidade e entre — o download libera na hora."
     : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X ou simulado usa 1. Kits não consomem crédito."}</p>
-      ${htmlAceiteChecks(exigirWhatsapp)}
+      ${htmlAceiteChecks(ehKit)}
       <button type="button" class="auth-google" data-google>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Continuar com Google
@@ -283,9 +295,9 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
       <form class="auth-form" data-form="criar" novalidate>
         <label>Nome<input name="nome" type="text" autocomplete="name" maxlength="80" required></label>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
-        ${exigirWhatsapp ? '<label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>' : ""}
+        ${ehKit ? '<label>WhatsApp <span class="auth-opcional">(opcional)</span><input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 99999-9999"></label>' : ""}
         <label>Senha<input name="senha" type="password" autocomplete="new-password" minlength="8" required placeholder="mínimo 8 caracteres"></label>
-        <button class="btn btn-primary" type="submit">${exigirWhatsapp ? "Criar conta e desbloquear" : "Criar conta e começar"}</button>
+        <button class="btn btn-primary" type="submit">${ehKit ? "Criar conta e desbloquear" : "Criar conta e começar"}</button>
       </form>
       <form class="auth-form" data-form="entrar" hidden novalidate>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
@@ -300,6 +312,13 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
   const msg = card.querySelector(".auth-msg");
   const avisar = (texto, ok = false) => { msg.textContent = texto; msg.classList.toggle("is-ok", ok); };
   const ocupado = (form, sim) => form.querySelectorAll("button, input").forEach((x) => (x.disabled = sim));
+
+  const waInput = card.querySelector('input[name="whatsapp"]');
+  if (waInput) {
+    waInput.addEventListener("input", () => {
+      waInput.value = formatarWhatsappDigitando(waInput.value);
+    });
+  }
 
   card.querySelectorAll("[data-aba]").forEach((aba) =>
     aba.addEventListener("click", () => {
@@ -327,13 +346,13 @@ function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
     const whatsapp = String(f.get("whatsapp") || "").trim();
     const aceite = lerChecksAceite(card);
     if (!nome || !email.includes("@")) return avisar("Preencha nome e e-mail.");
-    if (exigirWhatsapp && !whatsappValido(whatsapp)) return avisar("Informe um WhatsApp válido com DDD, ex.: (11) 99999-9999.");
+    if (whatsapp && !whatsappValido(whatsapp)) return avisar("WhatsApp inválido. Use DDD, ex.: (11) 99999-9999 — ou deixe em branco.");
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
     if (!aceite.termos) return avisar("Para criar a conta, aceite a Política de Privacidade.");
     ocupado(criar, true);
     salvarAceiteLocal(aceite);
     lembrarVolta();
-    const whatsappLimpo = exigirWhatsapp ? normalizarWhatsapp(whatsapp) : "";
+    const whatsappLimpo = whatsapp ? normalizarWhatsapp(whatsapp) : "";
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -403,20 +422,20 @@ function telaNovaSenha(raiz, aoTerminar) {
   });
 }
 
-function telaAceite(raiz, perfil, { exigirWhatsapp = false } = {}) {
+/** Fallback raro: OAuth sem localStorage (modo privado / outra aba). Sem WhatsApp. */
+function telaAceite(raiz, perfil, { contexto = "tool" } = {}) {
+  const ehKit = contexto === "kit";
   return new Promise((resolver) => {
-    const precisaWhatsapp = exigirWhatsapp && !whatsappValido(perfil.whatsapp || "");
     const card = el(`
       <section class="auth-card">
-        <p class="eyebrow"><span class="pulse-dot"></span> Último passo</p>
         <h2>Bem-vindo, <span data-nome></span></h2>
+        <p class="auth-sub">Marque a privacidade para liberar${ehKit ? " o kit" : ""}.</p>
         <form class="auth-form" novalidate>
-          ${precisaWhatsapp ? '<label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>' : ""}
           <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-          <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${exigirWhatsapp
-    ? "Quero receber novos kits e materiais por e-mail e WhatsApp."
+          <label class="auth-check"><input name="ofertas" type="checkbox" ${ehKit ? "checked" : ""}> <span>${ehKit
+    ? "Quero receber novos kits e materiais por e-mail."
     : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser."}</span></label>
-          <button class="btn btn-primary" type="submit">${exigirWhatsapp ? "Desbloquear kit" : "Começar"}</button>
+          <button class="btn btn-primary" type="submit">${ehKit ? "Desbloquear kit" : "Começar"}</button>
         </form>
         <p class="auth-msg" role="alert"></p>
       </section>`);
@@ -427,45 +446,9 @@ function telaAceite(raiz, perfil, { exigirWhatsapp = false } = {}) {
       const f = new FormData(e.target);
       const msg = card.querySelector(".auth-msg");
       if (!f.get("termos")) { msg.textContent = "Para continuar, aceite a Política de Privacidade."; return; }
-      if (precisaWhatsapp) {
-        const w = String(f.get("whatsapp") || "").trim();
-        if (!whatsappValido(w)) { msg.textContent = "Informe um WhatsApp válido com DDD."; return; }
-        await salvarWhatsapp(perfil.id, w);
-      }
       const { error } = await supabase.rpc("registrar_aceite", { ofertas: Boolean(f.get("ofertas")) });
       if (error) { msg.textContent = traduzir(error); return; }
       resolver();
-    });
-  });
-}
-
-async function pedirWhatsappSeFaltar(raiz, user, perfil) {
-  const meta = user.user_metadata || {};
-  const atual = perfil?.whatsapp || meta.whatsapp || "";
-  if (whatsappValido(atual)) return perfil;
-
-  return new Promise((resolver) => {
-    const card = el(`
-      <section class="auth-card">
-        <p class="eyebrow"><span class="pulse-dot"></span> Quase lá</p>
-        <h2>Qual o seu WhatsApp?</h2>
-        <p class="auth-sub">Precisamos do número uma vez para liberar o kit e avisar quando sair material novo.</p>
-        <form class="auth-form" novalidate>
-          <label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>
-          <button class="btn btn-primary" type="submit">Salvar e continuar</button>
-        </form>
-        <p class="auth-msg" role="alert"></p>
-      </section>`);
-    raiz.replaceChildren(card);
-    raiz.hidden = false;
-    card.querySelector("form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const w = String(new FormData(e.target).get("whatsapp")).trim();
-      const msg = card.querySelector(".auth-msg");
-      if (!whatsappValido(w)) { msg.textContent = "Informe um WhatsApp válido com DDD."; return; }
-      await salvarWhatsapp(user.id, w);
-      const novo = await lerPerfil(user.id);
-      resolver(novo || { ...perfil, whatsapp: normalizarWhatsapp(w) });
     });
   });
 }
@@ -478,9 +461,10 @@ async function lerPerfil(userId) {
 /**
  * Mostra o cadastro em `#auth-gate` até a pessoa estar logada e com o aceite registrado.
  * O conteúdo da ferramenta/kit fica em `#app` (escondido até lá).
- * @param {{ origem: string, exigirWhatsapp?: boolean }} opts
+ * Após login bem-sucedido: libera na hora (aceite via form ou localStorage pós-Google).
+ * @param {{ origem: string, contexto?: "kit" | "tool" }} opts
  */
-export function exigirCadastro({ origem, exigirWhatsapp = false }) {
+export function exigirCadastro({ origem, contexto = "tool" }) {
   const raiz = document.querySelector("#auth-gate");
   const app = document.querySelector("#app");
   raiz.dataset.origem = origem;
@@ -501,17 +485,8 @@ export function exigirCadastro({ origem, exigirWhatsapp = false }) {
         // Fallback raro: OAuth sem localStorage (modo privado / aba diferente)
         app.hidden = true;
         raiz.hidden = false;
-        await telaAceite(raiz, perfil, { exigirWhatsapp });
+        await telaAceite(raiz, perfil, { contexto });
         perfil = await lerPerfil(session.user.id);
-      }
-      if (exigirWhatsapp) {
-        const metaWa = session.user.user_metadata?.whatsapp;
-        const temWa = whatsappValido(perfil?.whatsapp || metaWa || "");
-        if (!temWa) {
-          app.hidden = true;
-          raiz.hidden = false;
-          perfil = await pedirWhatsappSeFaltar(raiz, session.user, perfil);
-        }
       }
       raiz.hidden = true;
       app.hidden = false;
@@ -536,7 +511,7 @@ export function exigirCadastro({ origem, exigirWhatsapp = false }) {
       if (data.session) return liberar(data.session);
       app.hidden = true;
       raiz.hidden = false;
-      telaCadastro(raiz, liberar, { exigirWhatsapp });
+      telaCadastro(raiz, liberar, { contexto });
     });
   });
 }

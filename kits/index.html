@@ -11,18 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
   <link rel="stylesheet" href="kits.css?v=1" />
+  <link rel="stylesheet" href="auth.css?v=3" />
 </head>
 <body>
   <script>
+    // Subdomínio kits.* → domínio principal (mesma conta das Tools).
+    if (location.hostname === "kits.fernandoparmezani.com.br") {
+      var p = location.pathname === "/" ? "/" : location.pathname;
+      location.replace("https://fernandoparmezani.com.br/kits" + p + location.search + location.hash);
+    }
     // Voltou de confirmação de e-mail para /kits/: segue para o kit de origem.
     (function () {
       if (!/access_token=|error_description=|[?&]code=/.test(location.hash + location.search)) return;
       var destino = "/kits/reel-tecnico/";
       try { destino = localStorage.getItem("auth:voltar") || destino; } catch (e) {}
-      // No subdomínio kits, o path não tem prefixo /kits
-      if (location.hostname === "kits.fernandoparmezani.com.br" && destino.indexOf("/kits/") === 0) {
-        destino = destino.replace(/^\/kits/, "") || "/";
-      }
       location.replace(destino + location.search + location.hash);
     })();
   </script>
@@ -84,5 +86,10 @@
     <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead.</div>
   </footer>
   <script src="chrome.js"></script>
+  <script type="module">
+    import { supabase, barraDoUsuario } from "./auth.js";
+    const { data } = await supabase.auth.getSession();
+    if (data.session) barraDoUsuario(data.session.user);
+  </script>
 </body>
 </html>

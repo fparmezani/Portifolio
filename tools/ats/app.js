@@ -1,3 +1,13 @@
+import {
+  exigirCadastro,
+  barraDoUsuario,
+  accessToken,
+  atualizarSaldoBarra,
+  mensagemSemCreditosHtml,
+  ligarCtaCompra,
+  comprarCreditos,
+} from "../auth.js?v=5";
+
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
 const GATE_MS = 4000;
@@ -6,6 +16,8 @@ const MAX_BYTES = 8 * 1024 * 1024;
 const MAX_PAGES = 15;
 
 const $ = (id) => document.getElementById(id);
+const RaioXAnalyze = window.RaioXAnalyze;
+const pdfjsLib = window.pdfjsLib;
 
 const views = {
   upload: $("view-upload"),
@@ -310,20 +322,36 @@ function renderResult(state) {
 async function requestFull(texts, context) {
   const base = apiBase();
   if (!base) throw new Error("A leitura completa não está configurada.");
+  const token = await accessToken();
+  if (!token) {
+    const err = new Error("Faça login para usar a leitura completa.");
+    err.code = "unauthorized";
+    throw err;
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
   try {
     const response = await fetch(`${base}/raio-x`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ text: texts.join("\n\n"), context }),
       signal: controller.signal
     });
     const body = await response.json().catch(() => ({}));
+    if (response.status === 402 || body.code === "insufficient_credits") {
+      const err = new Error(body.error || "Seus créditos acabaram.");
+      err.code = "insufficient_credits";
+      throw err;
+    }
     if (!response.ok) throw new Error(body.error || "A leitura completa falhou agora.");
     if (!body || !body.resume || !body.diagnosis) throw new Error("A leitura completa veio incompleta.");
+    if (body.credits != null) atualizarSaldoBarra(body.credits);
     return body;
   } catch (error) {
+    if (error.code === "insufficient_credits" || error.code === "unauthorized") throw error;
     if (error.name === "AbortError") throw new Error("A leitura completa demorou demais.");
     if (error instanceof TypeError) throw new Error("Não consegui falar com o servidor da leitura completa.");
     throw error;
@@ -499,6 +527,15 @@ async function start(file) {
   try {
     state.full = await fullRequest;
   } catch (error) {
+    if (error.code === "insufficient_credits") {
+      $("gate").hidden = true;
+      $("gate-video").pause();
+      show("upload");
+      const box = $("upload-error");
+      box.innerHTML = mensagemSemCreditosHtml();
+      ligarCtaCompra(box);
+      return;
+    }
     state.reason = error.message;
   }
   if (current !== run) return;
@@ -575,9 +612,12 @@ function exportDoc() {
 
 injectResumeCss();
 
-if (window.pdfjsLib) {
+if (pdfjsLib) {
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
+
+const { user } = await exigirCadastro({ origem: "ats" });
+barraDoUsuario(user);
 
 $("context-form").addEventListener("submit", (event) => event.preventDefault());
 
@@ -626,4 +666,4 @@ $("section-list").addEventListener("click", async (event) => {
   setTimeout(() => { button.querySelector("b").textContent = "Copiar"; }, 1800);
 });
 
-window.RaioXApp = { renderResult, reset, resumeHtml };
+window.RaioXApp = { renderResult, reset, resumeHtml, comprarCreditos };

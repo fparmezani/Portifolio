@@ -1,46 +1,58 @@
 # tools/backend
 
-API do Raio-X do Currículo (`tools/ats`). O PDF é lido no navegador. Só o texto extraído chega aqui. A API chama o Claude, responde e descarta.
+API das ferramentas: Raio-X do Currículo (Claude), consumo de créditos e Stripe Checkout.
 
-Não há banco, login, log do conteúdo nem gravação de currículo.
+O PDF é lido no navegador. Só o texto extraído chega aqui. A API autentica o usuário (JWT Supabase), debita 1 crédito, chama o Claude, responde e descarta o texto.
 
-## Rota
+## Rotas
 
-`POST /raio-x`
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/health` | — | Saúde + flags `credits` / `stripe` |
+| GET | `/me/credits` | Bearer | Saldo atual |
+| POST | `/raio-x` | Bearer | Análise completa (−1 crédito; reembolsa se a IA falhar) |
+| POST | `/simulador/consumir` | Bearer | Debita 1 crédito do simulado |
+| POST | `/checkout/credits` | Bearer | Cria Stripe Checkout Session (100 créditos) |
+| POST | `/webhooks/stripe` | assinatura Stripe | Credita após `checkout.session.completed` |
+
+### `POST /raio-x`
 
 ```json
 { "text": "texto extraído do PDF", "context": { "company": "", "recruiter": "", "jobDescription": "" } }
 ```
 
-A resposta traz `diagnosis`, `sections` (antes → depois → por quê), `keywords`, `resume` (currículo completo reescrito) e `todo`. O formato é garantido por JSON Schema em `raio-x.js`. Números que o PDF não traz voltam como `[preencher: …]` e nunca são inventados.
+Header: `Authorization: Bearer <access_token do Supabase>`.
 
-Saúde: `GET /health`.
+Resposta 402 se não houver créditos. Em sucesso, inclui `credits` com o saldo restante.
 
 ## Variáveis de ambiente
 
-| Nome | Padrão | Para quê |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | (obrigatória) | Chave da Anthropic. Nunca vai para o GitHub. |
-| `ALLOWED_ORIGINS` | `https://fernandoparmezani.com.br,https://www.fernandoparmezani.com.br` | Origens liberadas no CORS, separadas por vírgula. |
-| `RAIO_X_PER_IP_HOUR` | `5` | Leituras por IP a cada hora. |
-| `RAIO_X_PER_DAY` | `200` | Teto diário total, para segurar o custo. |
-| `RAIO_X_MODEL` | `claude-opus-5-5` | Modelo usado. |
-| `PORT` | `3001` | Porta. |
+Veja [`.env.example`](.env.example) e o passo a passo em [`CONFIGURAR-CREDITOS.md`](CONFIGURAR-CREDITOS.md).
+
+| Nome | Para quê |
+|---|---|
+| `ANTHROPIC_API_KEY` | Claude (Raio-X) |
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Auth + créditos |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Checkout + webhook |
+| `STRIPE_PRICE_CREDITS` | `price_1UQFwf9MowzYQLdMxF4tdtg9` |
+| `ALLOWED_ORIGINS` | CORS |
+| `RAIO_X_PER_IP_HOUR` / `RAIO_X_PER_DAY` | Teto extra de proteção |
+| `PORT` | Padrão 3001 |
 
 ## Publicar na Hostinger
 
-1. No painel, crie o app Node no subdomínio `api.fernandoparmezani.com.br` apontando para esta pasta.
-2. Defina as variáveis acima no painel, no mínimo `ANTHROPIC_API_KEY`.
-3. Comando de start: `npm start`.
-4. Se o subdomínio for outro, troque `<meta name="raio-x-api">` em `tools/ats/index.html`.
-
-Se a API não responder, a página cai sozinha na leitura básica por regras, feita no navegador.
+1. App Node em `api.fernandoparmezani.com.br` apontando para esta pasta.
+2. `npm install` + variáveis do `.env.example`.
+3. Start: `npm start`.
+4. Rodar a migration `supabase/migrations/20261013_credits.sql`.
+5. Criar webhook Stripe → `/webhooks/stripe`.
 
 ## Local
 
 ```bash
 npm install
-ANTHROPIC_API_KEY=... ALLOWED_ORIGINS=http://localhost:8080 npm start
+# defina as envs (ou use um .env carregado pelo seu processo)
+npm start
 ```
 
-Abrindo o site em `localhost`, a página chama `http://localhost:3001` automaticamente.
+Abrindo o site em `localhost`, o front chama `http://localhost:3001`.

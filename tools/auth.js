@@ -1,10 +1,15 @@
-// Cadastro único das ferramentas (Supabase Auth).
+// Cadastro único (Supabase Auth) + créditos — compartilhado por Tools e Kits.
 // Uso: const { user, perfil } = await exigirCadastro({ origem: "simulador" });
+// Kits: await exigirCadastro({ origem: "kit-…", exigirWhatsapp: true });
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-// O login fica salvo por endereço: tools.fernandoparmezani.com.br vai sempre para o endereço principal.
+// O login fica salvo por endereço: tools.* e kits.* vão para o domínio principal.
 if (location.hostname === "tools.fernandoparmezani.com.br") {
   location.replace("https://fernandoparmezani.com.br/tools" + location.pathname + location.search + location.hash);
+}
+if (location.hostname === "kits.fernandoparmezani.com.br") {
+  const path = location.pathname === "/" ? "/" : location.pathname;
+  location.replace("https://fernandoparmezani.com.br/kits" + path + location.search + location.hash);
 }
 
 const SUPABASE_URL = "https://hrpmoshviubjrudawuuk.supabase.co";
@@ -24,8 +29,124 @@ const ERROS = {
 const traduzir = (erro) =>
   ERROS[erro?.code] ?? ERROS[erro?.message] ?? "Não deu certo agora. Tente de novo em instantes.";
 const urlDeVolta = () => location.origin + location.pathname;
-// Se o Supabase devolver a pessoa para /tools/, a página de Ferramentas usa isto para mandá-la de volta à ferramenta.
-const lembrarVolta = () => { try { localStorage.setItem("auth:voltar", location.pathname); } catch { /* modo privado */ } };
+const lembrarVolta = () => {
+  try {
+    const path = location.hostname === "kits.fernandoparmezani.com.br"
+      ? "/kits" + (location.pathname === "/" ? "/" : location.pathname)
+      : location.pathname;
+    localStorage.setItem("auth:voltar", path);
+  } catch { /* modo privado */ }
+};
+
+export function toolsApiBase() {
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return "http://localhost:3001";
+  return "https://api.fernandoparmezani.com.br";
+}
+
+export async function accessToken() {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token ?? null;
+}
+
+export async function lerSaldoCreditos() {
+  const token = await accessToken();
+  if (!token) return null;
+  try {
+    const res = await fetch(`${toolsApiBase()}/me/credits`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) return null;
+    return Number(body.credits);
+  } catch {
+    return null;
+  }
+}
+
+export async function lerHistoricoCreditos() {
+  const token = await accessToken();
+  if (!token) return [];
+  try {
+    const res = await fetch(`${toolsApiBase()}/me/credits/history`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return Array.isArray(body.items) ? body.items : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function comprarCreditos() {
+  const token = await accessToken();
+  if (!token) {
+    alert("Faça login para comprar créditos.");
+    return;
+  }
+  const here = location.origin + location.pathname + location.search;
+  const res = await fetch(`${toolsApiBase()}/checkout/credits`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      successUrl: `${location.origin}${location.pathname}?credits=ok`,
+      cancelUrl: here.includes("credits=") ? location.origin + location.pathname : here,
+    }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.url) {
+    alert(body.error || "Não consegui abrir o pagamento agora.");
+    return;
+  }
+  location.href = body.url;
+}
+
+/** Debita 1 crédito no backend. Retorna { ok, credits?, error?, code? }. */
+export async function consumirCreditoFerramenta(ferramenta) {
+  const token = await accessToken();
+  if (!token) return { ok: false, error: "Faça login para continuar.", code: "unauthorized" };
+  const path = ferramenta === "simulador" ? "/simulador/consumir" : null;
+  if (!path) return { ok: false, error: "Ferramenta desconhecida." };
+  try {
+    const res = await fetch(`${toolsApiBase()}${path}`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (res.status === 402 || body.code === "insufficient_credits") {
+      return { ok: false, error: body.error, code: "insufficient_credits" };
+    }
+    if (!res.ok) return { ok: false, error: body.error || "Não consegui debitar o crédito agora." };
+    return { ok: true, credits: Number(body.credits) };
+  } catch {
+    return { ok: false, error: "Não consegui falar com o servidor de créditos." };
+  }
+}
+
+/** Empty-state guiado quando o saldo zera. */
+export function mensagemSemCreditosHtml() {
+  return `
+    <div class="auth-empty-credits" role="status">
+      <strong>Seus créditos acabaram</strong>
+      <p>Cada Raio-X ou simulado usa 1 crédito. Compre um pacote de <strong>100 créditos</strong> para continuar.</p>
+      <button type="button" class="btn btn-primary" data-comprar-creditos>Comprar créditos</button>
+    </div>`;
+}
+
+export function ligarCtaCompra(raiz) {
+  if (!raiz) return;
+  raiz.querySelectorAll("[data-comprar-creditos]").forEach((btn) => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      comprarCreditos();
+    });
+  });
+}
 
 function el(html) {
   const t = document.createElement("template");
@@ -33,12 +154,65 @@ function el(html) {
   return t.content.firstElementChild;
 }
 
-function telaCadastro(raiz, aoEntrar) {
+function primeiroNome(perfil, user) {
+  const bruto =
+    perfil?.nome ||
+    user?.user_metadata?.nome ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    (user?.email || "").split("@")[0] ||
+    "Conta";
+  return String(bruto).trim().split(/\s+/)[0] || "Conta";
+}
+
+function rotuloCreditos(n) {
+  if (n == null || Number.isNaN(n)) return "créditos";
+  const v = Number(n);
+  return v === 1 ? "1 crédito" : `${v} créditos`;
+}
+
+function rotuloLedger(item) {
+  const mapa = {
+    bonus_cadastro: "Bônus de cadastro",
+    compra_stripe: "Compra de créditos",
+    uso: item.ferramenta ? `Uso · ${item.ferramenta}` : "Uso de ferramenta",
+    reembolso: item.ferramenta ? `Reembolso · ${item.ferramenta}` : "Reembolso",
+  };
+  return mapa[item.reason] || item.reason || "Movimentação";
+}
+
+/** Aceita (11) 99999-9999, 11999999999, +55 11 99999-9999 etc. Devolve só dígitos (com 55 se vier). */
+export function normalizarWhatsapp(valor) {
+  const digitos = String(valor || "").replace(/\D/g, "");
+  if (digitos.length === 10 || digitos.length === 11) return "55" + digitos;
+  if (digitos.length === 12 || digitos.length === 13) return digitos;
+  return "";
+}
+
+function whatsappValido(valor) {
+  const n = normalizarWhatsapp(valor);
+  return n.length >= 12 && n.length <= 13 && n.startsWith("55");
+}
+
+async function salvarWhatsapp(userId, whatsapp) {
+  const limpo = normalizarWhatsapp(whatsapp);
+  if (!limpo) return;
+  try {
+    await supabase.auth.updateUser({ data: { whatsapp: limpo } });
+  } catch { /* metadata é best-effort */ }
+  try {
+    await supabase.from("profiles").update({ whatsapp: limpo }).eq("id", userId);
+  } catch { /* coluna pode ainda não existir */ }
+}
+
+function telaCadastro(raiz, aoEntrar, { exigirWhatsapp = false } = {}) {
   const card = el(`
     <section class="auth-card" aria-labelledby="auth-title">
-      <p class="eyebrow"><span class="pulse-dot"></span> Acesso gratuito</p>
-      <h2 id="auth-title">Crie sua conta para começar</h2>
-      <p class="auth-sub">Uma conta só vale para todas as ferramentas do site.</p>
+      <p class="eyebrow"><span class="pulse-dot"></span> ${exigirWhatsapp ? "Kit gratuito" : "10 créditos para começar"}</p>
+      <h2 id="auth-title">${exigirWhatsapp ? "Desbloqueie com e-mail e WhatsApp" : "Crie sua conta para começar"}</h2>
+      <p class="auth-sub">${exigirWhatsapp
+    ? "Uma conta vale para kits e ferramentas do site. Usamos o WhatsApp só para avisos de novos materiais, se você quiser."
+    : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X ou simulado usa 1. Kits não consomem crédito."}</p>
       <button type="button" class="auth-google" data-google>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Continuar com Google
@@ -51,10 +225,13 @@ function telaCadastro(raiz, aoEntrar) {
       <form class="auth-form" data-form="criar" novalidate>
         <label>Nome<input name="nome" type="text" autocomplete="name" maxlength="80" required></label>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        ${exigirWhatsapp ? '<label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>' : ""}
         <label>Senha<input name="senha" type="password" autocomplete="new-password" minlength="8" required placeholder="mínimo 8 caracteres"></label>
         <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-        <label class="auth-check"><input name="ofertas" type="checkbox"> <span>Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser.</span></label>
-        <button class="btn btn-primary" type="submit">Criar conta e começar</button>
+        <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${exigirWhatsapp
+    ? "Quero receber novos kits e materiais por e-mail e WhatsApp. Dá para sair quando quiser."
+    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser."}</span></label>
+        <button class="btn btn-primary" type="submit">${exigirWhatsapp ? "Criar conta e desbloquear" : "Criar conta e começar"}</button>
       </form>
       <form class="auth-form" data-form="entrar" hidden novalidate>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
@@ -90,21 +267,31 @@ function telaCadastro(raiz, aoEntrar) {
     const nome = String(f.get("nome")).trim();
     const email = String(f.get("email")).trim();
     const senha = String(f.get("senha"));
+    const whatsapp = String(f.get("whatsapp") || "").trim();
     if (!nome || !email.includes("@")) return avisar("Preencha nome e e-mail.");
+    if (exigirWhatsapp && !whatsappValido(whatsapp)) return avisar("Informe um WhatsApp válido com DDD, ex.: (11) 99999-9999.");
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
     if (!f.get("termos")) return avisar("Para criar a conta, aceite a Política de Privacidade.");
     ocupado(criar, true);
     lembrarVolta();
+    const whatsappLimpo = exigirWhatsapp ? normalizarWhatsapp(whatsapp) : "";
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
       options: {
         emailRedirectTo: urlDeVolta(),
-        data: { nome, aceite_termos: true, aceite_ofertas: Boolean(f.get("ofertas")), origem: raiz.dataset.origem },
+        data: {
+          nome,
+          ...(whatsappLimpo ? { whatsapp: whatsappLimpo } : {}),
+          aceite_termos: true,
+          aceite_ofertas: Boolean(f.get("ofertas")),
+          origem: raiz.dataset.origem,
+        },
       },
     });
     ocupado(criar, false);
     if (error) return avisar(traduzir(error));
+    if (whatsappLimpo && data.user?.id) await salvarWhatsapp(data.user.id, whatsappLimpo);
     if (data.session) return aoEntrar(data.session);
     avisar(`Pronto! Enviamos um link de confirmação para ${email}. Abra o e-mail e clique no link para começar.`, true);
   });
@@ -149,7 +336,6 @@ function telaNovaSenha(raiz, aoTerminar) {
     const msg = card.querySelector(".auth-msg");
     if (senha.length < 8) { msg.textContent = "A senha precisa ter pelo menos 8 caracteres."; return; }
     const { error } = await supabase.auth.updateUser({ password: senha });
-    // same_password = a senha digitada já é a atual. O link de recuperação já autenticou; segue.
     if (error && error.code !== "same_password" && !/different from the old password/i.test(error.message || "")) {
       msg.textContent = traduzir(error);
       return;
@@ -158,30 +344,69 @@ function telaNovaSenha(raiz, aoTerminar) {
   });
 }
 
-// Quem entrou pelo Google ainda não aceitou nada: um passo só.
-function telaAceite(raiz, perfil) {
+function telaAceite(raiz, perfil, { exigirWhatsapp = false } = {}) {
   return new Promise((resolver) => {
+    const precisaWhatsapp = exigirWhatsapp && !whatsappValido(perfil.whatsapp || "");
     const card = el(`
       <section class="auth-card">
         <p class="eyebrow"><span class="pulse-dot"></span> Último passo</p>
         <h2>Bem-vindo, <span data-nome></span></h2>
         <form class="auth-form" novalidate>
+          ${precisaWhatsapp ? '<label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>' : ""}
           <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-          <label class="auth-check"><input name="ofertas" type="checkbox"> <span>Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser.</span></label>
-          <button class="btn btn-primary" type="submit">Começar</button>
+          <label class="auth-check"><input name="ofertas" type="checkbox" ${exigirWhatsapp ? "checked" : ""}> <span>${exigirWhatsapp
+    ? "Quero receber novos kits e materiais por e-mail e WhatsApp."
+    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser."}</span></label>
+          <button class="btn btn-primary" type="submit">${exigirWhatsapp ? "Desbloquear kit" : "Começar"}</button>
         </form>
         <p class="auth-msg" role="alert"></p>
       </section>`);
-    card.querySelector("[data-nome]").textContent = (perfil.nome || perfil.email).split(" ")[0];
+    card.querySelector("[data-nome]").textContent = (perfil.nome || perfil.email || "").split(" ")[0];
     raiz.replaceChildren(card);
     card.querySelector("form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const f = new FormData(e.target);
       const msg = card.querySelector(".auth-msg");
       if (!f.get("termos")) { msg.textContent = "Para continuar, aceite a Política de Privacidade."; return; }
+      if (precisaWhatsapp) {
+        const w = String(f.get("whatsapp") || "").trim();
+        if (!whatsappValido(w)) { msg.textContent = "Informe um WhatsApp válido com DDD."; return; }
+        await salvarWhatsapp(perfil.id, w);
+      }
       const { error } = await supabase.rpc("registrar_aceite", { ofertas: Boolean(f.get("ofertas")) });
       if (error) { msg.textContent = traduzir(error); return; }
       resolver();
+    });
+  });
+}
+
+async function pedirWhatsappSeFaltar(raiz, user, perfil) {
+  const meta = user.user_metadata || {};
+  const atual = perfil?.whatsapp || meta.whatsapp || "";
+  if (whatsappValido(atual)) return perfil;
+
+  return new Promise((resolver) => {
+    const card = el(`
+      <section class="auth-card">
+        <p class="eyebrow"><span class="pulse-dot"></span> Quase lá</p>
+        <h2>Qual o seu WhatsApp?</h2>
+        <p class="auth-sub">Precisamos do número uma vez para liberar o kit e avisar quando sair material novo.</p>
+        <form class="auth-form" novalidate>
+          <label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(11) 99999-9999"></label>
+          <button class="btn btn-primary" type="submit">Salvar e continuar</button>
+        </form>
+        <p class="auth-msg" role="alert"></p>
+      </section>`);
+    raiz.replaceChildren(card);
+    raiz.hidden = false;
+    card.querySelector("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const w = String(new FormData(e.target).get("whatsapp")).trim();
+      const msg = card.querySelector(".auth-msg");
+      if (!whatsappValido(w)) { msg.textContent = "Informe um WhatsApp válido com DDD."; return; }
+      await salvarWhatsapp(user.id, w);
+      const novo = await lerPerfil(user.id);
+      resolver(novo || { ...perfil, whatsapp: normalizarWhatsapp(w) });
     });
   });
 }
@@ -193,14 +418,14 @@ async function lerPerfil(userId) {
 
 /**
  * Mostra o cadastro em `#auth-gate` até a pessoa estar logada e com o aceite registrado.
- * O conteúdo da ferramenta fica em `#app` (escondido até lá).
+ * O conteúdo da ferramenta/kit fica em `#app` (escondido até lá).
+ * @param {{ origem: string, exigirWhatsapp?: boolean }} opts
  */
-export function exigirCadastro({ origem }) {
+export function exigirCadastro({ origem, exigirWhatsapp = false }) {
   const raiz = document.querySelector("#auth-gate");
   const app = document.querySelector("#app");
   raiz.dataset.origem = origem;
 
-  // Link de "esqueci a senha": primeiro a nova senha, depois a ferramenta.
   const recuperando = location.hash.includes("type=recovery");
 
   return new Promise((resolver) => {
@@ -212,12 +437,21 @@ export function exigirCadastro({ origem }) {
       if (perfil && !perfil.aceite_termos_em) {
         app.hidden = true;
         raiz.hidden = false;
-        await telaAceite(raiz, perfil);
+        await telaAceite(raiz, perfil, { exigirWhatsapp });
         perfil = await lerPerfil(session.user.id);
+      }
+      if (exigirWhatsapp) {
+        const metaWa = session.user.user_metadata?.whatsapp;
+        const temWa = whatsappValido(perfil?.whatsapp || metaWa || "");
+        if (!temWa) {
+          app.hidden = true;
+          raiz.hidden = false;
+          perfil = await pedirWhatsappSeFaltar(raiz, session.user, perfil);
+        }
       }
       raiz.hidden = true;
       app.hidden = false;
-      history.replaceState(null, "", location.pathname);
+      history.replaceState(null, "", location.pathname + location.search);
       resolver({ user: session.user, perfil });
     };
 
@@ -238,22 +472,140 @@ export function exigirCadastro({ origem }) {
       if (data.session) return liberar(data.session);
       app.hidden = true;
       raiz.hidden = false;
-      telaCadastro(raiz, liberar);
+      telaCadastro(raiz, liberar, { exigirWhatsapp });
     });
   });
 }
 
-/** Mostra "e-mail · Sair" no menu do site. */
-export function barraDoUsuario(user) {
+/** Atualiza o badge e o saldo detalhado no menu. */
+export function atualizarSaldoBarra(credits) {
+  const n = credits == null || Number.isNaN(Number(credits)) ? null : Number(credits);
+  document.querySelectorAll("[data-credits]").forEach((node) => {
+    node.textContent = rotuloCreditos(n);
+  });
+  document.querySelectorAll("[data-saldo-detalhe]").forEach((node) => {
+    node.textContent = rotuloCreditos(n);
+  });
+}
+
+async function abrirHistorico() {
+  const overlay = el(`
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-hist-title">
+      <div class="auth-modal-card">
+        <div class="auth-modal-head">
+          <h2 id="auth-hist-title">Histórico de créditos</h2>
+          <button type="button" class="auth-modal-close" data-fechar aria-label="Fechar">×</button>
+        </div>
+        <div class="auth-hist-list" data-lista>
+          <p class="auth-hist-empty">Carregando…</p>
+        </div>
+      </div>
+    </div>`);
+  document.body.append(overlay);
+  const fechar = () => overlay.remove();
+  overlay.querySelector("[data-fechar]").addEventListener("click", fechar);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) fechar(); });
+
+  const lista = overlay.querySelector("[data-lista]");
+  const items = await lerHistoricoCreditos();
+  if (!items.length) {
+    lista.innerHTML = `<p class="auth-hist-empty">Ainda não há movimentações.</p>`;
+    return;
+  }
+  lista.replaceChildren(...items.map((item) => {
+    const delta = Number(item.delta);
+    const quando = item.created_at
+      ? new Date(item.created_at).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })
+      : "";
+    return el(`
+      <div class="auth-hist-item">
+        <div>
+          <strong>${rotuloLedger(item)}</strong>
+          <span>${quando}</span>
+        </div>
+        <span class="auth-hist-delta ${delta >= 0 ? "is-plus" : "is-minus"}">${delta >= 0 ? "+" : ""}${delta}</span>
+      </div>`);
+  }));
+}
+
+/**
+ * Menu de conta no header: botão = Nome + badge de créditos.
+ * Dropdown: saldo, comprar, histórico, sair (e-mail só dentro do menu).
+ */
+export function barraDoUsuario(user, perfilHint = null) {
   const nav = document.querySelector(".nav");
-  if (!nav || nav.querySelector(".auth-user")) return;
-  const item = el(`<span class="auth-user"><span data-email></span> · <button type="button">Sair</button></span>`);
-  item.querySelector("[data-email]").textContent = user.email;
-  item.querySelector("button").addEventListener("click", async () => {
+  if (!nav || nav.querySelector(".auth-account")) return;
+
+  const item = el(`
+    <div class="auth-account">
+      <button type="button" class="auth-account-btn" aria-expanded="false" aria-haspopup="true" data-toggle>
+        <span data-nome></span>
+        <span data-credits class="auth-credits">…</span>
+      </button>
+      <div class="auth-account-menu" hidden data-menu>
+        <p class="auth-account-email" data-email></p>
+        <p class="auth-account-saldo">Saldo: <strong data-saldo-detalhe>…</strong></p>
+        <button type="button" data-comprar>Comprar créditos</button>
+        <button type="button" data-historico>Histórico</button>
+        <button type="button" data-sair>Sair</button>
+      </div>
+    </div>`);
+
+  item.querySelector("[data-nome]").textContent = primeiroNome(perfilHint, user);
+  item.querySelector("[data-email]").textContent = user.email || "";
+
+  const btn = item.querySelector("[data-toggle]");
+  const menu = item.querySelector("[data-menu]");
+  const fecharMenu = () => {
+    menu.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  };
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const aberto = menu.hidden;
+    menu.hidden = !aberto;
+    btn.setAttribute("aria-expanded", String(aberto));
+  });
+  document.addEventListener("click", (e) => {
+    if (!item.contains(e.target)) fecharMenu();
+  });
+
+  item.querySelector("[data-sair]").addEventListener("click", async () => {
     await supabase.auth.signOut();
     location.reload();
   });
+  item.querySelector("[data-comprar]").addEventListener("click", () => {
+    fecharMenu();
+    comprarCreditos();
+  });
+  item.querySelector("[data-historico]").addEventListener("click", () => {
+    fecharMenu();
+    abrirHistorico();
+  });
   nav.append(item);
+
+  const params = new URLSearchParams(location.search);
+  if (params.get("credits") === "ok") {
+    const aviso = el(`<p class="auth-credits-toast" role="status">Pagamento confirmado. Seus créditos devem aparecer em instantes.</p>`);
+    document.querySelector(".tools-main .container, .kits-main .container")?.prepend(aviso);
+    params.delete("credits");
+    const qs = params.toString();
+    history.replaceState(null, "", location.pathname + (qs ? `?${qs}` : ""));
+    setTimeout(() => aviso.remove(), 8000);
+  }
+
+  Promise.all([lerSaldoCreditos(), perfilHint ? Promise.resolve(perfilHint) : lerPerfil(user.id)]).then(([apiSaldo, perfil]) => {
+    if (perfil) item.querySelector("[data-nome]").textContent = primeiroNome(perfil, user);
+    if (apiSaldo != null) {
+      atualizarSaldoBarra(apiSaldo);
+      return;
+    }
+    if (perfil && typeof perfil.credits === "number") {
+      atualizarSaldoBarra(perfil.credits);
+      return;
+    }
+    atualizarSaldoBarra(null);
+  });
 }
 
 /** Guarda o uso da ferramenta para segmentar campanhas. Falha em silêncio. */

@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="../tools.css?v=11" />
+  <link rel="stylesheet" href="../tools.css?v=12" />
+  <link rel="stylesheet" href="../auth.css?v=3" />
 </head>
 <body>
   <div class="site-bg" aria-hidden="true"></div>
@@ -23,6 +24,7 @@
     <nav class="nav" aria-label="Navegação">
       <a href="https://fernandoparmezani.com.br/">Início</a>
       <a href="../">Ferramentas</a>
+      <a href="https://fernandoparmezani.com.br/kits/">Kits</a>
       <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
     </nav>
   </header>
@@ -31,11 +33,14 @@
     <div class="container">
       <p class="crumb"><a href="../">Ferramentas</a> / Raio-X do Currículo</p>
 
+      <div id="auth-gate" hidden></div>
+
+      <div id="app" hidden>
       <section id="view-upload">
         <div class="center-copy">
           <p class="eyebrow"><span class="pulse-dot"></span> Consulta ATS</p>
           <h1>Raio-X do<br><strong>Currículo</strong></h1>
-          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para exportar. Nenhum dado é inventado.</p>
+          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para exportar. Cada leitura completa usa <strong>1 crédito</strong>.</p>
         </div>
         <form class="context-form" id="context-form">
           <p>Opcional, mas com a vaga a reescrita mira nela. Pode enviar só o PDF.</p>
@@ -152,6 +157,7 @@
         </article>
         <p class="disclaimer">O texto do currículo é usado só para gerar esta leitura e é descartado. Nada é guardado. A nota não é oficial de nenhum ATS.</p>
       </section>
+      </div>
     </div>
   </main>
 
@@ -175,12 +181,12 @@
   </div>
 
   <footer class="footer">
-    <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead.</div>
+    <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead. · <a href="../privacidade.html">Privacidade</a></div>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="analyze.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js?v=2"></script>
   <script src="../chrome.js"></script>
 </body>
 </html>

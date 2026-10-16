@@ -10,7 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="tools.css?v=7" />
+  <link rel="stylesheet" href="tools.css?v=8" />
+  <link rel="stylesheet" href="auth.css?v=3" />
 </head>
 <body>
   <script>
@@ -31,15 +32,16 @@
     <nav class="nav" aria-label="Navegação">
       <a href="https://fernandoparmezani.com.br/">Início</a>
       <a href="./" aria-current="page">Ferramentas</a>
+      <a href="https://fernandoparmezani.com.br/kits/">Kits</a>
       <a href="https://fernandoparmezani.com.br/#contact">Contato</a>
     </nav>
   </header>
 
   <main class="tools-main">
     <div class="container">
-      <p class="eyebrow"><span class="pulse-dot"></span> Ferramentas livres</p>
+      <p class="eyebrow"><span class="pulse-dot"></span> Ferramentas com créditos</p>
       <h1>Ferramentas<br><strong>do site</strong></h1>
-      <p class="lead">Ferramentas gratuitas para devs C# e .NET conseguirem a próxima vaga e passarem na entrevista técnica.</p>
+      <p class="lead">Crie sua conta e ganhe 10 créditos para usar o Raio-X e o Simulador. Cada uso consome 1 crédito; quando acabar, você compra mais.</p>
       <div class="tool-grid">
         <a class="tool-card has-cover" href="ats/">
           <img class="tool-cover" src="assets/raio-x-curriculo.jpg" alt="Raio-X do Currículo" width="480" height="480" loading="lazy">
@@ -48,7 +50,7 @@
             <h2>Raio-X do <span class="hl">Currículo</span></h2>
             <p>Diz o que mudar em cada trecho do currículo, com o texto pronto para copiar, e devolve uma versão reescrita com layout profissional para exportar em PDF ou Word.</p>
             <div class="meta-row">
-              <span>PDF</span>
+              <span>1 crédito</span>
               <span>PDF e Word</span>
               <span>LGPD</span>
             </div>
@@ -64,7 +66,7 @@
             <div class="meta-row">
               <span>10 perguntas</span>
               <span>Júnior a Sênior</span>
-              <span>Grátis</span>
+              <span>1 crédito</span>
             </div>
             <span class="btn btn-primary">Fazer o simulado</span>
           </div>
@@ -77,5 +79,10 @@
     <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead.</div>
   </footer>
   <script src="chrome.js"></script>
+  <script type="module">
+    import { supabase, barraDoUsuario } from "./auth.js";
+    const { data } = await supabase.auth.getSession();
+    if (data.session) barraDoUsuario(data.session.user);
+  </script>
 </body>
 </html>

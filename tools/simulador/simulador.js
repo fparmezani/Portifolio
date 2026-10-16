@@ -1,4 +1,13 @@
-import { exigirCadastro, barraDoUsuario, registrarUso, supabase } from "../auth.js?v=4";
+import {
+  exigirCadastro,
+  barraDoUsuario,
+  registrarUso,
+  supabase,
+  consumirCreditoFerramenta,
+  mensagemSemCreditosHtml,
+  ligarCtaCompra,
+  atualizarSaldoBarra,
+} from "../auth.js?v=5";
 
 const POR_SIMULADO = 10;
 const LIVRO = "C# Moderno sem Medo";
@@ -123,7 +132,25 @@ function montarSetup() {
 let rodada = null;
 let relogio = null;
 
-function iniciar() {
+async function iniciar() {
+  const btn = $("#comecar");
+  const erro = $("#setup-erro");
+  btn.disabled = true;
+  erro.textContent = "Debitando 1 crédito…";
+  const debito = await consumirCreditoFerramenta("simulador");
+  if (!debito.ok) {
+    btn.disabled = false;
+    if (debito.code === "insufficient_credits") {
+      erro.innerHTML = mensagemSemCreditosHtml();
+      ligarCtaCompra(erro);
+    } else {
+      erro.textContent = debito.error || "Não deu para começar agora.";
+    }
+    return;
+  }
+  atualizarSaldoBarra(debito.credits);
+  erro.textContent = "";
+
   const perguntas = sortear();
   rodada = { perguntas, atual: 0, respostas: [], inicio: Date.now() };
   clearInterval(relogio);
@@ -134,6 +161,7 @@ function iniciar() {
   registrarUso("simulador", "iniciou", { nivel: estado.nivel, temas: [...estado.temas], total: perguntas.length });
   mostrar("#view-quiz");
   renderPergunta();
+  btn.disabled = false;
 }
 
 function renderPergunta() {

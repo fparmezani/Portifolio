@@ -1,5 +1,5 @@
 // Auth dos kits = mesma conta das Tools (mesmo origin após redirect).
-// WhatsApp é pedido uma vez se ainda faltar no perfil.
+// WhatsApp nunca bloqueia o kit; opcional só no form de e-mail (tools/auth.js).
 if (location.hostname === "kits.fernandoparmezani.com.br") {
   const path = location.pathname === "/" ? "/" : location.pathname;
   location.replace("https://fernandoparmezani.com.br/kits" + path + location.search + location.hash);
@@ -19,7 +19,7 @@ export {
 
 import { exigirCadastro as exigirCadastroShared } from "../tools/auth.js";
 
-/** Login obrigatório nos kits; WhatsApp só se ainda não estiver no perfil. */
+/** Login obrigatório nos kits; um único formulário; libera download na hora. */
 export function exigirCadastro({ origem }) {
-  return exigirCadastroShared({ origem, exigirWhatsapp: true });
+  return exigirCadastroShared({ origem, contexto: "kit" });
 }

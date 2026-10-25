@@ -1,0 +1,24 @@
+# Fernando Parmezani · Criação de Sites
+
+> Criação de sites profissionais sob medida para clínicas, consultórios, academias, restaurantes e profissionais liberais. Design autoral com preço acessível, e SEO técnico, GEO, segurança, performance, analytics e LGPD inclusos em cada projeto. Atendimento online para todo o Brasil.
+
+Responsável: Fernando Parmezani, engenheiro de software sênior e tech lead com mais de 18 anos de experiência.
+Contato: WhatsApp +55 11 96376-7799 · fparmezani@gmail.com
+Site principal: https://fernandoparmezani.com.br/
+
+## Projetos publicados
+- [Instituto Médico Casagrande](https://institutomedicocasagrande.com.br/): clínica de ortopedia, clínica médica, nutrologia e geriatria em Artur Nogueira/SP
+- [Dra. Aline Bragatto](https://clientes.fernandoparmezani.com.br/alinebragatto/): cirurgiã plástica em Campinas/SP
+- [CT Lucas Ribeiro](https://clientes.fernandoparmezani.com.br/ctlucasribeiro/): centro de treinamento em Artur Nogueira/SP
+- [Studio Raquel Simon](https://studioraquelsimon.com.br/): pilates, yoga e fisioterapia em Cosmópolis/SP
+- [Miranha Sushi](https://clientes.fernandoparmezani.com.br/miranha/): buffet japonês para eventos em Campinas/SP
+
+## O que está incluído
+- Design sob medida, sem templates, pensado para celular e computador
+- SEO técnico: títulos, sitemap, dados estruturados Schema.org e presença local
+- GEO: conteúdo e llms.txt para assistentes de IA
+- Segurança: HTTPS e cabeçalhos de segurança, site estático
+- Performance: imagens WebP, carregamento sob demanda
+- Analytics: Google Analytics, Meta Pixel e cliques no WhatsApp
+- LGPD: política de privacidade
+- Sem mensalidade pelo site; o cliente paga apenas domínio e hospedagem

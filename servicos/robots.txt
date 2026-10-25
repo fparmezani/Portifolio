@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://servicos.fernandoparmezani.com.br/sitemap.xml

@@ -180,11 +180,23 @@ app.post("/raio-x", async (req, res) => {
   const auth = await authOr401(req, res);
   if (!auth) return;
 
+  // Se o navegador desistir (timeout, aba fechada) antes da resposta, a leitura não chega a ninguém.
+  let abandonado = false;
+  res.on("close", () => {
+    if (!res.writableFinished) abandonado = true;
+  });
+
   let debitado = false;
   try {
     await consumirCredito(auth.token, "raio-x", RAIO_X_CUSTO);
     debitado = true;
     const report = await analyzeResume(req.body);
+    if (abandonado) {
+      await reembolsarCredito(auth.user.id, "raio-x", RAIO_X_CUSTO).catch((refundErr) => {
+        console.error("reembolso raio-x abandonado", refundErr && refundErr.message);
+      });
+      return;
+    }
     res.setHeader("Cache-Control", "no-store");
     const credits = await getCredits(auth.user.id).catch(() => null);
     res.json({ ...report, credits });

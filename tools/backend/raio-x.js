@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const MODEL = process.env.RAIO_X_MODEL || "claude-opus-5-5";
+const MODEL = process.env.RAIO_X_MODEL || "claude-sonnet-5-5";
 const MAX_RESUME_CHARS = 30000;
 const MAX_JOB_CHARS = 6000;
 

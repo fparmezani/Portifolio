@@ -18,7 +18,9 @@ function obj(properties) {
   };
 }
 
-const SCHEMA = obj({
+// O schema inteiro passa do limite de gramática da API ("compiled grammar is too large"),
+// então a leitura sai em duas chamadas paralelas: diagnóstico e currículo reescrito.
+const SCHEMA_PARTS = {
   diagnosis: obj({
     score: { type: "integer" },
     headline: str,
@@ -42,6 +44,9 @@ const SCHEMA = obj({
     present: strList,
     missing: strList
   }),
+};
+
+const SCHEMA_RESUME = {
   resume: obj({
     name: str,
     headline: str,
@@ -89,7 +94,18 @@ const SCHEMA = obj({
     }
   }),
   todo: strList
-});
+};
+
+const PARTS = [
+  {
+    schema: obj(SCHEMA_PARTS),
+    ask: "Nesta resposta, entregue só a entrega 1 (DIAGNÓSTICO ACIONÁVEL): diagnosis, sections e keywords."
+  },
+  {
+    schema: obj(SCHEMA_RESUME),
+    ask: "Nesta resposta, entregue só a entrega 2 (CURRÍCULO REESCRITO): resume e todo."
+  }
+];
 
 const SYSTEM = `Você é uma recrutadora técnica sênior brasileira que também revisa currículos para sistemas ATS (Gupy, Kenoby, Workday, Greenhouse, LinkedIn Recruiter). Você recebe o texto extraído de um PDF de currículo e, às vezes, a vaga desejada.
 
@@ -154,6 +170,12 @@ export async function analyzeResume(input) {
     parts.push("Não há vaga informada. Deduza o cargo-alvo pelo currículo.");
   }
 
+  const content = parts.join("\n\n");
+  const [diagnosis, rewrite] = await Promise.all(PARTS.map((part) => ask(content, part)));
+  return { ...diagnosis, ...rewrite };
+}
+
+async function ask(content, part) {
   const stream = client.beta.messages.stream({
     model: MODEL,
     max_tokens: 32000,
@@ -161,10 +183,10 @@ export async function analyzeResume(input) {
     fallbacks: "default",
     output_config: {
       effort: "high",
-      format: { type: "json_schema", schema: SCHEMA }
+      format: { type: "json_schema", schema: part.schema }
     },
     system: SYSTEM,
-    messages: [{ role: "user", content: parts.join("\n\n") }]
+    messages: [{ role: "user", content: `${content}\n\n${part.ask}` }]
   });
   const message = await stream.finalMessage();
 

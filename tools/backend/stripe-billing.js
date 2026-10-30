@@ -37,6 +37,12 @@ export async function createCreditsCheckout({ userId, email, successUrl, cancelU
     mode: "payment",
     customer_email: email || undefined,
     line_items: [{ price: PRICE_ID, quantity: 1 }],
+    locale: "pt-BR",
+    custom_text: {
+      submit: {
+        message: `Os ${CREDITS_PER_PACK} créditos entram na sua conta assim que o pagamento é aprovado. Rendem ${Math.floor(CREDITS_PER_PACK / 3)} leituras do Raio-X do Currículo ou ${CREDITS_PER_PACK} simulados de entrevista.`,
+      },
+    },
     success_url: safeUrl(successUrl, DEFAULT_SUCCESS),
     cancel_url: safeUrl(cancelUrl, DEFAULT_CANCEL),
     client_reference_id: userId,
@@ -53,7 +59,8 @@ export async function handleStripeWebhook(rawBody, signature) {
   if (!secret) throw new Error("STRIPE_WEBHOOK_SECRET missing");
   const event = client().webhooks.constructEvent(rawBody, signature, secret);
 
-  if (event.type === "checkout.session.completed") {
+  // Pix/boleto chegam como "completed" ainda não pagos; o crédito vem no async_payment_succeeded.
+  if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
     const session = event.data.object;
     const userId = session.metadata?.user_id || session.client_reference_id;
     const credits = Number(session.metadata?.credits) || CREDITS_PER_PACK;

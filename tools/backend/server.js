@@ -82,7 +82,15 @@ async function authOr401(req, res) {
     res.status(503).json({ error: "Créditos ainda não configurados no servidor." });
     return null;
   }
-  const auth = await requireUser(req);
+  let auth;
+  try {
+    auth = await requireUser(req);
+  } catch (error) {
+    // Sem isso, um erro aqui derruba o processo e a Hostinger responde 503.
+    console.error("auth", error && error.message);
+    res.status(503).json({ error: "Não consegui validar seu login agora. Tente de novo em instantes." });
+    return null;
+  }
   if (!auth) {
     res.status(401).json({ error: "Faça login para usar esta ferramenta." });
     return null;

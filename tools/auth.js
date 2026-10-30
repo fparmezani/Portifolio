@@ -502,7 +502,18 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
       if (evento === "SIGNED_IN" && !recuperando) setTimeout(() => liberar(session), 0);
     });
 
-    supabase.auth.getSession().then(({ data }) => {
+    // Sem resposta do Supabase (fora do ar, rede): mostra aviso em vez de página em branco.
+    const indisponivel = () => {
+      if (liberado) return;
+      app.hidden = true;
+      raiz.hidden = false;
+      telaIndisponivel(raiz);
+    };
+    const espera = setTimeout(indisponivel, 10000);
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      clearTimeout(espera);
+      if (!data.session && error) return indisponivel();
       if (recuperando && data.session) {
         app.hidden = true;
         raiz.hidden = false;
@@ -512,8 +523,23 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
       app.hidden = true;
       raiz.hidden = false;
       telaCadastro(raiz, liberar, { contexto });
+    }).catch(() => {
+      clearTimeout(espera);
+      indisponivel();
     });
   });
+}
+
+function telaIndisponivel(raiz) {
+  const card = el(`
+    <section class="auth-card" aria-labelledby="auth-title">
+      <p class="eyebrow"><span class="pulse-dot"></span> Instabilidade</p>
+      <h2 id="auth-title">O login está fora do ar agora</h2>
+      <p class="auth-sub">Não consegui falar com o servidor de contas. Seus créditos e dados estão guardados. Tente de novo em alguns minutos.</p>
+      <button type="button" class="btn btn-primary" data-recarregar>Tentar de novo</button>
+    </section>`);
+  card.querySelector("[data-recarregar]").addEventListener("click", () => location.reload());
+  raiz.replaceChildren(card);
 }
 
 /** Atualiza o badge e o saldo detalhado no menu. */

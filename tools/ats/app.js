@@ -6,7 +6,7 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   comprarCreditos,
-} from "../auth.js?v=7";
+} from "../auth.js?v=8";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
@@ -322,15 +322,19 @@ function renderResult(state) {
 async function requestFull(texts, context) {
   const base = apiBase();
   if (!base) throw new Error("A leitura completa não está configurada.");
-  const token = await accessToken();
-  if (!token) {
-    const err = new Error("Faça login para usar a leitura completa.");
-    err.code = "unauthorized";
-    throw err;
-  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
   try {
+    // A espera também cobre o token: se o Supabase travar aqui, o timeout ainda vence.
+    const token = await Promise.race([
+      accessToken(),
+      new Promise((_, reject) => controller.signal.addEventListener("abort", () => reject(new DOMException("timeout", "AbortError"))))
+    ]);
+    if (!token) {
+      const err = new Error("Faça login para usar a leitura completa.");
+      err.code = "unauthorized";
+      throw err;
+    }
     const response = await fetch(`${base}/raio-x`, {
       method: "POST",
       headers: {

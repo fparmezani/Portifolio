@@ -1,4 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
+import WebSocket from "ws";
+
+// Node < 22 não tem WebSocket nativo e o supabase-js lança erro no createClient sem isso.
+const realtime = { transport: WebSocket };
 
 const url = process.env.SUPABASE_URL || "";
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
@@ -12,6 +16,7 @@ export function adminClient() {
   if (!url || !serviceKey) throw new Error("SUPABASE_URL/SERVICE_ROLE_KEY missing");
   return createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
+    realtime,
   });
 }
 
@@ -20,6 +25,7 @@ export function userClient(accessToken) {
   return createClient(url, anonKey, {
     global: { headers: { Authorization: `Bearer ${accessToken}` } },
     auth: { persistSession: false, autoRefreshToken: false },
+    realtime,
   });
 }
 

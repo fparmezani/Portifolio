@@ -99,8 +99,7 @@ if (hasGsap) {
     const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
     intro
       .from(wall, { opacity: 0, scale: 1.6, rotationX: base.rx + 20, duration: 2.4 }, 0)
-      .from('.hero .kicker', { y: 20, opacity: 0, duration: 1 }, 0.5)
-      .from('h1 .line > span', { yPercent: 110, duration: 1.2, stagger: 0.12 }, 0.6)
+      .from('h1 .line > span', { yPercent: 110, duration: 1.2, stagger: 0.12 }, 0.5)
       .fromTo('[data-uau]', { scale: 0.4, opacity: 0, filter: 'blur(30px) drop-shadow(0px 0px 0px rgba(13,110,253,0))' }, { scale: 1, opacity: 1, filter: 'blur(0px) drop-shadow(0px 0px 60px rgba(13,110,253,0.45))', duration: 1.8, ease: 'expo.out' }, 0.9)
       .from('.hero-sub, .hero-cta', { y: 24, opacity: 0, duration: 1, stagger: 0.1 }, 1.3)
       .from('.header', { y: -30, opacity: 0, duration: 1 }, 1.1)

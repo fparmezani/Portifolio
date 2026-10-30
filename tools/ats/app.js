@@ -11,7 +11,7 @@ import {
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
-const VIDEO_SRC = "assets/apresentacao.mp4";
+const VIDEO_SRC = "assets/apresentacao.mp4?v=1";
 const API_TIMEOUT_MS = 6 * 60 * 1000;
 const POLL_MS = 3000;
 const CUSTO = 3;

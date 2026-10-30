@@ -11,6 +11,7 @@ import {
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
+const VIDEO_SRC = "assets/apresentacao.mp4";
 const API_TIMEOUT_MS = 6 * 60 * 1000;
 const POLL_MS = 3000;
 const CUSTO = 3;
@@ -130,14 +131,6 @@ function injectResumeCss() {
   const style = document.createElement("style");
   style.textContent = RESUME_CSS;
   document.head.appendChild(style);
-}
-
-function armScan() {
-  const line = document.querySelector(".scan-line");
-  if (!line) return;
-  line.style.animation = "none";
-  void line.offsetWidth;
-  line.style.animation = "raio-sweep 2.4s ease-in-out infinite alternate";
 }
 
 function show(name) {
@@ -481,28 +474,25 @@ async function waitJob(base, job, startedAt) {
   throw new Error(`A leitura completa demorou demais. ${COBRADO_SEM_RESPOSTA}`);
 }
 
-// Cada etapa da varredura: sem classe (aguardando), is-active, is-done ou is-skipped.
-function setStep(id, status) {
-  const step = $(id);
-  step.classList.remove("is-active", "is-done", "is-skipped");
-  if (status) step.classList.add(`is-${status}`);
+// Faixa acima do vídeo: barra de progresso e uma frase só.
+function setProgress(percent, text) {
+  $("vsl-progress").style.width = `${percent}%`;
+  if (text) $("scan-status").textContent = text;
 }
 
 function prepareScan() {
-  setStep("step-read", "active");
-  setStep("step-check");
-  setStep("step-rewrite");
-  $("scan-stage").classList.remove("is-done");
-  $("scan-status").textContent = "Lendo o texto selecionável…";
-  $("rewrite-status").textContent = "Leva cerca de um minuto.";
+  $("vsl-status").classList.remove("is-done");
+  setProgress(4, "Lendo seu currículo…");
   $("scan-summary").hidden = true;
-  $("see-result").disabled = true;
+  $("see-result").hidden = true;
   $("see-result").textContent = "Ver meu raio-x";
 
   const video = $("gate-video");
   const cover = $("gate-cover");
+  const sound = $("vsl-sound");
   video.hidden = true;
   cover.hidden = false;
+  sound.hidden = true;
   video.onloadeddata = () => {
     video.hidden = false;
     cover.hidden = true;
@@ -510,8 +500,15 @@ function prepareScan() {
   video.onerror = () => {
     video.hidden = true;
     cover.hidden = false;
+    sound.hidden = true;
   };
-  video.src = "assets/apresentacao.mp4";
+  video.onvolumechange = () => {
+    if (!video.muted) sound.hidden = true;
+  };
+  video.src = VIDEO_SRC;
+  // Começa sempre mudo; o som vem de um toque da pessoa.
+  video.muted = true;
+  video.play().then(() => { sound.hidden = false; }).catch(() => {});
 }
 
 function stopVideo() {
@@ -519,17 +516,18 @@ function stopVideo() {
   video.pause();
   video.removeAttribute("src");
   video.load();
+  $("vsl-sound").hidden = true;
 }
 
 function trackRewrite() {
   const started = Date.now();
   clearInterval(rewriteTimer);
   rewriteTimer = setInterval(() => {
-    const elapsed = Math.round((Date.now() - started) / 1000);
-    $("rewrite-status").textContent = elapsed < 50
-      ? `Leva cerca de um minuto. (${elapsed}s)`
-      : `Quase lá. Currículos longos levam um pouco mais. (${elapsed}s)`;
-  }, 250);
+    const elapsed = (Date.now() - started) / 1000;
+    // Sobe rápido no começo e desacelera perto do fim, sem nunca chegar a 100 sozinha.
+    setProgress(Math.round(25 + 70 * (1 - Math.exp(-elapsed / 18))),
+      elapsed < 50 ? "Reescrevendo seu currículo…" : "Quase lá. Currículos longos levam um pouco mais…");
+  }, 500);
 }
 
 // Uma linha com o que a pessoa vai encontrar, antes de clicar.
@@ -546,19 +544,17 @@ function finishScan(state) {
   clearInterval(rewriteTimer);
   const summary = $("scan-summary");
   const button = $("see-result");
-  setStep("step-rewrite", state.full ? "done" : "skipped");
   if (state.full) {
-    $("rewrite-status").textContent = "Pronto.";
-    summary.textContent = resultSummary(state.full);
-    button.textContent = "Ver meu currículo reescrito";
+    summary.textContent = `Pronto: ${resultSummary(state.full)}`;
+    button.textContent = "Ver meu raio-x";
   } else {
-    $("rewrite-status").textContent = state.reason;
-    summary.textContent = "A leitura básica, feita no navegador, está pronta.";
+    summary.textContent = `${state.reason} A leitura básica está pronta.`;
     button.textContent = "Ver a leitura básica";
   }
+  setProgress(100);
+  $("vsl-status").classList.add("is-done");
   summary.hidden = false;
-  $("scan-stage").classList.add("is-done");
-  button.disabled = false;
+  button.hidden = false;
 }
 
 // Página recarregada no meio da leitura: espera o mesmo pedido em vez de cobrar outra vez.
@@ -584,7 +580,7 @@ function reset() {
   clearResult();
   clearJob();
   clearInterval(rewriteTimer);
-  clearInterval(scanTimer);
+  clearTimeout(scanTimer);
   pending = null;
   $("file").value = "";
   $("upload-error").textContent = "";
@@ -612,14 +608,6 @@ async function readPdf(file) {
       if (fn === ops.paintImageXObject || fn === ops.paintJpegXObject || fn === ops.paintInlineImageXObject || fn === ops.paintImageXObjectRepeat) {
         images += 1;
       }
-    }
-    if (number === 1) {
-      const viewport = page.getViewport({ scale: 1.4 });
-      const canvas = $("page-canvas");
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
-      armScan();
     }
   }
 
@@ -655,16 +643,9 @@ async function start(file) {
   pending = null;
   show("scan");
   prepareScan();
-  const status = $("scan-status");
-  clearInterval(scanTimer);
-  const marks = [[900, "Separando seções, cargos e datas…"]];
+  clearTimeout(scanTimer);
   const started = Date.now();
-  scanTimer = setInterval(() => {
-    const elapsed = Date.now() - started;
-    const next = [...marks].reverse().find((item) => elapsed >= item[0]);
-    if (next) status.textContent = next[1];
-  }, 200);
-  armScan();
+  scanTimer = setTimeout(() => setProgress(10, "Separando experiências, cargos e datas…"), 900);
 
   const context = {
     company: $("company").value.trim(),
@@ -676,7 +657,7 @@ async function start(file) {
   try {
     parsed = await readPdf(file);
   } catch (error) {
-    clearInterval(scanTimer);
+    clearTimeout(scanTimer);
     console.error(error);
     stopVideo();
     show("upload");
@@ -690,17 +671,13 @@ async function start(file) {
     ? requestFull(parsed.texts, context, onJob)
     : Promise.reject(new Error("O PDF quase não tem texto selecionável, então a reescrita não tem de onde partir. Nada foi cobrado."));
 
-  clearInterval(scanTimer);
+  clearTimeout(scanTimer);
   if (current !== run) return;
-  status.textContent = `${parsed.meta.pages} página(s) lida(s).`;
-  setStep("step-read", "done");
-  setStep("step-check", "active");
+  setProgress(16, "Conferindo o que os filtros de vaga enxergam…");
 
   const wait = SCAN_MS - (Date.now() - started);
   if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
   if (current !== run) return;
-  setStep("step-check", "done");
-  setStep("step-rewrite", "active");
 
   const state = { fileName: file.name, context, local, full: null, reason: "", done: false };
   pending = state;
@@ -831,10 +808,18 @@ dropzone.addEventListener("drop", (event) => {
 });
 
 $("see-result").addEventListener("click", () => {
-  if (!pending || !pending.done || $("see-result").disabled) return;
+  if (!pending || !pending.done || $("see-result").hidden) return;
   stopVideo();
   renderResult(pending);
   pending = null;
+});
+
+$("vsl-sound").addEventListener("click", () => {
+  const video = $("gate-video");
+  video.muted = false;
+  video.currentTime = 0;
+  video.play().catch(() => {});
+  $("vsl-sound").hidden = true;
 });
 
 $("again").addEventListener("click", reset);

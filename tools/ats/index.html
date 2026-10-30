@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="../tools.css?v=17" />
+  <link rel="stylesheet" href="../tools.css?v=20" />
   <link rel="stylesheet" href="../auth.css?v=6" />
 </head>
 <body>
@@ -67,35 +67,25 @@
 
       <section id="view-scan" hidden>
         <div class="center-copy">
-          <p class="eyebrow"><span class="pulse-dot"></span> Lendo o arquivo</p>
-          <h1>Varredura</h1>
+          <p class="eyebrow"><span class="pulse-dot"></span> Analisando seu currículo</p>
+          <h1>Enquanto isso, assista</h1>
         </div>
-        <div class="scan-layout">
-          <div class="scan-wrap">
-            <div class="scan-stage" id="scan-stage">
-              <canvas id="page-canvas"></canvas>
-              <div class="scan-line" aria-hidden="true"></div>
-            </div>
-            <ol class="scan-steps" aria-live="polite">
-              <li id="step-read"><b>Lendo o PDF</b><span id="scan-status">Lendo o texto selecionável…</span></li>
-              <li id="step-check"><b>Conferindo forma, contato e palavras-chave</b><span>O que o ATS enxerga no arquivo.</span></li>
-              <li id="step-rewrite"><b>Reescrevendo o seu currículo</b><span id="rewrite-status">Leva cerca de um minuto.</span></li>
-            </ol>
-            <p class="scan-summary" id="scan-summary" hidden></p>
-            <button class="btn btn-primary scan-cta" type="button" id="see-result" disabled>Ver meu raio-x</button>
+        <div class="vsl">
+          <div class="vsl-status" id="vsl-status" aria-live="polite">
+            <div class="vsl-bar" aria-hidden="true"><span id="vsl-progress"></span></div>
+            <p id="scan-status">Lendo seu currículo…</p>
+            <p class="vsl-summary" id="scan-summary" hidden></p>
+            <button class="btn vsl-result" type="button" id="see-result" hidden>Ver meu raio-x</button>
           </div>
 
-          <aside class="panel scan-pitch">
-            <p class="verdict-kicker">Enquanto isso</p>
-            <div class="scan-media">
-              <video id="gate-video" controls playsinline preload="metadata" hidden></video>
-              <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
-            </div>
-            <h2>O currículo passa no filtro. A entrevista técnica cobra o porquê.</h2>
-            <p>Depois do ATS vem a call, e nela a pergunta é outra: <code>record</code>, <code>await</code>, valor e referência. Você precisa explicar o que o código faz antes de rodar.</p>
-            <p>O C# Moderno Sem Medo são 10 capítulos nesse caminho, com laboratório e mais de 100 perguntas de revisão. R$ 27,90, PDF na hora, 7 dias para devolver.</p>
-            <a class="btn btn-secondary" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
-          </aside>
+          <div class="vsl-player">
+            <video id="gate-video" playsinline preload="auto" hidden></video>
+            <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
+            <button class="vsl-sound" type="button" id="vsl-sound" hidden>Toque para ouvir</button>
+          </div>
+
+          <a class="btn vsl-buy" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero o C# Moderno Sem Medo · <span>R$ 27,90</span></a>
+          <p class="vsl-note">Abre em outra aba. Sua análise continua rodando aqui.</p>
         </div>
       </section>
 
@@ -187,7 +177,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="analyze.js"></script>
-  <script type="module" src="app.js?v=8"></script>
+  <script type="module" src="app.js?v=9"></script>
   <script src="../chrome.js"></script>
 </body>
 </html>

@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Raio-X do Currículo | Fernando Parmezani</title>
-  <meta name="description" content="Envie o PDF do currículo e receba o que mudar, trecho a trecho, e uma versão reescrita pronta para exportar. Nada é guardado." />
+  <meta name="description" content="Envie o PDF do currículo e receba o que mudar, trecho a trecho, e uma versão reescrita pronta para revisar e exportar. Nada é guardado." />
   <meta name="raio-x-api" content="https://api.fernandoparmezani.com.br" />
   <meta name="theme-color" content="#020814" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="../tools.css?v=14" />
+  <link rel="stylesheet" href="../tools.css?v=17" />
   <link rel="stylesheet" href="../auth.css?v=6" />
 </head>
 <body>
@@ -40,7 +40,7 @@
         <div class="center-copy">
           <p class="eyebrow"><span class="pulse-dot"></span> Consulta ATS</p>
           <h1>Raio-X do<br><strong>Currículo</strong></h1>
-          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para exportar. Cada leitura completa usa <strong>3 créditos</strong>.</p>
+          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para revisar e exportar. Cada leitura completa usa <strong>3 créditos</strong>.</p>
         </div>
         <form class="context-form" id="context-form">
           <p>Opcional, mas com a vaga a reescrita mira nela. Pode enviar só o PDF.</p>
@@ -70,12 +70,32 @@
           <p class="eyebrow"><span class="pulse-dot"></span> Lendo o arquivo</p>
           <h1>Varredura</h1>
         </div>
-        <div class="scan-wrap">
-          <div class="scan-stage" id="scan-stage">
-            <canvas id="page-canvas"></canvas>
-            <div class="scan-line" aria-hidden="true"></div>
+        <div class="scan-layout">
+          <div class="scan-wrap">
+            <div class="scan-stage" id="scan-stage">
+              <canvas id="page-canvas"></canvas>
+              <div class="scan-line" aria-hidden="true"></div>
+            </div>
+            <ol class="scan-steps" aria-live="polite">
+              <li id="step-read"><b>Lendo o PDF</b><span id="scan-status">Lendo o texto selecionável…</span></li>
+              <li id="step-check"><b>Conferindo forma, contato e palavras-chave</b><span>O que o ATS enxerga no arquivo.</span></li>
+              <li id="step-rewrite"><b>Reescrevendo o seu currículo</b><span id="rewrite-status">Leva cerca de um minuto.</span></li>
+            </ol>
+            <p class="scan-summary" id="scan-summary" hidden></p>
+            <button class="btn btn-primary scan-cta" type="button" id="see-result" disabled>Ver meu raio-x</button>
           </div>
-          <p class="scan-status" id="scan-status" aria-live="polite">Lendo o texto selecionável…</p>
+
+          <aside class="panel scan-pitch">
+            <p class="verdict-kicker">Enquanto isso</p>
+            <div class="scan-media">
+              <video id="gate-video" controls playsinline preload="metadata" hidden></video>
+              <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
+            </div>
+            <h2>O currículo passa no filtro. A entrevista técnica cobra o porquê.</h2>
+            <p>Depois do ATS vem a call, e nela a pergunta é outra: <code>record</code>, <code>await</code>, valor e referência. Você precisa explicar o que o código faz antes de rodar.</p>
+            <p>O C# Moderno Sem Medo são 10 capítulos nesse caminho, com laboratório e mais de 100 perguntas de revisão. R$ 27,90, PDF na hora, 7 dias para devolver.</p>
+            <a class="btn btn-secondary" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
+          </aside>
         </div>
       </section>
 
@@ -85,6 +105,23 @@
         <p class="file-chip" id="file-chip"></p>
 
         <div id="full-result">
+          <h2 class="step-title"><span>1</span> Seu currículo reescrito</h2>
+          <p class="step-lead">Montado com os seus dados. Clique em qualquer texto para editar. Os trechos em amarelo pedem um dado que só você tem.</p>
+          <div class="todo-box" id="todo-box" hidden>
+            <strong>Antes de exportar</strong>
+            <ul id="todo-list"></ul>
+          </div>
+          <div class="resume-bar">
+            <span id="todo-count" class="todo-count"></span>
+            <div class="gate-actions">
+              <button class="btn btn-secondary" type="button" id="export-doc">Baixar Word</button>
+              <button class="btn btn-primary" type="button" id="export-pdf">Exportar PDF</button>
+            </div>
+          </div>
+          <div class="sheet-frame">
+            <article id="resume-sheet" class="resume-sheet" contenteditable="true" spellcheck="true"></article>
+          </div>
+          <h2 class="step-title" id="why-title"><span>2</span> O que mudamos e por quê</h2>
           <article class="panel verdict-panel">
             <div class="score-wrap">
               <div class="score-ring" id="score-ring"><b id="score-value">0</b></div>
@@ -107,26 +144,9 @@
             <div class="kw-row" id="kw-row"></div>
           </article>
 
-          <h2 class="step-title"><span>1</span> O que mudar, trecho a trecho</h2>
           <p class="step-lead">Cada cartão mostra o texto de hoje e o texto sugerido, pronto para copiar.</p>
           <div id="section-list" class="section-list"></div>
 
-          <h2 class="step-title"><span>2</span> Seu currículo reescrito</h2>
-          <p class="step-lead">Montado com os seus dados. Clique em qualquer texto para editar. Os trechos em amarelo pedem um dado que só você tem.</p>
-          <div class="todo-box" id="todo-box" hidden>
-            <strong>Antes de exportar</strong>
-            <ul id="todo-list"></ul>
-          </div>
-          <div class="resume-bar">
-            <span id="todo-count" class="todo-count"></span>
-            <div class="gate-actions">
-              <button class="btn btn-secondary" type="button" id="export-doc">Baixar Word</button>
-              <button class="btn btn-primary" type="button" id="export-pdf">Exportar PDF</button>
-            </div>
-          </div>
-          <div class="sheet-frame">
-            <article id="resume-sheet" class="resume-sheet" contenteditable="true" spellcheck="true"></article>
-          </div>
         </div>
 
         <div id="lite-result" hidden>
@@ -155,30 +175,11 @@
             </div>
           </div>
         </article>
-        <p class="disclaimer">O texto do currículo é usado só para gerar esta leitura e é descartado. Nada é guardado. A nota não é oficial de nenhum ATS.</p>
+        <p class="disclaimer">O texto do currículo é usado só para gerar esta leitura e é descartado no servidor. A última leitura fica salva só neste navegador, por 7 dias, até você analisar outro PDF. A nota não é oficial de nenhum ATS.</p>
       </section>
       </div>
     </div>
   </main>
-
-  <div class="gate" id="gate" hidden>
-    <div class="gate-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-      <div>
-        <video id="gate-video" controls playsinline preload="metadata" hidden></video>
-        <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
-      </div>
-      <div>
-        <p class="gate-status" id="gate-status" aria-live="polite">Reescrevendo o seu currículo. Leva cerca de um minuto.</p>
-        <h2 id="gate-title">O ATS leu a forma. A entrevista cobra o porquê.</h2>
-        <p>O raio-x só olha o arquivo. Na call, a pergunta é outra: <code>record</code>, <code>await</code>, valor e referência. Você precisa explicar o que o código faz antes de rodar.</p>
-        <p>O C# Moderno Sem Medo são 10 capítulos nesse caminho, com laboratório e mais de 100 perguntas de revisão. R$ 27,90, PDF na hora, 7 dias para devolver.</p>
-        <div class="gate-actions">
-          <button class="btn btn-primary" type="button" id="see-result" disabled>Ver meu raio-x</button>
-          <a class="btn btn-secondary" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <footer class="footer">
     <div class="container">© <span id="year"></span> Fernando Parmezani. Desenvolvedor .NET Sênior &amp; Tech Lead. · <a href="../privacidade.html">Privacidade</a></div>
@@ -186,7 +187,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="analyze.js"></script>
-  <script type="module" src="app.js?v=4"></script>
+  <script type="module" src="app.js?v=7"></script>
   <script src="../chrome.js"></script>
 </body>
 </html>

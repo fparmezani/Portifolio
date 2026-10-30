@@ -6,14 +6,16 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   comprarCreditos,
+  lerSaldoCreditos,
 } from "../auth.js?v=9";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
-const GATE_MS = 4000;
 const API_TIMEOUT_MS = 180000;
 const MAX_BYTES = 8 * 1024 * 1024;
 const MAX_PAGES = 15;
+// Toda falha termina sem custo: ou a leitura nem foi cobrada, ou o servidor devolve os créditos.
+const SALDO_INTACTO = "Seu saldo de créditos não mudou.";
 
 const $ = (id) => document.getElementById(id);
 const RaioXAnalyze = window.RaioXAnalyze;
@@ -25,10 +27,61 @@ const views = {
   result: $("view-result")
 };
 
-let gateTimer = 0;
+let rewriteTimer = 0;
 let scanTimer = 0;
 let run = 0;
 let pending = null;
+let saveKey = null;
+
+// Última leitura fica só neste navegador: recarregar a página não obriga a pagar de novo.
+const SAVE_DAYS = 7;
+
+function saveResult(state) {
+  if (!saveKey) return;
+  try {
+    localStorage.setItem(saveKey, JSON.stringify({
+      fileName: state.fileName,
+      context: state.context,
+      local: state.local,
+      full: state.full,
+      reason: state.reason,
+      sheet: state.sheet || "",
+      savedAt: Date.now()
+    }));
+  } catch { /* cota cheia ou modo privado */ }
+}
+
+function loadResult() {
+  if (!saveKey) return null;
+  try {
+    const saved = JSON.parse(localStorage.getItem(saveKey) || "null");
+    if (!saved || !saved.local || Date.now() - saved.savedAt > SAVE_DAYS * 86400000) return null;
+    return saved;
+  } catch {
+    return null;
+  }
+}
+
+function clearResult() {
+  if (!saveKey) return;
+  try { localStorage.removeItem(saveKey); } catch { /* modo privado */ }
+}
+
+let shown = null;
+let sheetTimer = 0;
+function saveSheet() {
+  if (!shown || !shown.full) return;
+  clearTimeout(sheetTimer);
+  sheetTimer = setTimeout(() => {
+    shown.sheet = $("resume-sheet").innerHTML;
+    saveResult(shown);
+  }, 600);
+}
+
+async function refreshCredits() {
+  const credits = await lerSaldoCreditos();
+  if (credits != null) atualizarSaldoBarra(credits);
+}
 
 function apiBase() {
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return "http://localhost:3001";
@@ -275,7 +328,7 @@ function blockTone(block) {
 function renderLite(local, reason) {
   $("full-result").hidden = true;
   $("lite-result").hidden = false;
-  $("lite-reason").textContent = `${reason} Abaixo vai a leitura por regras, feita no navegador. Ela aponta problemas, mas não reescreve o currículo. Tente de novo em alguns minutos para receber a versão reescrita.`;
+  $("lite-reason").textContent = `${reason} ${SALDO_INTACTO} Abaixo vai a leitura por regras, feita no navegador. Ela aponta problemas, mas não reescreve o currículo. Tente de novo em alguns minutos para receber a versão reescrita.`;
   $("lite-score").textContent = String(local.score);
   $("lite-ring").style.setProperty("--p", String(local.score));
   $("rank-list").innerHTML = (local.ranks || []).map((rank) => (
@@ -306,11 +359,17 @@ function renderLite(local, reason) {
 /* ---------- Fluxo ---------- */
 
 function renderResult(state) {
+  shown = state;
   $("file-chip").textContent = state.full
-    ? `${state.fileName} · lido e descartado · não salvo`
-    : `${state.fileName} · analisado no navegador · não salvo`;
+    ? `${state.fileName} · salvo só neste navegador`
+    : `${state.fileName} · analisado no navegador`;
   if (state.full) renderFull(state.full, state.context);
   else renderLite(state.local, state.reason);
+  if (state.full && state.sheet) {
+    $("resume-sheet").innerHTML = state.sheet;
+    countTodo();
+  }
+  saveResult(state);
   const close = state.local.dotnetPitch ? DOTNET_CLOSE : OTHER_CLOSE;
   $("close-title").textContent = close.title;
   $("close-body").textContent = close.body;
@@ -364,11 +423,26 @@ async function requestFull(texts, context) {
   }
 }
 
-function openGate(state) {
-  pending = state;
+// Cada etapa da varredura: sem classe (aguardando), is-active, is-done ou is-skipped.
+function setStep(id, status) {
+  const step = $(id);
+  step.classList.remove("is-active", "is-done", "is-skipped");
+  if (status) step.classList.add(`is-${status}`);
+}
+
+function prepareScan() {
+  setStep("step-read", "active");
+  setStep("step-check");
+  setStep("step-rewrite");
+  $("scan-stage").classList.remove("is-done");
+  $("scan-status").textContent = "Lendo o texto selecionável…";
+  $("rewrite-status").textContent = "Leva cerca de um minuto.";
+  $("scan-summary").hidden = true;
+  $("see-result").disabled = true;
+  $("see-result").textContent = "Ver meu raio-x";
+
   const video = $("gate-video");
   const cover = $("gate-cover");
-  const button = $("see-result");
   video.hidden = true;
   cover.hidden = false;
   video.onloadeddata = () => {
@@ -380,46 +454,65 @@ function openGate(state) {
     cover.hidden = false;
   };
   video.src = "assets/apresentacao.mp4";
-  button.disabled = true;
-  $("gate").hidden = false;
+}
+
+function stopVideo() {
+  const video = $("gate-video");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+}
+
+function trackRewrite() {
   const started = Date.now();
-  clearInterval(gateTimer);
-  const tick = () => {
-    const left = Math.ceil((GATE_MS - (Date.now() - started)) / 1000);
+  clearInterval(rewriteTimer);
+  rewriteTimer = setInterval(() => {
     const elapsed = Math.round((Date.now() - started) / 1000);
-    if (!state.done) {
-      button.textContent = "Analisando…";
-      $("gate-status").textContent = elapsed < 50
-        ? `Reescrevendo o seu currículo. Leva cerca de um minuto. (${elapsed}s)`
-        : `Quase lá. Currículos longos levam um pouco mais. (${elapsed}s)`;
-      return;
-    }
-    $("gate-status").textContent = state.full
-      ? "Pronto. A análise e o currículo reescrito estão prontos."
-      : "A leitura completa não respondeu. A leitura básica está pronta.";
-    if (left > 0) {
-      button.textContent = `Ver meu raio-x (${left})`;
-      return;
-    }
-    button.disabled = false;
-    button.textContent = "Ver meu raio-x";
-    clearInterval(gateTimer);
-  };
-  tick();
-  gateTimer = setInterval(tick, 250);
+    $("rewrite-status").textContent = elapsed < 50
+      ? `Leva cerca de um minuto. (${elapsed}s)`
+      : `Quase lá. Currículos longos levam um pouco mais. (${elapsed}s)`;
+  }, 250);
+}
+
+// Uma linha com o que a pessoa vai encontrar, antes de clicar.
+function resultSummary(report) {
+  const score = Math.max(0, Math.min(100, Number(report.diagnosis && report.diagnosis.score) || 0));
+  const changes = list(report.sections).reduce((total, item) => total + list(item.changes).length, 0);
+  const todo = (JSON.stringify(report.resume || {}).match(/\[preencher:/gi) || []).length;
+  const parts = [`Nota ${score}`, `${changes} troca(s) sugerida(s)`];
+  parts.push(todo ? `currículo reescrito com ${todo} trecho(s) para você completar` : "currículo reescrito");
+  return parts.join(" · ");
+}
+
+function finishScan(state) {
+  clearInterval(rewriteTimer);
+  const summary = $("scan-summary");
+  const button = $("see-result");
+  setStep("step-rewrite", state.full ? "done" : "skipped");
+  if (state.full) {
+    $("rewrite-status").textContent = "Pronto.";
+    summary.textContent = resultSummary(state.full);
+    button.textContent = "Ver meu currículo reescrito";
+  } else {
+    $("rewrite-status").textContent = `${state.reason} ${SALDO_INTACTO}`;
+    summary.textContent = "A leitura básica, feita no navegador, está pronta.";
+    button.textContent = "Ver a leitura básica";
+  }
+  summary.hidden = false;
+  $("scan-stage").classList.add("is-done");
+  button.disabled = false;
 }
 
 function reset() {
   run += 1;
-  clearInterval(gateTimer);
+  shown = null;
+  clearResult();
+  clearInterval(rewriteTimer);
   clearInterval(scanTimer);
   pending = null;
   $("file").value = "";
   $("upload-error").textContent = "";
-  $("gate").hidden = true;
-  const video = $("gate-video");
-  video.removeAttribute("src");
-  video.load();
+  stopVideo();
   show("upload");
 }
 
@@ -483,14 +576,12 @@ async function start(file) {
   }
 
   const current = ++run;
+  pending = null;
   show("scan");
+  prepareScan();
   const status = $("scan-status");
-  status.textContent = "Lendo o texto selecionável…";
   clearInterval(scanTimer);
-  const marks = [
-    [900, "Separando seções, cargos e datas…"],
-    [1800, "Checando contato, palavras-chave e formato…"]
-  ];
+  const marks = [[900, "Separando seções, cargos e datas…"]];
   const started = Date.now();
   scanTimer = setInterval(() => {
     const elapsed = Date.now() - started;
@@ -511,6 +602,7 @@ async function start(file) {
   } catch (error) {
     clearInterval(scanTimer);
     console.error(error);
+    stopVideo();
     show("upload");
     $("upload-error").textContent = "Não consegui ler este PDF. Se ele tiver senha, tire a senha e tente de novo.";
     return;
@@ -521,19 +613,28 @@ async function start(file) {
     ? requestFull(parsed.texts, context)
     : Promise.reject(new Error("O PDF quase não tem texto selecionável, então a reescrita não tem de onde partir."));
 
-  const wait = SCAN_MS - (Date.now() - started);
-  if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
   clearInterval(scanTimer);
   if (current !== run) return;
+  status.textContent = `${parsed.meta.pages} página(s) lida(s).`;
+  setStep("step-read", "done");
+  setStep("step-check", "active");
+
+  const wait = SCAN_MS - (Date.now() - started);
+  if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+  if (current !== run) return;
+  setStep("step-check", "done");
+  setStep("step-rewrite", "active");
 
   const state = { fileName: file.name, context, local, full: null, reason: "", done: false };
-  openGate(state);
+  pending = state;
+  trackRewrite();
   try {
     state.full = await fullRequest;
   } catch (error) {
+    if (current !== run) return;
     if (error.code === "insufficient_credits") {
-      $("gate").hidden = true;
-      $("gate-video").pause();
+      clearInterval(rewriteTimer);
+      stopVideo();
       show("upload");
       const box = $("upload-error");
       box.innerHTML = mensagemSemCreditosHtml();
@@ -542,8 +643,10 @@ async function start(file) {
     }
     state.reason = error.message;
   }
+  refreshCredits();
   if (current !== run) return;
   state.done = true;
+  finishScan(state);
 }
 
 /* ---------- Exportação ---------- */
@@ -622,6 +725,9 @@ if (pdfjsLib) {
 
 const { user } = await exigirCadastro({ origem: "ats" });
 barraDoUsuario(user);
+saveKey = `raio-x:ultimo:${user.id}`;
+const saved = loadResult();
+if (saved) renderResult(saved);
 
 $("context-form").addEventListener("submit", (event) => event.preventDefault());
 
@@ -647,8 +753,7 @@ dropzone.addEventListener("drop", (event) => {
 
 $("see-result").addEventListener("click", () => {
   if (!pending || !pending.done || $("see-result").disabled) return;
-  $("gate").hidden = true;
-  $("gate-video").pause();
+  stopVideo();
   renderResult(pending);
   pending = null;
 });
@@ -656,7 +761,10 @@ $("see-result").addEventListener("click", () => {
 $("again").addEventListener("click", reset);
 $("export-pdf").addEventListener("click", exportPdf);
 $("export-doc").addEventListener("click", exportDoc);
-$("resume-sheet").addEventListener("input", countTodo);
+$("resume-sheet").addEventListener("input", () => {
+  countTodo();
+  saveSheet();
+});
 
 $("section-list").addEventListener("click", async (event) => {
   const button = event.target.closest(".copy-btn");

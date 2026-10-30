@@ -11,11 +11,12 @@ import {
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
-const API_TIMEOUT_MS = 180000;
+const API_TIMEOUT_MS = 6 * 60 * 1000;
+const POLL_MS = 3000;
+const CUSTO = 3;
 const MAX_BYTES = 8 * 1024 * 1024;
 const MAX_PAGES = 15;
 // Toda falha termina sem custo: ou a leitura nem foi cobrada, ou o servidor devolve os créditos.
-const SALDO_INTACTO = "Seu saldo de créditos não mudou.";
 
 const $ = (id) => document.getElementById(id);
 const RaioXAnalyze = window.RaioXAnalyze;
@@ -328,7 +329,7 @@ function blockTone(block) {
 function renderLite(local, reason) {
   $("full-result").hidden = true;
   $("lite-result").hidden = false;
-  $("lite-reason").textContent = `${reason} ${SALDO_INTACTO} Abaixo vai a leitura por regras, feita no navegador. Ela aponta problemas, mas não reescreve o currículo. Tente de novo em alguns minutos para receber a versão reescrita.`;
+  $("lite-reason").textContent = `${reason} Abaixo vai a leitura por regras, feita no navegador. Ela aponta problemas, mas não reescreve o currículo. Tente de novo em alguns minutos para receber a versão reescrita.`;
   $("lite-score").textContent = String(local.score);
   $("lite-ring").style.setProperty("--p", String(local.score));
   $("rank-list").innerHTML = (local.ranks || []).map((rank) => (
@@ -378,49 +379,106 @@ function renderResult(state) {
   window.scrollTo({ top: 0 });
 }
 
-async function requestFull(texts, context) {
-  const base = apiBase();
-  if (!base) throw new Error("A leitura completa não está configurada.");
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+// O servidor responde na hora com um número de pedido e lê em segundo plano; aqui só perguntamos se ficou pronto.
+// Assim nenhuma conexão passa de 1 segundo e o proxy da hospedagem não corta a leitura no meio.
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const COBRADO_SEM_RESPOSTA = "Os créditos já tinham sido debitados; se a leitura terminar, ela aparece aqui ao recarregar a página.";
+
+function jobKey() {
+  return saveKey ? saveKey.replace("raio-x:ultimo:", "raio-x:pedido:") : null;
+}
+
+function saveJob(job) {
+  const key = jobKey();
+  if (!key) return;
+  try { localStorage.setItem(key, JSON.stringify(job)); } catch { /* modo privado */ }
+}
+
+function loadJob() {
+  const key = jobKey();
+  if (!key) return null;
   try {
-    // A espera também cobre o token: se o Supabase travar aqui, o timeout ainda vence.
-    const token = await Promise.race([
-      accessToken(),
-      new Promise((_, reject) => controller.signal.addEventListener("abort", () => reject(new DOMException("timeout", "AbortError"))))
-    ]);
-    if (!token) {
-      const err = new Error("Faça login para usar a leitura completa.");
-      err.code = "unauthorized";
-      throw err;
-    }
-    const response = await fetch(`${base}/raio-x`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ text: texts.join("\n\n"), context }),
-      signal: controller.signal
-    });
-    const body = await response.json().catch(() => ({}));
-    if (response.status === 402 || body.code === "insufficient_credits") {
-      const err = new Error(body.error || "Seus créditos acabaram.");
-      err.code = "insufficient_credits";
-      throw err;
-    }
-    if (!response.ok) throw new Error(body.error || "A leitura completa falhou agora.");
-    if (!body || !body.resume || !body.diagnosis) throw new Error("A leitura completa veio incompleta.");
-    if (body.credits != null) atualizarSaldoBarra(body.credits);
-    return body;
-  } catch (error) {
-    if (error.code === "insufficient_credits" || error.code === "unauthorized") throw error;
-    if (error.name === "AbortError") throw new Error("A leitura completa demorou demais.");
-    if (error instanceof TypeError) throw new Error("Não consegui falar com o servidor da leitura completa.");
-    throw error;
-  } finally {
-    clearTimeout(timer);
+    const job = JSON.parse(localStorage.getItem(key) || "null");
+    if (!job || !job.job || Date.now() - job.startedAt > API_TIMEOUT_MS) return null;
+    return job;
+  } catch {
+    return null;
   }
+}
+
+function clearJob() {
+  const key = jobKey();
+  if (!key) return;
+  try { localStorage.removeItem(key); } catch { /* modo privado */ }
+}
+
+async function tokenOrThrow() {
+  const token = await Promise.race([accessToken(), sleep(15000).then(() => null)]);
+  if (!token) {
+    const err = new Error("Faça login para usar a leitura completa. Nada foi cobrado.");
+    err.code = "unauthorized";
+    throw err;
+  }
+  return token;
+}
+
+async function requestFull(texts, context, onJob) {
+  const base = apiBase();
+  if (!base) throw new Error("A leitura completa não está configurada. Nada foi cobrado.");
+  const token = await tokenOrThrow();
+  let response;
+  try {
+    response = await fetch(`${base}/raio-x`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ text: texts.join("\n\n"), context })
+    });
+  } catch {
+    throw new Error("Não consegui falar com o servidor da leitura completa. Nada foi cobrado.");
+  }
+  const body = await response.json().catch(() => ({}));
+  if (response.status === 402 || body.code === "insufficient_credits") {
+    const err = new Error(body.error || "Seus créditos não são suficientes.");
+    err.code = "insufficient_credits";
+    throw err;
+  }
+  if (!response.ok || !body.job) {
+    throw new Error(`${body.error || "A leitura completa falhou agora."} Nada foi cobrado.`);
+  }
+  if (body.credits != null) atualizarSaldoBarra(body.credits);
+  if (onJob) onJob(body.job);
+  return waitJob(base, body.job, Date.now());
+}
+
+async function waitJob(base, job, startedAt) {
+  while (Date.now() - startedAt < API_TIMEOUT_MS) {
+    await sleep(POLL_MS);
+    let body;
+    try {
+      const token = await tokenOrThrow();
+      const response = await fetch(`${base}/raio-x/${encodeURIComponent(job)}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      body = await response.json().catch(() => ({}));
+      if (response.status === 404) {
+        clearJob();
+        throw new Error(`A leitura se perdeu no servidor. ${COBRADO_SEM_RESPOSTA}`);
+      }
+      if (!response.ok) continue;
+    } catch (error) {
+      if (error.message.startsWith("A leitura se perdeu")) throw error;
+      continue; // queda de rede momentânea: tenta de novo na próxima volta
+    }
+    if (body.credits != null) atualizarSaldoBarra(body.credits);
+    if (body.status === "running") continue;
+    clearJob();
+    if (body.status === "done" && body.report && body.report.resume && body.report.diagnosis) return body.report;
+    if (body.status === "error") {
+      throw new Error(`${body.error || "A leitura completa falhou agora."} ${body.refunded ? `Os ${CUSTO} créditos foram devolvidos.` : "Fale comigo para devolver os créditos."}`);
+    }
+    throw new Error("A leitura completa veio incompleta.");
+  }
+  throw new Error(`A leitura completa demorou demais. ${COBRADO_SEM_RESPOSTA}`);
 }
 
 // Cada etapa da varredura: sem classe (aguardando), is-active, is-done ou is-skipped.
@@ -494,7 +552,7 @@ function finishScan(state) {
     summary.textContent = resultSummary(state.full);
     button.textContent = "Ver meu currículo reescrito";
   } else {
-    $("rewrite-status").textContent = `${state.reason} ${SALDO_INTACTO}`;
+    $("rewrite-status").textContent = state.reason;
     summary.textContent = "A leitura básica, feita no navegador, está pronta.";
     button.textContent = "Ver a leitura básica";
   }
@@ -503,10 +561,28 @@ function finishScan(state) {
   button.disabled = false;
 }
 
+// Página recarregada no meio da leitura: espera o mesmo pedido em vez de cobrar outra vez.
+async function resumeJob(unfinished) {
+  const box = $("upload-error");
+  box.textContent = "Sua leitura anterior ainda está sendo escrita. Ela aparece aqui sozinha quando ficar pronta.";
+  const myRun = run;
+  const state = { fileName: unfinished.fileName, context: unfinished.context, local: unfinished.local, full: null, reason: "", done: true };
+  try {
+    state.full = await waitJob(apiBase(), unfinished.job, unfinished.startedAt);
+  } catch (error) {
+    state.reason = error.message;
+  }
+  if (myRun !== run) return;
+  box.textContent = "";
+  refreshCredits();
+  renderResult(state);
+}
+
 function reset() {
   run += 1;
   shown = null;
   clearResult();
+  clearJob();
   clearInterval(rewriteTimer);
   clearInterval(scanTimer);
   pending = null;
@@ -609,9 +685,10 @@ async function start(file) {
   }
 
   const local = RaioXAnalyze.analyze(parsed.texts, parsed.meta, context);
+  const onJob = (job) => saveJob({ job, startedAt: Date.now(), fileName: file.name, context, local });
   const fullRequest = local.found.selectable
-    ? requestFull(parsed.texts, context)
-    : Promise.reject(new Error("O PDF quase não tem texto selecionável, então a reescrita não tem de onde partir."));
+    ? requestFull(parsed.texts, context, onJob)
+    : Promise.reject(new Error("O PDF quase não tem texto selecionável, então a reescrita não tem de onde partir. Nada foi cobrado."));
 
   clearInterval(scanTimer);
   if (current !== run) return;
@@ -727,7 +804,9 @@ const { user } = await exigirCadastro({ origem: "ats" });
 barraDoUsuario(user);
 saveKey = `raio-x:ultimo:${user.id}`;
 const saved = loadResult();
-if (saved) renderResult(saved);
+const unfinished = loadJob();
+if (unfinished) resumeJob(unfinished);
+else if (saved) renderResult(saved);
 
 $("context-form").addEventListener("submit", (event) => event.preventDefault());
 

@@ -6,7 +6,7 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   comprarCreditos,
-} from "../auth.js?v=8";
+} from "../auth.js?v=9";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;

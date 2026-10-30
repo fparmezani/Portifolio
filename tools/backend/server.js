@@ -19,6 +19,7 @@ const origins = (process.env.ALLOWED_ORIGINS || "https://fernandoparmezani.com.b
   .filter(Boolean);
 const PER_IP_HOUR = Number(process.env.RAIO_X_PER_IP_HOUR) || 5;
 const PER_DAY = Number(process.env.RAIO_X_PER_DAY) || 200;
+const RAIO_X_CUSTO = 3;
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -75,7 +76,7 @@ function allow(ip) {
 }
 
 const MSG_SEM_CREDITO =
-  "Seus créditos acabaram. Compre mais créditos para continuar usando as ferramentas.";
+  "Seus créditos não são suficientes. Compre mais créditos para continuar usando as ferramentas.";
 
 async function authOr401(req, res) {
   if (!supabaseConfigured()) {
@@ -181,7 +182,7 @@ app.post("/raio-x", async (req, res) => {
 
   let debitado = false;
   try {
-    await consumirCredito(auth.token, "raio-x");
+    await consumirCredito(auth.token, "raio-x", RAIO_X_CUSTO);
     debitado = true;
     const report = await analyzeResume(req.body);
     res.setHeader("Cache-Control", "no-store");
@@ -193,7 +194,7 @@ app.post("/raio-x", async (req, res) => {
     }
     if (debitado) {
       try {
-        await reembolsarCredito(auth.token, "raio-x");
+        await reembolsarCredito(auth.user.id, "raio-x", RAIO_X_CUSTO);
       } catch (refundErr) {
         console.error("reembolso raio-x", refundErr && refundErr.message);
       }

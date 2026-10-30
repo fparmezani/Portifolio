@@ -53,9 +53,9 @@ export async function getCredits(userId) {
   return data?.credits ?? 0;
 }
 
-export async function consumirCredito(token, ferramenta) {
+export async function consumirCredito(token, ferramenta, quantidade = 1) {
   const client = userClient(token);
-  const { data, error } = await client.rpc("consumir_credito", { p_ferramenta: ferramenta });
+  const { data, error } = await client.rpc("consumir_credito", { p_ferramenta: ferramenta, p_quantidade: quantidade });
   if (error) {
     const msg = String(error.message || "");
     if (msg.includes("insufficient_credits")) {
@@ -68,9 +68,13 @@ export async function consumirCredito(token, ferramenta) {
   return Number(data);
 }
 
-export async function reembolsarCredito(token, ferramenta) {
-  const client = userClient(token);
-  const { data, error } = await client.rpc("reembolsar_credito", { p_ferramenta: ferramenta });
+export async function reembolsarCredito(userId, ferramenta, quantidade = 1) {
+  const admin = adminClient();
+  const { data, error } = await admin.rpc("reembolsar_credito", {
+    p_user_id: userId,
+    p_ferramenta: ferramenta,
+    p_quantidade: quantidade,
+  });
   if (error) throw error;
   return Number(data);
 }

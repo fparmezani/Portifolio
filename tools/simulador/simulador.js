@@ -7,7 +7,7 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   atualizarSaldoBarra,
-} from "../auth.js?v=8";
+} from "../auth.js?v=9";
 
 const POR_SIMULADO = 10;
 const MINUTOS_PADRAO = 8;

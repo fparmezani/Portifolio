@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Raio-X do Currículo · posts</title>
+<link rel="stylesheet" href="../../brand.css">
+<style>
+  html, body { width: auto; height: auto; background: #333; }
+  body { display: grid; gap: 40px; padding: 40px; justify-content: center; }
+
+  .slide { display: flex; flex-direction: column; }
+  .tag { margin-top: 70px; align-self: flex-start; }
+  h2 { margin-top: 36px; font-size: 80px; }
+  .body { position: relative; margin-top: 36px; color: var(--muted); font-size: 37px; line-height: 1.5; }
+  .body b { color: var(--text); }
+  .note { position: relative; margin-top: auto; margin-bottom: 70px; padding-left: 28px; border-left: 4px solid var(--blue); color: var(--muted); font-size: 31px; line-height: 1.5; }
+  .note b { color: var(--text); }
+  .footer span:last-child { color: var(--link); }
+
+  .foto { position: absolute; right: -150px; bottom: 0; width: 820px; z-index: 0; filter: drop-shadow(0 30px 60px rgba(0,0,0,.5)); }
+  .slide > *:not(.foto) { z-index: 1; }
+
+  /* nota */
+  .score { position: relative; width: 250px; height: 250px; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(var(--blue) 0 84%, rgba(13,110,253,.18) 84% 100%); box-shadow: 0 0 80px rgba(13,110,253,.45); margin-top: 56px; }
+  .score::before { content: ""; position: absolute; inset: 24px; border-radius: 50%; background: var(--bg); }
+  .score b { position: relative; font: 800 104px/1 var(--display); letter-spacing: -.05em; }
+
+  /* antes e depois */
+  .card { position: relative; border-radius: 18px; padding: 30px 36px; font-size: 33px; line-height: 1.45; margin-top: 22px; }
+  .card small { display: block; margin-bottom: 12px; font-size: 21px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .card.hoje { background: rgba(60,18,40,.55); border: 1.5px solid rgba(244,63,94,.3); color: #cbb3c0; }
+  .card.hoje small { color: #fb7185; }
+  .card.hoje p { text-decoration: line-through; text-decoration-color: rgba(251,113,133,.7); }
+  .card.troca { background: rgba(6,40,40,.6); border: 1.5px solid rgba(52,211,153,.35); color: var(--text); }
+  .card.troca small { color: #34d399; }
+  .gap { margin-top: 44px; }
+  mark { background: rgba(250,204,21,.22); color: #fde047; border-radius: 6px; padding: 0 6px; }
+
+  /* palavras */
+  .chips { position: relative; display: flex; flex-wrap: wrap; gap: 14px; margin-top: 44px; }
+  .chips span { padding: 18px 28px; border-radius: 999px; font-size: 32px; font-weight: 600; border: 1.5px solid rgba(244,63,94,.4); background: rgba(60,18,40,.55); color: #fecdd3; }
+
+  /* lista */
+  .lista { position: relative; list-style: none; display: grid; gap: 34px; margin-top: 48px; }
+  .lista li { display: flex; gap: 24px; font-size: 39px; line-height: 1.4; }
+  .lista li::before { content: "✓"; flex: none; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; font-weight: 800; color: #34d399; background: rgba(52,211,153,.12); border: 1.5px solid rgba(52,211,153,.4); }
+
+  /* passos */
+  .passos { position: relative; display: grid; gap: 22px; margin-top: 50px; }
+  .passos .panel { display: flex; gap: 30px; align-items: center; padding: 30px 38px; font-size: 35px; line-height: 1.4; }
+  .passos .panel b { flex: none; width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center; font: 800 36px var(--display); background: linear-gradient(135deg, var(--blue), var(--deep)); }
+
+  .quote { position: relative; margin-top: 40px; font-size: 37px; line-height: 1.5; color: var(--text); }
+  .quote::before { content: "“"; position: absolute; left: -6px; top: -64px; font: 800 140px var(--display); color: var(--blue); opacity: .5; }
+
+  .swipe { margin-bottom: -16px; padding: 14px 24px; border-radius: 999px; background: rgba(2,8,20,.75); border: 1.5px solid var(--line); color: var(--link); font-size: 26px; font-weight: 700; letter-spacing: .04em; }
+  #s01 .lead, #s10 .lead { max-width: 520px; }
+  .cta-url { position: relative; margin-top: 50px; align-self: flex-start; font-size: 28px; letter-spacing: .04em; text-transform: none; }
+</style>
+</head>
+<body>
+
+<!-- 01 · capa -->
+<section class="slide" id="s01">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">01/10</div></div>
+  <div class="tag">Raio-X do Currículo</div>
+  <h1>21 anos de carreira.<br>Nota <span class="hl">84</span>.</h1>
+  <p class="lead">Passei meu próprio currículo no Raio-X. Ele achou <b style="color:var(--text)">4 pontos</b> que me escondiam dos recrutadores.</p>
+  <div class="score"><b>84</b></div>
+  <img class="foto" src="../../assets/fernandoparmezani.png" alt="">
+  <div class="footer"><span class="swipe">Arrasta para o lado →</span></div>
+</section>
+
+<!-- 02 · analogia -->
+<section class="slide" id="s02">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">02/10</div></div>
+  <div class="tag">Antes de alguém ler</div>
+  <h2>Seu currículo é uma vitrine. E quem passa primeiro <span class="hl">não é gente.</span></h2>
+  <p class="body">Antes do recrutador, um programa lê o seu PDF procurando as palavras da vaga.</p>
+  <p class="body">Se ele não encontra, a vitrine fica com a <b>luz apagada</b>. Não importa o quanto o que está lá dentro seja bom.</p>
+  <p class="note">Esse programa tem nome: <b>ATS</b>, o filtro de candidatos que quase toda empresa usa.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 03 · nome certo -->
+<section class="slide" id="s03">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">03/10</div></div>
+  <div class="tag">Ponto 1 · O nome certo</div>
+  <h2>Ninguém procura <span class="hl">“nuvem”</span>. Procuram o nome dela.</h2>
+  <div class="card hoje gap"><small>Hoje</small><p>Engenheiro de Software Sênior .NET | Backend | Cloud</p></div>
+  <div class="card troca"><small>Troque por</small><p>Engenheiro de Software Sênior .NET | Backend C# | AWS e Azure</p></div>
+  <p class="note">É como uma loja escrever “calçado” na vitrine enquanto o cliente procura <b>“tênis de corrida”</b>.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 04 · números -->
+<section class="slide" id="s04">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">04/10</div></div>
+  <div class="tag">Ponto 2 · Prova</div>
+  <h2>“Reduzi” sem número é promessa. <span class="hl">Com número, é prova.</span></h2>
+  <div class="card hoje gap"><small>Hoje</small><p>Automatizo build e release, reduzindo os ciclos de deploy e eliminando etapas manuais.</p></div>
+  <div class="card troca"><small>Troque por</small><p>Automatizo build e release, reduzindo o ciclo de deploy de <mark>[antes]</mark> para <mark>[depois]</mark> e eliminando <mark>[nº]</mark> etapas manuais.</p></div>
+  <p class="note">O amarelo a ferramenta <b>não inventa</b>. Ela marca o lugar onde só você sabe a resposta.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 05 · objetivo -->
+<section class="slide" id="s05">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">05/10</div></div>
+  <div class="tag">Ponto 3 · Destino</div>
+  <h2>Meu currículo não dizia <span class="hl">o que eu queria.</span></h2>
+  <p class="body">É como entrar num táxi e não dizer o endereço. O motorista até anda, mas <b>para onde?</b></p>
+  <div class="card troca gap"><small>Acrescente</small><p>Atuar como Engenheiro de Software Sênior / Especialista .NET Backend em times remotos, construindo APIs e soluções em AWS ou Azure.</p></div>
+  <p class="note">Uma frase no topo ajuda o filtro e o recrutador a te colocar <b>na pilha certa</b>.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 06 · palavras que faltam -->
+<section class="slide" id="s06">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">06/10</div></div>
+  <div class="tag">Ponto 4 · O que não apareceu</div>
+  <h2>Palavras que o filtro <span class="hl">procurou e não achou.</span></h2>
+  <div class="chips">
+    <span>RabbitMQ</span><span>Kafka</span><span>Azure Service Bus</span><span>Azure Functions</span><span>AKS</span><span>Terraform</span><span>Testes de integração</span><span>TDD</span><span>CQRS</span><span>API Gateway</span><span>System Design</span><span>Certificação AWS ou Azure</span>
+  </div>
+  <p class="note">Não é para inventar. É para lembrar do que você <b>já fez e esqueceu de escrever</b>. Só entra o que é verdade.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 07 · 30 segundos -->
+<section class="slide" id="s07">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">07/10</div></div>
+  <div class="tag">O que o recrutador vê</div>
+  <h2>Você tem <span class="hl">30 segundos.</span></h2>
+  <p class="body">É o tempo de uma primeira olhada. O Raio-X te conta o que dá para entender de você nesse tempo. O meu ficou assim:</p>
+  <div class="panel gap"><p class="quote">Engenheiro de Software Sênior .NET backend, com 21 anos de carreira, AWS/Azure e especialidade em modernização de legado e tuning de SQL Server.</p></div>
+  <p class="note">Se essa frase não for a que você quer passar, <b>é ali que se mexe</b>.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 08 · o que já funciona -->
+<section class="slide" id="s08">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">08/10</div></div>
+  <div class="tag">Não é só crítica</div>
+  <h2>Ele também mostra <span class="hl">o que já funciona.</span></h2>
+  <ul class="lista">
+    <li>Números concretos em quase todas as experiências</li>
+    <li>Tecnologias descritas pelo nome, uma a uma</li>
+    <li>Uma história clara: sistemas antigos virando sistemas modernos</li>
+    <li>Início de carreira resumido, sem poluir a primeira página</li>
+  </ul>
+  <p class="note">Saber o que <b>manter</b> vale tanto quanto saber o que trocar.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 09 · como funciona -->
+<section class="slide" id="s09">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">09/10</div></div>
+  <div class="tag">Como funciona</div>
+  <h2>Três passos. <span class="hl">Sem mistério.</span></h2>
+  <div class="passos">
+    <div class="panel"><b>1</b><span>Solte o PDF do seu currículo. Se tiver a vaga, cole junto.</span></div>
+    <div class="panel"><b>2</b><span>Veja, trecho a trecho, o que trocar e por quê.</span></div>
+    <div class="panel"><b>3</b><span>Baixe o currículo reescrito em Word ou PDF.</span></div>
+  </div>
+  <p class="note">Seu currículo <b>não fica guardado</b> no servidor. É lido, analisado e descartado.</p>
+  <div class="footer"><span>fernandoparmezani.com.br</span><span>Raio-X do Currículo</span></div>
+</section>
+
+<!-- 10 · CTA -->
+<section class="slide" id="s10">
+  <div class="top"><div class="brand"><img src="../../assets/logotipo.png" alt="">Fernando Parmezani</div><div class="count">10/10</div></div>
+  <div class="tag">Sua vez</div>
+  <h1>Vem fazer o <span class="hl">seu raio-x.</span></h1>
+  <p class="lead">Quem se cadastra ganha <b style="color:var(--text)">10 créditos</b>. Dá para 3 leituras completas.</p>
+  <div class="btn cta-url">fernandoparmezani.com.br/tools/ats</div>
+  <img class="foto" src="../../assets/fernandoparmezani.png" alt="">
+  <div class="footer"><span>Link na bio</span></div>
+</section>
+
+</body>
+</html>

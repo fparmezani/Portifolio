@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: transparent; }
+  .art { position: relative; overflow: hidden; color: #f8fafc; font-family: Inter, sans-serif;
+    background: radial-gradient(circle at 75% 12%, rgba(0,102,255,.38), transparent 42%),
+                radial-gradient(circle at 10% 90%, rgba(29,78,216,.25), transparent 40%),
+                linear-gradient(180deg, #06111f 0%, #020814 100%); }
+  .art::after { content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size: 60px 60px; mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 75%); }
+  .art > * { position: relative; z-index: 1; }
+
+  /* Produto 1200x1200 */
+  #produto { width: 1200px; height: 1200px; display: flex; flex-direction: column; justify-content: center; padding: 0 110px; box-sizing: border-box; }
+  #produto .marca { display: flex; align-items: center; gap: 22px; font: 700 40px Sora, sans-serif; letter-spacing: -.01em; }
+  #produto .marca img { height: 86px; }
+  #produto .num { font: 800 330px/0.9 Sora, sans-serif; letter-spacing: -.07em; color: #1682ff; text-shadow: 0 0 70px rgba(13,110,253,.55); margin: 70px 0 0 -12px; }
+  #produto .rotulo { font: 800 96px/1 Sora, sans-serif; letter-spacing: -.04em; text-transform: uppercase; margin-top: 18px; }
+  #produto .linha { width: 120px; height: 8px; border-radius: 8px; background: #0d6efd; margin: 56px 0 44px; box-shadow: 0 0 30px #0d6efd; }
+  #produto ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; font: 600 44px Inter, sans-serif; color: #c5cfdd; }
+  #produto li { display: flex; align-items: center; gap: 22px; }
+  #produto li b { color: #f8fafc; }
+  #produto li::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 18px #38bdf8; flex: none; }
+
+  /* Ícone 512x512 */
+  #icone { width: 512px; height: 512px; display: grid; place-items: center; }
+  #icone img { width: 330px; }
+
+  /* Logo 1200x300 */
+  #logo { width: 1200px; height: 260px; display: flex; align-items: center; gap: 30px; padding: 0 50px; box-sizing: border-box; background: transparent; color: #020814; font: 700 84px Sora, sans-serif; letter-spacing: -.02em; white-space: nowrap; }
+  #logo img { height: 150px; }
+</style>
+</head>
+<body>
+  <div id="produto" class="art">
+    <div class="marca"><img src="logotipo-recorte.png" alt=""> Fernando Parmezani</div>
+    <div class="num">100</div>
+    <div class="rotulo">créditos</div>
+    <div class="linha"></div>
+    <ul>
+      <li><span><b>33 leituras</b> do Raio-X do Currículo</span></li>
+      <li><span>ou <b>100 simulados</b> de entrevista</span></li>
+    </ul>
+  </div>
+  <div id="icone" class="art"><img src="logotipo-recorte.png" alt=""></div>
+  <div id="logo"><img src="logotipo-recorte.png" alt=""> Fernando Parmezani</div>
+</body>
+</html>

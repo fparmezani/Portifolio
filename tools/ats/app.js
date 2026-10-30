@@ -7,7 +7,8 @@ import {
   ligarCtaCompra,
   comprarCreditos,
   lerSaldoCreditos,
-} from "../auth.js?v=10";
+  rastrear,
+} from "../auth.js?v=11";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
@@ -690,6 +691,7 @@ async function start(file) {
 
   const local = RaioXAnalyze.analyze(parsed.texts, parsed.meta, context);
   const onJob = (job) => saveJob({ job, startedAt: Date.now(), fileName: file.name, context, local });
+  if (local.found.selectable) rastrear("ViewContent", { content_name: "raio-x" });
   const fullRequest = local.found.selectable
     ? requestFull(parsed.texts, context, onJob)
     : Promise.reject(new Error("O PDF quase não tem texto selecionável, então a reescrita não tem de onde partir. Nada foi cobrado."));

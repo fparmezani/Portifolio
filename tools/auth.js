@@ -136,6 +136,14 @@ export async function lerHistoricoCreditos() {
   }
 }
 
+// Preço do pacote de créditos na Stripe, para o valor dos eventos do pixel.
+const PRECO_PACOTE = 17.99;
+
+/** Evento do Pixel da Meta. Só dispara nas páginas que carregam o pixel. */
+export function rastrear(evento, dados) {
+  if (typeof window.fbq === "function") window.fbq("track", evento, dados);
+}
+
 export async function comprarCreditos() {
   const token = await accessToken();
   if (!token) {
@@ -159,6 +167,7 @@ export async function comprarCreditos() {
     alert(body.error || "Não consegui abrir o pagamento agora.");
     return;
   }
+  rastrear("InitiateCheckout", { value: PRECO_PACOTE, currency: "BRL" });
   location.href = body.url;
 }
 
@@ -376,6 +385,7 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
     });
     ocupado(criar, false);
     if (error) return avisar(traduzir(error));
+    rastrear("CompleteRegistration", { content_name: raiz.dataset.origem || "tools" });
     if (whatsappLimpo && data.user?.id) await salvarWhatsapp(data.user.id, whatsappLimpo);
     if (data.session) return aoEntrar(data.session);
     avisar(`Pronto! Enviamos um link de confirmação para ${email}. Abra o e-mail e clique no link para começar.`, true);
@@ -663,6 +673,7 @@ export function barraDoUsuario(user, perfilHint = null) {
   if (params.get("credits") === "ok") {
     const aviso = el(`<p class="auth-credits-toast" role="status">Pagamento confirmado. Seus créditos devem aparecer em instantes.</p>`);
     document.querySelector(".tools-main .container, .kits-main .container")?.prepend(aviso);
+    rastrear("Purchase", { value: PRECO_PACOTE, currency: "BRL" });
     params.delete("credits");
     const qs = params.toString();
     history.replaceState(null, "", location.pathname + (qs ? `?${qs}` : ""));

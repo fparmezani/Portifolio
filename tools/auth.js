@@ -184,12 +184,19 @@ export async function consumirCreditoFerramenta(ferramenta) {
   }
 }
 
-/** Empty-state guiado quando o saldo zera. */
-export function mensagemSemCreditosHtml() {
+/**
+ * Empty-state guiado quando o saldo não cobre a ferramenta.
+ * saldo: créditos atuais (null se não deu para ler); uso: frase com o custo, ex. "O Raio-X usa 3 créditos."
+ */
+export function mensagemSemCreditosHtml({ saldo = null, uso = "" } = {}) {
+  const n = saldo == null || Number.isNaN(Number(saldo)) ? null : Number(saldo);
+  const titulo = n == null
+    ? "Seus créditos não são suficientes."
+    : n <= 0 ? "Você não tem créditos." : `Você tem ${rotuloCreditos(n)}.`;
   return `
     <div class="auth-empty-credits" role="status">
-      <strong>Créditos insuficientes</strong>
-      <p>Cada Raio-X usa 3 créditos e cada simulado, 1. Compre um pacote de <strong>100 créditos</strong> para continuar.</p>
+      <strong>${titulo} ${uso}</strong>
+      <p>Um pacote de <strong>100 créditos</strong> rende 33 leituras do Raio-X ou 100 simulados.</p>
       <button type="button" class="btn btn-primary" data-comprar-creditos>Comprar créditos</button>
     </div>`;
 }

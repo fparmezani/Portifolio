@@ -93,6 +93,7 @@ a.tool-card:hover { border-color: rgba(13, 110, 253, .55); transform: translateY
 .dropzone.is-over { background: rgba(13, 110, 253, .16); }
 .center-copy { text-align: center; }
 .center-copy .lead, .center-copy .eyebrow { margin-inline: auto; }
+#credit-block { max-width: 720px; margin: 28px auto 0; }
 .form-error { color: #fecaca; min-height: 1.4em; margin-top: 14px; }
 .btn,
 a.btn,
@@ -128,6 +129,8 @@ button.btn.btn-secondary[disabled] {
   transform: none;
 }
 #view-scan[hidden],
+#dropzone[hidden],
+#credit-block[hidden],
 #view-result[hidden],
 #full-result[hidden],
 #lite-result[hidden],

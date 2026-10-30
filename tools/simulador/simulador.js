@@ -7,7 +7,8 @@ import {
   mensagemSemCreditosHtml,
   ligarCtaCompra,
   atualizarSaldoBarra,
-} from "../auth.js?v=9";
+  lerSaldoCreditos,
+} from "../auth.js?v=10";
 
 const POR_SIMULADO = 10;
 const MINUTOS_PADRAO = 8;
@@ -177,7 +178,7 @@ async function iniciar() {
   if (!debito.ok) {
     btn.disabled = false;
     if (debito.code === "insufficient_credits") {
-      erro.innerHTML = mensagemSemCreditosHtml();
+      erro.innerHTML = mensagemSemCreditosHtml({ saldo: await lerSaldoCreditos(), uso: "Cada simulado usa 1 crédito." });
       ligarCtaCompra(erro);
     } else {
       erro.textContent = debito.error || "Não deu para começar agora.";

@@ -7,7 +7,7 @@ import {
   ligarCtaCompra,
   comprarCreditos,
   lerSaldoCreditos,
-} from "../auth.js?v=9";
+} from "../auth.js?v=10";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
@@ -83,6 +83,25 @@ function saveSheet() {
 async function refreshCredits() {
   const credits = await lerSaldoCreditos();
   if (credits != null) atualizarSaldoBarra(credits);
+}
+
+// Saldo menor que o custo: a área do PDF dá lugar ao aviso de compra.
+// Sem saldo legível (servidor fora), libera e deixa o servidor decidir.
+function showBalance(credits) {
+  const block = $("credit-block");
+  const short = credits != null && credits < CUSTO;
+  block.hidden = !short;
+  $("dropzone").hidden = short;
+  if (!short) return;
+  block.innerHTML = mensagemSemCreditosHtml({ saldo: credits, uso: `O Raio-X usa ${CUSTO} créditos.` });
+  ligarCtaCompra(block);
+}
+
+async function checkBalance() {
+  const credits = await lerSaldoCreditos();
+  if (credits != null) atualizarSaldoBarra(credits);
+  showBalance(credits);
+  return credits;
 }
 
 function apiBase() {
@@ -586,6 +605,7 @@ function reset() {
   $("upload-error").textContent = "";
   stopVideo();
   show("upload");
+  checkBalance();
 }
 
 async function readPdf(file) {
@@ -640,6 +660,9 @@ async function start(file) {
   }
 
   const current = ++run;
+  const credits = await checkBalance();
+  if (current !== run) return;
+  if (credits != null && credits < CUSTO) return;
   pending = null;
   show("scan");
   prepareScan();
@@ -690,9 +713,7 @@ async function start(file) {
       clearInterval(rewriteTimer);
       stopVideo();
       show("upload");
-      const box = $("upload-error");
-      box.innerHTML = mensagemSemCreditosHtml();
-      ligarCtaCompra(box);
+      checkBalance();
       return;
     }
     state.reason = error.message;
@@ -779,6 +800,7 @@ if (pdfjsLib) {
 
 const { user } = await exigirCadastro({ origem: "ats" });
 barraDoUsuario(user);
+checkBalance();
 saveKey = `raio-x:ultimo:${user.id}`;
 const saved = loadResult();
 const unfinished = loadJob();

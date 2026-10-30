@@ -18,7 +18,8 @@ const origins = (process.env.ALLOWED_ORIGINS || "https://fernandoparmezani.com.b
   .split(",")
   .map((item) => item.trim())
   .filter(Boolean);
-const PER_IP_HOUR = Number(process.env.RAIO_X_PER_IP_HOUR) || 5;
+// Teto contra abuso por conta (não por IP: escritório e 4G dividem o mesmo IP).
+const PER_USER_HOUR = Number(process.env.RAIO_X_PER_USER_HOUR) || 20;
 const PER_DAY = Number(process.env.RAIO_X_PER_DAY) || 200;
 const RAIO_X_CUSTO = 3;
 
@@ -59,7 +60,7 @@ const hits = new Map();
 let day = new Date().toISOString().slice(0, 10);
 let dayCount = 0;
 
-function allow(ip) {
+function allow(userId) {
   const today = new Date().toISOString().slice(0, 10);
   if (today !== day) {
     day = today;
@@ -68,10 +69,10 @@ function allow(ip) {
   }
   if (dayCount >= PER_DAY) return false;
   const hourAgo = Date.now() - 3600_000;
-  const recent = (hits.get(ip) || []).filter((time) => time > hourAgo);
-  if (recent.length >= PER_IP_HOUR) return false;
+  const recent = (hits.get(userId) || []).filter((time) => time > hourAgo);
+  if (recent.length >= PER_USER_HOUR) return false;
   recent.push(Date.now());
-  hits.set(ip, recent);
+  hits.set(userId, recent);
   dayCount += 1;
   return true;
 }
@@ -218,12 +219,12 @@ async function rodarRaioX(job, body) {
 }
 
 app.post("/raio-x", async (req, res) => {
-  if (!allow(req.ip)) {
-    return res.status(429).json({ error: "Limite de leituras atingido. Tente de novo mais tarde." });
-  }
-
   const auth = await authOr401(req, res);
   if (!auth) return;
+
+  if (!allow(auth.user.id)) {
+    return res.status(429).json({ error: `Você fez ${PER_USER_HOUR} leituras na última hora. Espere um pouco para a próxima.` });
+  }
 
   try {
     await consumirCredito(auth.token, "raio-x", RAIO_X_CUSTO);

@@ -36,7 +36,7 @@ Veja [`.env.example`](.env.example) e o passo a passo em [`CONFIGURAR-CREDITOS.m
 | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Checkout + webhook |
 | `STRIPE_PRICE_CREDITS` | `price_1UQFwf9MowzYQLdMxF4tdtg9` |
 | `ALLOWED_ORIGINS` | CORS |
-| `RAIO_X_PER_IP_HOUR` / `RAIO_X_PER_DAY` | Teto extra de proteção |
+| `RAIO_X_PER_USER_HOUR` / `RAIO_X_PER_DAY` | Teto extra de proteção |
 | `PORT` | Padrão 3001 |
 
 ## Publicar na Hostinger

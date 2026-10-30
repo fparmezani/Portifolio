@@ -6,3 +6,9 @@ node_modules/
 
 # Credenciais MCP (Cakto etc.)
 .cursor/mcp.json
+
+# Segredos locais (tokens Meta etc.)
+.env
+
+# Logs locais de automação de navegador
+.playwright-mcp/

@@ -1,0 +1,139 @@
+/* Identidade visual extraída de fernandoparmezani.com.br (05/10/2026) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap');
+
+:root {
+  --bg: #020814;
+  --bg2: #06111f;
+  --blue: #0d6efd;
+  --accent: #1d4ed8;
+  --deep: #073d92;
+  --cyan: #38bdf8;
+  --link: #83bdff;
+  --text: #f8fafc;
+  --muted: #a8b3c7;
+  --soft: #708096;
+  --panel: rgba(8, 20, 38, .82);
+  --line: rgba(59, 130, 246, .25);
+  --line2: rgba(148, 163, 184, .13);
+  --radius: 18px;
+  --display: Sora, Inter, system-ui, sans-serif;
+  --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1350px; background: var(--bg); }
+
+.slide {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--font);
+  background:
+    radial-gradient(circle at 78% 62%, rgba(13, 110, 253, .55) 0%, rgba(6, 40, 101, .45) 28%, rgba(3, 18, 37, 0) 60%),
+    radial-gradient(circle at 10% 0%, rgba(56, 189, 248, .10), rgba(0, 0, 0, 0) 40%),
+    var(--bg);
+  padding: 88px 84px;
+}
+
+/* grade de pontos, igual ao hero do site */
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(13, 110, 253, .55) 1.6px, transparent 1.6px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at 85% 55%, #000 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { display: flex; align-items: center; gap: 18px; font-family: var(--display); font-weight: 700; font-size: 30px; }
+.brand img { width: 64px; height: 64px; }
+.count { font-family: var(--display); font-weight: 700; font-size: 26px; color: var(--soft); letter-spacing: .04em; }
+
+.tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 96px;
+  padding: 16px 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: rgba(13, 110, 253, .08);
+  color: var(--link);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.tag::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 14px var(--blue); }
+
+h1 {
+  position: relative;
+  margin-top: 44px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 118px;
+  line-height: .98;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+}
+h1 .hl, h2 .hl {
+  background: linear-gradient(135deg, #2e8bff 0%, var(--blue) 45%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+h2 {
+  position: relative;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 76px;
+  line-height: 1.04;
+  letter-spacing: -.04em;
+}
+
+.lead { position: relative; margin-top: 40px; max-width: 560px; color: var(--muted); font-size: 34px; line-height: 1.5; }
+
+.panel {
+  position: relative;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
+  padding: 40px 44px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--deep));
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.btn.ghost { background: rgba(2, 13, 28, .46); border: 1.5px solid var(--line); }
+
+.footer {
+  position: absolute;
+  left: 84px; right: 84px; bottom: 72px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--soft);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .06em;
+}

@@ -56,24 +56,17 @@ async function aplicarAceitePendente() {
   return true;
 }
 
-function htmlAceiteChecks(ehKit) {
-  const ofertasTxt = ehKit
-    ? "Quero receber novos kits e materiais por e-mail. Dá para sair quando quiser."
-    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser.";
+// Sem checkbox: quem continua aceita a privacidade. Ofertas seguem o padrão de antes
+// (kits já vinham marcados; ferramentas, não) e o aviso diz isso.
+function htmlAceiteAviso(ehKit) {
   return `
-    <div class="auth-aceite" data-aceite>
-      <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-      <label class="auth-check"><input name="ofertas" type="checkbox" ${ehKit ? "checked" : ""}> <span>${ofertasTxt}</span></label>
-    </div>`;
+    <p class="auth-aceite-aviso">Ao continuar, você aceita a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>${ehKit
+    ? " e recebe novos kits por e-mail. Dá para sair quando quiser."
+    : "."}</p>`;
 }
 
-function lerChecksAceite(raiz) {
-  const box = raiz.querySelector("[data-aceite]");
-  if (!box) return { termos: false, ofertas: false };
-  return {
-    termos: Boolean(box.querySelector('input[name="termos"]')?.checked),
-    ofertas: Boolean(box.querySelector('input[name="ofertas"]')?.checked),
-  };
+function aceitePadrao(ehKit) {
+  return { termos: true, ofertas: ehKit };
 }
 
 const ERROS = {
@@ -296,9 +289,9 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
       <p class="eyebrow"><span class="pulse-dot"></span> ${ehKit ? "Kit gratuito" : "10 créditos para começar"}</p>
       <h2 id="auth-title">${ehKit ? "Desbloqueie o kit" : "Crie sua conta para começar"}</h2>
       <p class="auth-sub">${ehKit
-    ? "Uma conta vale para kits e ferramentas do site. Aceite a privacidade e entre — o download libera na hora."
+    ? "Uma conta vale para kits e ferramentas do site. Entre e o download libera na hora."
     : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X usa 3 e cada simulado, 1. Kits não consomem crédito."}</p>
-      ${htmlAceiteChecks(ehKit)}
+      ${htmlAceiteAviso(ehKit)}
       <button type="button" class="auth-google" data-google>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Continuar com Google
@@ -344,9 +337,7 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
     }));
 
   card.querySelector("[data-google]").addEventListener("click", async () => {
-    const aceite = lerChecksAceite(card);
-    if (!aceite.termos) return avisar("Para continuar com Google, aceite a Política de Privacidade.");
-    salvarAceiteLocal(aceite);
+    salvarAceiteLocal(aceitePadrao(ehKit));
     lembrarVolta();
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: urlDeVolta() } });
     if (error) avisar(traduzir(error));
@@ -360,11 +351,10 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
     const email = String(f.get("email")).trim();
     const senha = String(f.get("senha"));
     const whatsapp = String(f.get("whatsapp") || "").trim();
-    const aceite = lerChecksAceite(card);
+    const aceite = aceitePadrao(ehKit);
     if (!nome || !email.includes("@")) return avisar("Preencha nome e e-mail.");
     if (whatsapp && !whatsappValido(whatsapp)) return avisar("WhatsApp inválido. Use DDD, ex.: (11) 99999-9999 — ou deixe em branco.");
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
-    if (!aceite.termos) return avisar("Para criar a conta, aceite a Política de Privacidade.");
     ocupado(criar, true);
     salvarAceiteLocal(aceite);
     lembrarVolta();
@@ -439,37 +429,6 @@ function telaNovaSenha(raiz, aoTerminar) {
   });
 }
 
-/** Fallback raro: OAuth sem localStorage (modo privado / outra aba). Sem WhatsApp. */
-function telaAceite(raiz, perfil, { contexto = "tool" } = {}) {
-  const ehKit = contexto === "kit";
-  return new Promise((resolver) => {
-    const card = el(`
-      <section class="auth-card">
-        <h2>Bem-vindo, <span data-nome></span></h2>
-        <p class="auth-sub">Marque a privacidade para liberar${ehKit ? " o kit" : ""}.</p>
-        <form class="auth-form" novalidate>
-          <label class="auth-check"><input name="termos" type="checkbox" required> <span>Li e aceito a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-          <label class="auth-check"><input name="ofertas" type="checkbox" ${ehKit ? "checked" : ""}> <span>${ehKit
-    ? "Quero receber novos kits e materiais por e-mail."
-    : "Quero receber conteúdos e ofertas do Fernando por e-mail. Opcional, e dá para sair quando quiser."}</span></label>
-          <button class="btn btn-primary" type="submit">${ehKit ? "Desbloquear kit" : "Começar"}</button>
-        </form>
-        <p class="auth-msg" role="alert"></p>
-      </section>`);
-    card.querySelector("[data-nome]").textContent = (perfil.nome || perfil.email || "").split(" ")[0];
-    raiz.replaceChildren(card);
-    card.querySelector("form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const f = new FormData(e.target);
-      const msg = card.querySelector(".auth-msg");
-      if (!f.get("termos")) { msg.textContent = "Para continuar, aceite a Política de Privacidade."; return; }
-      const { error } = await supabase.rpc("registrar_aceite", { ofertas: Boolean(f.get("ofertas")) });
-      if (error) { msg.textContent = traduzir(error); return; }
-      resolver();
-    });
-  });
-}
-
 async function lerPerfil(userId) {
   const { data } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
   return data;
@@ -499,11 +458,10 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
         if (ok) perfil = await lerPerfil(session.user.id);
       }
       if (perfil && !perfil.aceite_termos_em) {
-        // Fallback raro: OAuth sem localStorage (modo privado / aba diferente)
-        app.hidden = true;
-        raiz.hidden = false;
-        await telaAceite(raiz, perfil, { contexto });
-        perfil = await lerPerfil(session.user.id);
+        // OAuth sem localStorage (modo privado / outra aba): registra o aceite sem pedir clique.
+        const { ofertas } = aceitePadrao(contexto === "kit");
+        const { error } = await supabase.rpc("registrar_aceite", { ofertas });
+        if (!error) perfil = await lerPerfil(session.user.id);
       }
       raiz.hidden = true;
       app.hidden = false;

@@ -50,6 +50,8 @@
 }
 .auth-form input::placeholder { color: #94a3b8; }
 .auth-aceite { display: grid; gap: 10px; margin: 2px 0 4px; }
+.auth-aceite-aviso { margin: 2px 0 4px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.auth-aceite-aviso a { color: var(--link); }
 .auth-aceite .auth-check,
 .auth-form .auth-check { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; color: var(--muted); line-height: 1.45; font-size: 13px; }
 .auth-check input { width: 18px; height: 18px; margin-top: 1px; flex: none; accent-color: var(--blue); }

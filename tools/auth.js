@@ -56,17 +56,16 @@ async function aplicarAceitePendente() {
   return true;
 }
 
-// Sem checkbox: quem continua aceita a privacidade. Ofertas seguem o padrão de antes
-// (kits já vinham marcados; ferramentas, não) e o aviso diz isso.
+// Sem checkbox: quem continua aceita a privacidade e recebe e-mails de conteúdo e oferta,
+// com saída em um clique no rodapé de cada e-mail (legítimo interesse, ver privacidade.html).
 function htmlAceiteAviso(ehKit) {
+  const recebe = ehKit ? "novos kits, conteúdos e ofertas" : "conteúdos e ofertas";
   return `
-    <p class="auth-aceite-aviso">Ao continuar, você aceita a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a>${ehKit
-    ? " e recebe novos kits por e-mail. Dá para sair quando quiser."
-    : "."}</p>`;
+    <p class="auth-aceite-aviso">Ao continuar, você aceita a <a href="${PRIVACIDADE}" target="_blank" rel="noopener">Política de Privacidade</a> e recebe ${recebe} por e-mail. Dá para sair com um clique em qualquer e-mail.</p>`;
 }
 
-function aceitePadrao(ehKit) {
-  return { termos: true, ofertas: ehKit };
+function aceitePadrao() {
+  return { termos: true, ofertas: true };
 }
 
 const ERROS = {
@@ -337,7 +336,7 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
     }));
 
   card.querySelector("[data-google]").addEventListener("click", async () => {
-    salvarAceiteLocal(aceitePadrao(ehKit));
+    salvarAceiteLocal(aceitePadrao());
     lembrarVolta();
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: urlDeVolta() } });
     if (error) avisar(traduzir(error));
@@ -351,7 +350,7 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
     const email = String(f.get("email")).trim();
     const senha = String(f.get("senha"));
     const whatsapp = String(f.get("whatsapp") || "").trim();
-    const aceite = aceitePadrao(ehKit);
+    const aceite = aceitePadrao();
     if (!nome || !email.includes("@")) return avisar("Preencha nome e e-mail.");
     if (whatsapp && !whatsappValido(whatsapp)) return avisar("WhatsApp inválido. Use DDD, ex.: (11) 99999-9999 — ou deixe em branco.");
     if (senha.length < 8) return avisar("A senha precisa ter pelo menos 8 caracteres.");
@@ -459,7 +458,7 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
       }
       if (perfil && !perfil.aceite_termos_em) {
         // OAuth sem localStorage (modo privado / outra aba): registra o aceite sem pedir clique.
-        const { ofertas } = aceitePadrao(contexto === "kit");
+        const { ofertas } = aceitePadrao();
         const { error } = await supabase.rpc("registrar_aceite", { ofertas });
         if (!error) perfil = await lerPerfil(session.user.id);
       }

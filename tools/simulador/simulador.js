@@ -8,7 +8,7 @@ import {
   ligarCtaCompra,
   atualizarSaldoBarra,
   lerSaldoCreditos,
-} from "../auth.js?v=12";
+} from "../auth.js?v=13";
 
 const POR_SIMULADO = 10;
 const MINUTOS_PADRAO = 8;

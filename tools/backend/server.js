@@ -11,6 +11,7 @@ import {
   supabaseConfigured,
 } from "./supabase.js";
 import { createCreditsCheckout, handleStripeWebhook, stripeConfigured } from "./stripe-billing.js";
+import { assinaturaValida, descadastrar, paginaDescadastro } from "./descadastro.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -261,6 +262,22 @@ app.get("/raio-x/:job", async (req, res) => {
     return res.json({ status: "error", error: job.error, refunded: Boolean(job.refunded), credits });
   }
   res.json({ status: "done", report: job.report, credits });
+});
+
+// "Sair da lista" do rodapé dos e-mails: sem login, validado pela assinatura do link.
+app.get("/email/sair", async (req, res) => {
+  const userId = String(req.query.u || "");
+  res.setHeader("Cache-Control", "no-store");
+  if (!assinaturaValida(userId, req.query.t)) {
+    return res.status(400).type("html").send(paginaDescadastro(false));
+  }
+  try {
+    await descadastrar(userId);
+    res.type("html").send(paginaDescadastro(true));
+  } catch (error) {
+    console.error("email/sair", error && error.message);
+    res.status(500).type("html").send(paginaDescadastro(false));
+  }
 });
 
 app.listen(port, () => {

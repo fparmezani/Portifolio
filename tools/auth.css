@@ -28,7 +28,9 @@
   cursor: pointer;
 }
 .auth-google svg { width: 20px; height: 20px; }
-.auth-google:hover { background: #ffffff; }
+@media (hover: hover) and (pointer: fine) {
+  .auth-google:hover { background: #ffffff; }
+}
 .auth-sep { display: flex; align-items: center; gap: 12px; color: var(--soft); font-size: 13px; }
 .auth-sep::before, .auth-sep::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .auth-tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
@@ -45,7 +47,7 @@
   border-radius: 12px;
   background: rgba(6, 17, 31, .9);
   color: #f8fafc;
-  font: 500 15px/1.5 Inter, sans-serif;
+  font: 500 16px/1.5 Inter, sans-serif;
   padding: 11px 14px;
 }
 .auth-form input::placeholder { color: #94a3b8; }

@@ -88,6 +88,54 @@ const lembrarVolta = () => {
   } catch { /* modo privado */ }
 };
 
+export async function sessaoAtual() {
+  const { data } = await supabase.auth.getSession();
+  return data.session ?? null;
+}
+
+export async function entrarComGoogle() {
+  salvarAceiteLocal(aceitePadrao());
+  lembrarVolta();
+  return supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: urlDeVolta() },
+  });
+}
+
+export function esperarLogin() {
+  return new Promise((resolver) => {
+    let feito = false;
+    let sub = null;
+    const concluir = (session) => {
+      if (feito || !session) return;
+      feito = true;
+      sub?.subscription.unsubscribe();
+      resolver(session);
+    };
+    const { data } = supabase.auth.onAuthStateChange((evento, session) => {
+      if (evento === "SIGNED_IN") concluir(session);
+    });
+    sub = data;
+    sessaoAtual().then(concluir);
+  });
+}
+
+/** Aceite de termos + perfil. Não mexe na UI. */
+export async function ativarSessao(session) {
+  if (!session) return null;
+  let perfil = await lerPerfil(session.user.id);
+  if (!perfil?.aceite_termos_em) {
+    const ok = await aplicarAceitePendente();
+    if (ok) perfil = await lerPerfil(session.user.id);
+  }
+  if (perfil && !perfil.aceite_termos_em) {
+    const { ofertas } = aceitePadrao();
+    const { error } = await supabase.rpc("registrar_aceite", { ofertas });
+    if (!error) perfil = await lerPerfil(session.user.id);
+  }
+  return { user: session.user, perfil };
+}
+
 export function toolsApiBase() {
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return "http://localhost:3001";
   return "https://api.fernandoparmezani.com.br";
@@ -281,15 +329,19 @@ async function salvarWhatsapp(userId, whatsapp) {
   } catch { /* coluna pode ainda não existir */ }
 }
 
-function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
+function telaCadastro(raiz, aoEntrar, { contexto = "tool", copy } = {}) {
   const ehKit = contexto === "kit";
+  const eyebrow = copy?.eyebrow ?? (ehKit ? "Kit gratuito" : "10 créditos para começar");
+  const title = copy?.title ?? (ehKit ? "Desbloqueie o kit" : "Crie sua conta para começar");
+  const sub = copy?.sub ?? (ehKit
+    ? "Uma conta vale para kits e ferramentas do site. Entre e o download libera na hora."
+    : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X usa 3 e cada simulado, 1. Kits não consomem crédito.");
+  const submit = copy?.submit ?? (ehKit ? "Criar conta e desbloquear" : "Criar conta e começar");
   const card = el(`
     <section class="auth-card" aria-labelledby="auth-title">
-      <p class="eyebrow"><span class="pulse-dot"></span> ${ehKit ? "Kit gratuito" : "10 créditos para começar"}</p>
-      <h2 id="auth-title">${ehKit ? "Desbloqueie o kit" : "Crie sua conta para começar"}</h2>
-      <p class="auth-sub">${ehKit
-    ? "Uma conta vale para kits e ferramentas do site. Entre e o download libera na hora."
-    : "Uma conta para todas as ferramentas e kits. Você ganha <strong>10 créditos</strong> no cadastro — cada Raio-X usa 3 e cada simulado, 1. Kits não consomem crédito."}</p>
+      <p class="eyebrow"><span class="pulse-dot"></span> ${eyebrow}</p>
+      <h2 id="auth-title">${title}</h2>
+      <p class="auth-sub">${sub}</p>
       ${htmlAceiteAviso(ehKit)}
       <button type="button" class="auth-google" data-google>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
@@ -305,7 +357,7 @@ function telaCadastro(raiz, aoEntrar, { contexto = "tool" } = {}) {
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
         ${ehKit ? '<label>WhatsApp <span class="auth-opcional">(opcional)</span><input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 99999-9999"></label>' : ""}
         <label>Senha<input name="senha" type="password" autocomplete="new-password" minlength="8" required placeholder="mínimo 8 caracteres"></label>
-        <button class="btn btn-primary" type="submit">${ehKit ? "Criar conta e desbloquear" : "Criar conta e começar"}</button>
+        <button class="btn btn-primary" type="submit">${submit}</button>
       </form>
       <form class="auth-form" data-form="entrar" hidden novalidate>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
@@ -437,9 +489,9 @@ async function lerPerfil(userId) {
  * Mostra o cadastro em `#auth-gate` até a pessoa estar logada e com o aceite registrado.
  * O conteúdo da ferramenta/kit fica em `#app` (escondido até lá).
  * Após login bem-sucedido: libera na hora (aceite via form ou localStorage pós-Google).
- * @param {{ origem: string, contexto?: "kit" | "tool" }} opts
+ * @param {{ origem: string, contexto?: "kit" | "tool", copy?: { eyebrow?: string, title?: string, sub?: string, submit?: string } }} opts
  */
-export function exigirCadastro({ origem, contexto = "tool" }) {
+export function exigirCadastro({ origem, contexto = "tool", copy } = {}) {
   const raiz = document.querySelector("#auth-gate");
   const app = document.querySelector("#app");
   raiz.dataset.origem = origem;
@@ -451,21 +503,11 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
     const liberar = async (session) => {
       if (liberado || !session) return;
       liberado = true;
-      let perfil = await lerPerfil(session.user.id);
-      if (!perfil?.aceite_termos_em) {
-        const ok = await aplicarAceitePendente();
-        if (ok) perfil = await lerPerfil(session.user.id);
-      }
-      if (perfil && !perfil.aceite_termos_em) {
-        // OAuth sem localStorage (modo privado / outra aba): registra o aceite sem pedir clique.
-        const { ofertas } = aceitePadrao();
-        const { error } = await supabase.rpc("registrar_aceite", { ofertas });
-        if (!error) perfil = await lerPerfil(session.user.id);
-      }
+      const out = await ativarSessao(session);
       raiz.hidden = true;
       app.hidden = false;
       history.replaceState(null, "", location.pathname + location.search);
-      resolver({ user: session.user, perfil });
+      resolver(out);
     };
 
     supabase.auth.onAuthStateChange((evento, session) => {
@@ -496,7 +538,7 @@ export function exigirCadastro({ origem, contexto = "tool" }) {
       if (data.session) return liberar(data.session);
       app.hidden = true;
       raiz.hidden = false;
-      telaCadastro(raiz, liberar, { contexto });
+      telaCadastro(raiz, liberar, { contexto, copy });
     }).catch(() => {
       clearTimeout(espera);
       indisponivel();

@@ -8,11 +8,15 @@ import {
   comprarCreditos,
   lerSaldoCreditos,
   rastrear,
-} from "../auth.js?v=13";
+  sessaoAtual,
+  entrarComGoogle,
+  esperarLogin,
+  ativarSessao,
+} from "../auth.js?v=14";
 
 const CHECKOUT = "https://pay.cakto.com.br/dv7g5sp_1090093";
 const SCAN_MS = 2800;
-const VIDEO_SRC = "assets/apresentacao.mp4?v=1";
+const VIDEO_SRC = new URL("assets/apresentacao.mp4?v=1", import.meta.url).href;
 const API_TIMEOUT_MS = 6 * 60 * 1000;
 const POLL_MS = 3000;
 const CUSTO = 3;
@@ -38,6 +42,115 @@ let saveKey = null;
 
 // Última leitura fica só neste navegador: recarregar a página não obriga a pagar de novo.
 const SAVE_DAYS = 7;
+const PDF_DB = "raio-x";
+const PDF_STORE = "pending";
+const PDF_TTL_MS = 30 * 60 * 1000;
+
+function openPdfDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(PDF_DB, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(PDF_STORE);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function guardarPdfPendente(file, context) {
+  const buf = await file.arrayBuffer();
+  const db = await openPdfDb();
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction(PDF_STORE, "readwrite");
+    tx.objectStore(PDF_STORE).put({
+      name: file.name,
+      type: file.type,
+      buf,
+      context,
+      savedAt: Date.now()
+    }, "file");
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function carregarPdfPendente() {
+  try {
+    const db = await openPdfDb();
+    const rec = await new Promise((resolve, reject) => {
+      const req = db.transaction(PDF_STORE, "readonly").objectStore(PDF_STORE).get("file");
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+    if (!rec || Date.now() - rec.savedAt > PDF_TTL_MS) return null;
+    return {
+      file: new File([rec.buf], rec.name, { type: rec.type || "application/pdf" }),
+      context: rec.context || {}
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function limparPdfPendente() {
+  try {
+    const db = await openPdfDb();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(PDF_STORE, "readwrite");
+      tx.objectStore(PDF_STORE).delete("file");
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch { /* modo privado */ }
+}
+
+function contextFromForm() {
+  return {
+    company: $("company").value.trim(),
+    recruiter: $("recruiter").value.trim(),
+    jobDescription: $("job-description").value.trim()
+  };
+}
+
+function fillContext(context) {
+  if (!context) return;
+  $("company").value = context.company || "";
+  $("recruiter").value = context.recruiter || "";
+  $("job-description").value = context.jobDescription || "";
+}
+
+function mostrarGoogle(sim) {
+  const card = $("scan-google");
+  if (card) card.hidden = !sim;
+}
+
+function mostrarPitch(sim) {
+  const pitch = $("scan-pitch");
+  const title = $("scan-title");
+  if (pitch) pitch.hidden = !sim;
+  if (title) title.textContent = sim ? "Enquanto eu reescrevo" : "Lendo seu currículo";
+  if (sim) requestAnimationFrame(() => playSaleVideo());
+  else stopVideo();
+}
+
+function ligarConta(user, perfil) {
+  barraDoUsuario(user, perfil);
+  saveKey = `raio-x:ultimo:${user.id}`;
+  const wrap = $("guest-login-wrap");
+  if (wrap) wrap.hidden = true;
+}
+
+async function esperarCreditos() {
+  for (let i = 0; i < 8; i += 1) {
+    const n = await lerSaldoCreditos();
+    if (n != null && n >= CUSTO) {
+      atualizarSaldoBarra(n);
+      return n;
+    }
+    await sleep(400);
+  }
+  const n = await lerSaldoCreditos();
+  if (n != null) atualizarSaldoBarra(n);
+  return n;
+}
 
 function saveResult(state) {
   if (!saveKey) return;
@@ -506,37 +619,68 @@ function prepareScan() {
   $("scan-summary").hidden = true;
   $("see-result").hidden = true;
   $("see-result").textContent = "Ver meu raio-x";
+  mostrarGoogle(false);
+  mostrarPitch(false);
+}
 
+let videoToken = 0;
+
+function playSaleVideo() {
   const video = $("gate-video");
   const cover = $("gate-cover");
   const sound = $("vsl-sound");
-  video.hidden = true;
+  if (!video || !cover || !sound) return;
+  const token = ++videoToken;
   cover.hidden = false;
   sound.hidden = true;
-  video.onloadeddata = () => {
-    video.hidden = false;
-    cover.hidden = true;
+  sound.textContent = "Toque para ouvir";
+  video.oncanplay = null;
+  video.onerror = null;
+  video.onvolumechange = null;
+  video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
+  video.setAttribute("playsinline", "");
+  video.setAttribute("muted", "");
+  if (video.getAttribute("src") !== VIDEO_SRC) video.src = VIDEO_SRC;
+  const tryPlay = () => {
+    if (token !== videoToken) return;
+    video.play().then(() => {
+      if (token !== videoToken) return;
+      cover.hidden = true;
+      sound.hidden = false;
+    }).catch(() => {
+      if (token !== videoToken) return;
+      sound.textContent = "Toque para assistir";
+      sound.hidden = false;
+    });
   };
+  if (video.readyState >= 2) tryPlay();
+  else video.oncanplay = tryPlay;
   video.onerror = () => {
-    video.hidden = true;
+    if (token !== videoToken || !video.getAttribute("src")) return;
     cover.hidden = false;
     sound.hidden = true;
   };
   video.onvolumechange = () => {
     if (!video.muted) sound.hidden = true;
   };
-  video.src = VIDEO_SRC;
-  // Começa sempre mudo; o som vem de um toque da pessoa.
-  video.muted = true;
-  video.play().then(() => { sound.hidden = false; }).catch(() => {});
 }
 
 function stopVideo() {
+  videoToken += 1;
   const video = $("gate-video");
+  const sound = $("vsl-sound");
+  const cover = $("gate-cover");
+  if (!video) return;
+  video.oncanplay = null;
+  video.onerror = null;
+  video.onvolumechange = null;
   video.pause();
   video.removeAttribute("src");
-  video.load();
-  $("vsl-sound").hidden = true;
+  try { video.load(); } catch { /* src vazio dispara erro inofensivo */ }
+  if (sound) sound.hidden = true;
+  if (cover) cover.hidden = false;
 }
 
 function trackRewrite() {
@@ -579,19 +723,23 @@ function finishScan(state) {
 
 // Página recarregada no meio da leitura: espera o mesmo pedido em vez de cobrar outra vez.
 async function resumeJob(unfinished) {
-  const box = $("upload-error");
-  box.textContent = "Sua leitura anterior ainda está sendo escrita. Ela aparece aqui sozinha quando ficar pronta.";
-  const myRun = run;
-  const state = { fileName: unfinished.fileName, context: unfinished.context, local: unfinished.local, full: null, reason: "", done: true };
+  const myRun = ++run;
+  show("scan");
+  prepareScan();
+  mostrarPitch(true);
+  setProgress(25, "Sua leitura anterior ainda está sendo escrita…");
+  trackRewrite();
+  const state = { fileName: unfinished.fileName, context: unfinished.context, local: unfinished.local, full: null, reason: "", done: false };
+  pending = state;
   try {
     state.full = await waitJob(apiBase(), unfinished.job, unfinished.startedAt);
   } catch (error) {
     state.reason = error.message;
   }
   if (myRun !== run) return;
-  box.textContent = "";
   refreshCredits();
-  renderResult(state);
+  state.done = true;
+  finishScan(state);
 }
 
 function reset() {
@@ -604,7 +752,8 @@ function reset() {
   pending = null;
   $("file").value = "";
   $("upload-error").textContent = "";
-  stopVideo();
+  mostrarGoogle(false);
+  mostrarPitch(false);
   show("upload");
   checkBalance();
 }
@@ -661,9 +810,9 @@ async function start(file) {
   }
 
   const current = ++run;
-  const credits = await checkBalance();
-  if (current !== run) return;
-  if (credits != null && credits < CUSTO) return;
+  const context = contextFromForm();
+  try { await guardarPdfPendente(file, context); } catch { /* IndexedDB pode falhar no modo privado */ }
+
   pending = null;
   show("scan");
   prepareScan();
@@ -671,19 +820,39 @@ async function start(file) {
   const started = Date.now();
   scanTimer = setTimeout(() => setProgress(10, "Separando experiências, cargos e datas…"), 900);
 
-  const context = {
-    company: $("company").value.trim(),
-    recruiter: $("recruiter").value.trim(),
-    jobDescription: $("job-description").value.trim()
-  };
+  const parsedPromise = readPdf(file);
+
+  let session = await sessaoAtual();
+  if (!session) {
+    clearTimeout(scanTimer);
+    mostrarGoogle(true);
+    setProgress(8, "Entra com Google para eu terminar.");
+    session = await esperarLogin();
+    if (current !== run) return;
+  }
+  mostrarGoogle(false);
+  const { user, perfil } = await ativarSessao(session);
+  ligarConta(user, perfil);
+  mostrarPitch(true);
+  setProgress(12, "Conta pronta. Enquanto reescrevo, o vídeo explica o livro.");
+
+  const credits = await esperarCreditos();
+  if (current !== run) return;
+  if (credits != null && credits < CUSTO) {
+    await limparPdfPendente();
+    mostrarPitch(false);
+    show("upload");
+    checkBalance();
+    return;
+  }
 
   let parsed;
   try {
-    parsed = await readPdf(file);
+    parsed = await parsedPromise;
   } catch (error) {
     clearTimeout(scanTimer);
     console.error(error);
-    stopVideo();
+    mostrarPitch(false);
     show("upload");
     $("upload-error").textContent = "Não consegui ler este PDF. Se ele tiver senha, tire a senha e tente de novo.";
     return;
@@ -713,13 +882,14 @@ async function start(file) {
     if (current !== run) return;
     if (error.code === "insufficient_credits") {
       clearInterval(rewriteTimer);
-      stopVideo();
+      mostrarPitch(false);
       show("upload");
       checkBalance();
       return;
     }
     state.reason = error.message;
   }
+  await limparPdfPendente();
   refreshCredits();
   if (current !== run) return;
   state.done = true;
@@ -800,16 +970,43 @@ if (pdfjsLib) {
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 
-const { user } = await exigirCadastro({ origem: "ats" });
-barraDoUsuario(user);
-checkBalance();
-saveKey = `raio-x:ultimo:${user.id}`;
-const saved = loadResult();
-const unfinished = loadJob();
-if (unfinished) resumeJob(unfinished);
-else if (saved) renderResult(saved);
+if (location.hash.includes("type=recovery")) {
+  const { user, perfil } = await exigirCadastro({ origem: "ats" });
+  ligarConta(user, perfil);
+}
+
+const sessionAberta = await sessaoAtual();
+if (sessionAberta) {
+  const { user, perfil } = await ativarSessao(sessionAberta);
+  ligarConta(user, perfil);
+  checkBalance();
+}
+
+const pdfPendente = await carregarPdfPendente();
+if (pdfPendente) {
+  fillContext(pdfPendente.context);
+  start(pdfPendente.file);
+} else if (sessionAberta) {
+  const unfinished = loadJob();
+  const saved = loadResult();
+  if (unfinished) resumeJob(unfinished);
+  else if (saved) {
+    renderResult(saved);
+  }
+}
 
 $("context-form").addEventListener("submit", (event) => event.preventDefault());
+$("guest-login")?.addEventListener("click", async () => {
+  const { user, perfil } = await exigirCadastro({ origem: "ats" });
+  ligarConta(user, perfil);
+  checkBalance();
+});
+$("scan-google-btn")?.addEventListener("click", async () => {
+  const msg = $("scan-google-msg");
+  if (msg) msg.textContent = "";
+  const { error } = await entrarComGoogle();
+  if (error && msg) msg.textContent = "Não deu para abrir o Google. Tente de novo.";
+});
 
 const input = $("file");
 const dropzone = $("dropzone");
@@ -831,15 +1028,18 @@ dropzone.addEventListener("drop", (event) => {
   if (file) start(file);
 });
 
-$("see-result").addEventListener("click", () => {
+$("see-result")?.addEventListener("click", () => {
   if (!pending || !pending.done || $("see-result").hidden) return;
-  stopVideo();
+  mostrarPitch(false);
   renderResult(pending);
   pending = null;
 });
 
-$("vsl-sound").addEventListener("click", () => {
+$("vsl-sound")?.addEventListener("click", () => {
   const video = $("gate-video");
+  const cover = $("gate-cover");
+  if (!video) return;
+  if (cover) cover.hidden = true;
   video.muted = false;
   video.currentTime = 0;
   video.play().catch(() => {});

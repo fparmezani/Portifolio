@@ -11,7 +11,7 @@
     gtag('config', 'G-56WPMPXN3W');
   </script>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Raio-X do Currículo | Fernando Parmezani</title>
   <meta name="description" content="Envie o PDF do currículo e receba o que mudar, trecho a trecho, e uma versão reescrita pronta para revisar e exportar. Nada é guardado." />
   <meta name="raio-x-api" content="https://api.fernandoparmezani.com.br" />
@@ -20,8 +20,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fernandoparmezani.com.br/styles.css" />
-  <link rel="stylesheet" href="../tools.css?v=21" />
-  <link rel="stylesheet" href="../auth.css?v=7" />
+  <link rel="stylesheet" href="../tools.css?v=28" />
+  <link rel="stylesheet" href="../auth.css?v=8" />
   <!-- Meta Pixel (RaioX_Pixel) -->
   <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -56,33 +56,40 @@
 
       <div id="auth-gate" hidden></div>
 
-      <div id="app" hidden>
+      <div id="app">
       <section id="view-upload">
         <div class="center-copy">
           <p class="eyebrow"><span class="pulse-dot"></span> Consulta ATS</p>
           <h1>Raio-X do<br><strong>Currículo</strong></h1>
-          <p class="lead">Diz o que mudar em cada trecho e devolve o currículo reescrito, com layout profissional, pronto para revisar e exportar. Cada leitura completa usa <strong>3 créditos</strong>.</p>
+          <p class="lead">Manda o PDF. A nota e o currículo reescrito saem na sequência. Três consultas no cadastro.</p>
         </div>
-        <form class="context-form" id="context-form">
-          <p>Opcional, mas com a vaga a reescrita mira nela. Pode enviar só o PDF.</p>
-          <div class="context-grid">
-            <label>Nome da empresa
-              <input id="company" name="company" type="text" maxlength="120" autocomplete="organization" placeholder="Empresa da vaga" />
-            </label>
-            <label>Nome da empresa recrutadora
-              <input id="recruiter" name="recruiter" type="text" maxlength="120" autocomplete="off" placeholder="Quem está recrutando" />
-            </label>
-          </div>
-          <label>Descrição da vaga
-            <textarea id="job-description" name="job-description" rows="4" maxlength="2000" placeholder="Cole a descrição, se tiver"></textarea>
-          </label>
-        </form>
         <div id="credit-block" hidden></div>
         <label class="dropzone" id="dropzone">
-          <strong>Solte o PDF aqui</strong>
-          <span>ou clique para escolher · só .pdf</span>
+          <strong class="drop-fine">Solte o PDF aqui</strong>
+          <strong class="drop-coarse">Toque para enviar o PDF</strong>
+          <span>só arquivo .pdf</span>
           <input id="file" type="file" accept="application/pdf,.pdf" hidden />
         </label>
+        <details class="context-details">
+          <summary>Tem a vaga? (opcional)</summary>
+          <form class="context-form" id="context-form">
+            <p>Com a vaga, a reescrita mira nela. Sem isso, envia só o PDF.</p>
+            <div class="context-grid">
+              <label>Nome da empresa
+                <input id="company" name="company" type="text" maxlength="120" autocomplete="organization" placeholder="Empresa da vaga" />
+              </label>
+              <label>Nome da empresa recrutadora
+                <input id="recruiter" name="recruiter" type="text" maxlength="120" autocomplete="off" placeholder="Quem está recrutando" />
+              </label>
+            </div>
+            <label>Descrição da vaga
+              <textarea id="job-description" name="job-description" rows="4" maxlength="2000" placeholder="Cole a descrição, se tiver"></textarea>
+            </label>
+          </form>
+        </details>
+        <p class="guest-login" id="guest-login-wrap">
+          <button type="button" class="auth-link" id="guest-login">Já tenho conta</button>
+        </p>
         <p class="form-error" id="upload-error" role="alert"></p>
         <p class="disclaimer center-copy">O PDF é lido no seu navegador. Só o texto extraído segue para a análise e é descartado em seguida, sem banco e sem log (LGPD). A nota mede boas práticas, não é nota oficial de ATS.</p>
       </section>
@@ -90,7 +97,7 @@
       <section id="view-scan" hidden>
         <div class="center-copy">
           <p class="eyebrow"><span class="pulse-dot"></span> Analisando seu currículo</p>
-          <h1>Enquanto isso, assista</h1>
+          <h1 id="scan-title">Lendo seu currículo</h1>
         </div>
         <div class="vsl">
           <div class="vsl-status" id="vsl-status" aria-live="polite">
@@ -99,15 +106,26 @@
             <p class="vsl-summary" id="scan-summary" hidden></p>
             <button class="btn vsl-result" type="button" id="see-result" hidden>Ver meu raio-x</button>
           </div>
-
-          <div class="vsl-player">
-            <video id="gate-video" playsinline preload="auto" hidden></video>
-            <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
-            <button class="vsl-sound" type="button" id="vsl-sound" hidden>Toque para ouvir</button>
+          <section class="auth-card scan-google" id="scan-google" hidden>
+            <p class="eyebrow"><span class="pulse-dot"></span> Cadastro</p>
+            <h2>Entra com Google para eu terminar</h2>
+            <p class="auth-sub">O PDF já está aqui. Você ganha 10 créditos. Esta leitura usa 3. No resultado o saldo fica 7.</p>
+            <p class="auth-aceite-aviso">Ao continuar, você aceita a <a href="../privacidade.html" target="_blank" rel="noopener">privacidade</a>. Dá para sair do e-mail com um clique.</p>
+            <button type="button" class="auth-google" id="scan-google-btn">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+              Continuar com Google
+            </button>
+            <p class="auth-msg" id="scan-google-msg" role="alert"></p>
+          </section>
+          <div class="scan-pitch" id="scan-pitch" hidden>
+            <div class="vsl-player">
+              <video id="gate-video" playsinline webkit-playsinline muted preload="auto"></video>
+              <img id="gate-cover" src="https://sales.fernandoparmezani.com.br/csharp-sem-medo/assets/img/ebook4.png" alt="Capa do ebook C# Moderno Sem Medo" />
+              <button class="vsl-sound" type="button" id="vsl-sound" hidden>Toque para ouvir</button>
+            </div>
+            <a class="btn vsl-buy" id="scan-buy" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero o C# Moderno Sem Medo · <span>R$ 27,90</span></a>
+            <p class="vsl-note">Abre em outra aba. Sua análise continua aqui. Quando ficar pronta, o botão verde libera o resultado — o vídeo não trava nada.</p>
           </div>
-
-          <a class="btn vsl-buy" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero o C# Moderno Sem Medo · <span>R$ 27,90</span></a>
-          <p class="vsl-note">Abre em outra aba. Sua análise continua rodando aqui.</p>
         </div>
       </section>
 
@@ -117,23 +135,7 @@
         <p class="file-chip" id="file-chip"></p>
 
         <div id="full-result">
-          <h2 class="step-title"><span>1</span> Seu currículo reescrito</h2>
-          <p class="step-lead">Montado com os seus dados. Clique em qualquer texto para editar. Os trechos em amarelo pedem um dado que só você tem.</p>
-          <div class="todo-box" id="todo-box" hidden>
-            <strong>Antes de exportar</strong>
-            <ul id="todo-list"></ul>
-          </div>
-          <div class="resume-bar">
-            <span id="todo-count" class="todo-count"></span>
-            <div class="gate-actions">
-              <button class="btn btn-secondary" type="button" id="export-doc">Baixar Word</button>
-              <button class="btn btn-primary" type="button" id="export-pdf">Exportar PDF</button>
-            </div>
-          </div>
-          <div class="sheet-frame">
-            <article id="resume-sheet" class="resume-sheet" contenteditable="true" spellcheck="true"></article>
-          </div>
-          <h2 class="step-title" id="why-title"><span>2</span> O que mudamos e por quê</h2>
+          <h2 class="step-title" id="why-title"><span>1</span> A sua nota</h2>
           <article class="panel verdict-panel">
             <div class="score-wrap">
               <div class="score-ring" id="score-ring"><b id="score-value">0</b></div>
@@ -155,6 +157,23 @@
             </div>
             <div class="kw-row" id="kw-row"></div>
           </article>
+
+          <h2 class="step-title"><span>2</span> Currículo reescrito</h2>
+          <p class="step-lead">Montado com os seus dados. Toque em qualquer texto para editar. Os trechos em amarelo pedem um dado que só você tem.</p>
+          <div class="todo-box" id="todo-box" hidden>
+            <strong>Antes de exportar</strong>
+            <ul id="todo-list"></ul>
+          </div>
+          <div class="resume-bar">
+            <span id="todo-count" class="todo-count"></span>
+            <div class="gate-actions">
+              <button class="btn btn-secondary" type="button" id="export-doc">Baixar Word</button>
+              <button class="btn btn-primary" type="button" id="export-pdf">Exportar PDF</button>
+            </div>
+          </div>
+          <div class="sheet-frame">
+            <article id="resume-sheet" class="resume-sheet" contenteditable="true" spellcheck="true"></article>
+          </div>
 
           <p class="step-lead">Cada cartão mostra o texto de hoje e o texto sugerido, pronto para copiar.</p>
           <div id="section-list" class="section-list"></div>
@@ -182,7 +201,7 @@
             <h2 id="close-title"></h2>
             <p id="close-body"></p>
             <div class="gate-actions">
-              <a class="btn btn-primary" id="close-link" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero entender o porquê — R$ 27,90</a>
+              <a class="btn btn-primary" id="close-link" href="https://pay.cakto.com.br/dv7g5sp_1090093" target="_blank" rel="noopener">Quero o C# Moderno Sem Medo · <span>R$ 27,90</span></a>
               <button class="btn btn-secondary" type="button" id="again">Analisar outro PDF</button>
             </div>
           </div>
@@ -199,7 +218,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="analyze.js"></script>
-  <script type="module" src="app.js?v=14"></script>
+  <script type="module" src="app.js?v=19"></script>
   <script src="../chrome.js"></script>
 </body>
 </html>

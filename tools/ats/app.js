@@ -624,6 +624,12 @@ function prepareScan() {
 }
 
 let videoToken = 0;
+let soundUnlocked = false;
+
+function esconderSom() {
+  const sound = $("vsl-sound");
+  if (sound) sound.hidden = true;
+}
 
 function playSaleVideo() {
   const video = $("gate-video");
@@ -631,6 +637,7 @@ function playSaleVideo() {
   const sound = $("vsl-sound");
   if (!video || !cover || !sound) return;
   const token = ++videoToken;
+  soundUnlocked = false;
   cover.hidden = false;
   sound.hidden = true;
   sound.textContent = "Toque para ouvir";
@@ -645,12 +652,15 @@ function playSaleVideo() {
   if (video.getAttribute("src") !== VIDEO_SRC) video.src = VIDEO_SRC;
   const tryPlay = () => {
     if (token !== videoToken) return;
+    video.oncanplay = null;
     video.play().then(() => {
       if (token !== videoToken) return;
       cover.hidden = true;
-      sound.hidden = false;
+      if (soundUnlocked || !video.muted) esconderSom();
+      else sound.hidden = false;
     }).catch(() => {
       if (token !== videoToken) return;
+      if (soundUnlocked) return;
       sound.textContent = "Toque para assistir";
       sound.hidden = false;
     });
@@ -660,15 +670,19 @@ function playSaleVideo() {
   video.onerror = () => {
     if (token !== videoToken || !video.getAttribute("src")) return;
     cover.hidden = false;
-    sound.hidden = true;
+    esconderSom();
   };
   video.onvolumechange = () => {
-    if (!video.muted) sound.hidden = true;
+    if (!video.muted) {
+      soundUnlocked = true;
+      esconderSom();
+    }
   };
 }
 
 function stopVideo() {
   videoToken += 1;
+  soundUnlocked = false;
   const video = $("gate-video");
   const sound = $("vsl-sound");
   const cover = $("gate-cover");
@@ -1039,11 +1053,15 @@ $("vsl-sound")?.addEventListener("click", () => {
   const video = $("gate-video");
   const cover = $("gate-cover");
   if (!video) return;
+  soundUnlocked = true;
+  video.oncanplay = null;
+  esconderSom();
   if (cover) cover.hidden = true;
   video.muted = false;
+  video.defaultMuted = false;
+  video.removeAttribute("muted");
   video.currentTime = 0;
   video.play().catch(() => {});
-  $("vsl-sound").hidden = true;
 });
 
 $("again").addEventListener("click", reset);

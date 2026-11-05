@@ -117,6 +117,20 @@ function fillContext(context) {
   $("job-description").value = context.jobDescription || "";
 }
 
+// Funil no Google Analytics: cada passo vira um evento, para ver onde a pessoa para.
+// app_linkedin separa quem abriu pelo navegador interno do app do LinkedIn (o Google bloqueia login ali).
+function medir(evento, dados = {}) {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", evento, { ...dados, app_linkedin: /LinkedInApp/i.test(navigator.userAgent) ? "sim" : "nao" });
+}
+
+// O Analytics junta os eventos e só envia a cada 5 s; ao sair para o Google o lote se perdia.
+// O pagehide faz ele enviar na hora (testado: 25 ms), então damos 150 ms antes de redirecionar.
+function enviarMedicoes() {
+  window.dispatchEvent(new PageTransitionEvent("pagehide", { persisted: false }));
+  return new Promise((resolve) => setTimeout(resolve, 150));
+}
+
 function mostrarGoogle(sim) {
   const card = $("scan-google");
   if (card) card.hidden = !sim;
@@ -720,6 +734,7 @@ function resultSummary(report) {
 
 function finishScan(state) {
   clearInterval(rewriteTimer);
+  medir("raiox_resultado", { tipo: state.full ? "completo" : "basico" });
   const summary = $("scan-summary");
   const button = $("see-result");
   if (state.full) {
@@ -811,7 +826,8 @@ function pageText(items) {
   return out.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
 }
 
-async function start(file) {
+// retomado: a página voltou do login do Google com o PDF guardado (já contou como enviado).
+async function start(file, retomado = false) {
   $("upload-error").textContent = "";
   const name = file.name.toLowerCase();
   if (file.type !== "application/pdf" && !name.endsWith(".pdf")) {
@@ -823,6 +839,7 @@ async function start(file) {
     return;
   }
 
+  if (!retomado) medir("raiox_pdf_enviado");
   const current = ++run;
   const context = contextFromForm();
   try { await guardarPdfPendente(file, context); } catch { /* IndexedDB pode falhar no modo privado */ }
@@ -840,9 +857,13 @@ async function start(file) {
   if (!session) {
     clearTimeout(scanTimer);
     mostrarGoogle(true);
+    medir("raiox_login_exibido");
     setProgress(8, "Entra com Google para eu terminar.");
     session = await esperarLogin();
     if (current !== run) return;
+    medir("raiox_login_concluido");
+  } else if (retomado) {
+    medir("raiox_login_concluido");
   }
   mostrarGoogle(false);
   const { user, perfil } = await ativarSessao(session);
@@ -999,7 +1020,7 @@ if (sessionAberta) {
 const pdfPendente = await carregarPdfPendente();
 if (pdfPendente) {
   fillContext(pdfPendente.context);
-  start(pdfPendente.file);
+  start(pdfPendente.file, true);
 } else if (sessionAberta) {
   const unfinished = loadJob();
   const saved = loadResult();
@@ -1018,6 +1039,8 @@ $("guest-login")?.addEventListener("click", async () => {
 $("scan-google-btn")?.addEventListener("click", async () => {
   const msg = $("scan-google-msg");
   if (msg) msg.textContent = "";
+  medir("raiox_login_clicado");
+  await enviarMedicoes();
   const { error } = await entrarComGoogle();
   if (error && msg) msg.textContent = "Não deu para abrir o Google. Tente de novo.";
 });

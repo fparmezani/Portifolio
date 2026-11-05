@@ -54,6 +54,27 @@ if (cycler.length && !reduceMotion) {
 
 document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
+// ---------- Conversas de WhatsApp ----------
+const wa = document.querySelector('[data-wa]');
+if (wa) {
+  const tabs = [...wa.querySelectorAll('[data-wa-tab]')];
+  const threads = [...wa.querySelectorAll('[data-wa-thread]')];
+  const show = (id) => {
+    tabs.forEach((t) => t.setAttribute('aria-selected', t.dataset.waTab === id ? 'true' : 'false'));
+    threads.forEach((th) => {
+      const on = th.dataset.waThread === id;
+      th.hidden = !on;
+      th.classList.toggle('on', on);
+      if (on && !reduceMotion) {
+        th.classList.remove('on');
+        void th.offsetWidth;
+        th.classList.add('on');
+      }
+    });
+  };
+  tabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.waTab)));
+}
+
 // ---------- Manifesto: separa em palavras ----------
 const manifesto = document.querySelector('[data-words]');
 if (manifesto) {
@@ -76,7 +97,7 @@ if (hasGsap) {
       const target = document.querySelector(a.getAttribute('href'));
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+      lenis.scrollTo(target, { offset: -80, duration: 1.4 });
     }));
   }
 
@@ -101,7 +122,7 @@ if (hasGsap) {
       .from(wall, { opacity: 0, scale: 1.6, rotationX: base.rx + 20, duration: 2.4 }, 0)
       .from('h1 .line > span', { yPercent: 110, duration: 1.2, stagger: 0.12 }, 0.5)
       .fromTo('[data-uau]', { scale: 0.4, opacity: 0, filter: 'blur(30px) drop-shadow(0px 0px 0px rgba(13,110,253,0))' }, { scale: 1, opacity: 1, filter: 'blur(0px) drop-shadow(0px 0px 60px rgba(13,110,253,0.45))', duration: 1.8, ease: 'expo.out' }, 0.9)
-      .from('.hero-sub, .hero-cta', { y: 24, opacity: 0, duration: 1, stagger: 0.1 }, 1.3)
+      .from('.hero-sub, .hero-meta, .hero-cta, .hero-note', { y: 24, opacity: 0, duration: 1, stagger: 0.08 }, 1.3)
       .from('.header', { y: -30, opacity: 0, duration: 1 }, 1.1)
       .from('.scroll-hint', { opacity: 0, duration: 1 }, 1.8);
 

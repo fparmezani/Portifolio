@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brutal Fit · Proposta do novo site</title>
+<meta name="description" content="Proposta visual do novo site da Brutal Fit Academia, em Artur Nogueira/SP.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#141213">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="assets/fonts.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--ink:#141213;--coal:#1d1b1c;--steel:#2a2728;--red:#eb0607;--red-deep:#cf070b;--red-text:#ff4b3e;--bone:#f4f2ef;--mute:#b3aeaa;--mute-2:#8d8884;--concrete:#dcd9d4;--on-light:#191718;--on-light-mute:#4d4845;--ease:cubic-bezier(.23,1,.32,1);--display:'Big Shoulders Display',sans-serif;--body:'Barlow',system-ui,sans-serif;--cond:'Barlow Condensed','Barlow',sans-serif;--gut:clamp(16px,3vw,32px)}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--bone);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red-text);outline-offset:3px}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+.wrap{max-width:calc(1240px + var(--gut)*2);margin:0 auto;padding-inline:var(--gut)}
+h1,h2,h3{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.92;margin:0;text-wrap:balance}
+h1{font-size:clamp(52px,6.6vw,92px)}
+h2{font-size:clamp(40px,4.8vw,72px)}
+h1 em,h2 em{font-style:normal;color:var(--red)}
+.lead{font-size:clamp(18px,1.45vw,21px);line-height:1.55;color:var(--mute);max-width:58ch;margin:22px 0 0}
+.lead b{color:var(--bone);font-weight:600}
+.btn{--cut:12px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 26px;text-decoration:none;font:600 18px/1 var(--cond);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%);transition:transform 160ms var(--ease),background-color 200ms ease}
+.btn:active{transform:scale(.97)}
+.btn-r{background:var(--red);color:#fff}
+.btn-g{background:transparent;color:var(--bone);box-shadow:inset 0 0 0 2px #4a4546;clip-path:none}
+@media (hover:hover) and (pointer:fine){.btn-r:hover{background:#b80508}.btn-g:hover{box-shadow:inset 0 0 0 2px var(--bone)}}
+.sec{padding-block:clamp(56px,6vw,88px)}
+
+/* topo */
+.top{padding:clamp(28px,4vw,48px) 0 clamp(40px,4vw,56px)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:52px;height:52px}
+.brand span{font:900 26px/1 var(--display);text-transform:uppercase}
+.brand span b{color:var(--red)}
+.brand small{display:block;font:500 14px/1.2 var(--cond);letter-spacing:.08em;color:var(--mute);margin-top:4px;text-transform:uppercase}
+.top h1{margin-top:clamp(32px,4vw,56px);max-width:16ch}
+.top .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+
+/* prévias */
+.previews{padding-bottom:clamp(56px,6vw,88px)}
+.devices{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.5fr) minmax(0,.5fr);gap:24px;align-items:end}
+.devices > *{min-width:0}
+.device{padding:10px;background:#0e0d0d;box-shadow:inset 0 0 0 1px var(--steel),0 28px 70px -36px rgba(0,0,0,.8)}
+.bar{display:flex;align-items:center;gap:7px;height:28px;padding:0 6px;font-size:12px;color:var(--mute-2)}
+.bar i{width:9px;height:9px;background:#3a3536}
+.bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen{position:relative;overflow:hidden;background:var(--ink)}
+.device .screen{height:600px}
+.phone{padding:10px;background:#0e0d0d;box-shadow:inset 0 0 0 1px var(--steel),0 28px 70px -36px rgba(0,0,0,.8)}
+.phone .screen{height:600px}
+.screen iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;transform:scale(var(--s,1))}
+.cap{margin:14px 0 0;font:600 15px/1.3 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+
+/* o que pensamos */
+.idea{background:var(--coal)}
+.idea-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:end}
+.idea-photo{margin:0;aspect-ratio:4/5;overflow:hidden;background:var(--steel)}
+.idea-photo img{width:100%;height:100%;object-fit:cover}
+.verbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.verbs span{font:900 clamp(26px,2.4vw,34px)/1 var(--display);text-transform:uppercase;padding:8px 14px;background:var(--steel)}
+.verbs span:nth-child(odd){color:var(--red)}
+.points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);margin-top:clamp(40px,5vw,64px);padding-top:32px;border-top:1px solid var(--steel)}
+.points h3{font-size:clamp(26px,2.2vw,32px);font-weight:800;line-height:1}
+.points p{margin:12px 0 0;color:var(--mute);font-size:17px}
+.points b{color:var(--bone);font-weight:600}
+
+/* vantagens */
+.now{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:clamp(32px,4vw,48px)}
+.now > div{padding:clamp(22px,2.6vw,32px)}
+.now .was{background:var(--coal);box-shadow:inset 0 0 0 1px var(--steel)}
+.now .will{background:var(--red-deep)}
+.now h3{font-size:30px;font-weight:800}
+.now p{margin:12px 0 0;font-size:18px;line-height:1.55;color:var(--mute)}
+.now .will p{color:#ffe9e7}
+.now b{color:var(--bone)}
+.now .will b{color:#fff}
+.gains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,80px);margin-top:clamp(32px,4vw,48px)}
+.gains div{padding:22px 0;border-top:1px solid var(--steel)}
+.gains h3{font-size:28px;font-weight:800;line-height:1}
+.gains p{margin:10px 0 0;color:var(--mute)}
+
+/* domínio e hospedagem (seção clara, cor da parede) */
+.host{background:var(--concrete);color:var(--on-light)}
+.host .lead{color:var(--on-light-mute)}
+.host .lead b{color:var(--on-light)}
+.domain{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:32px;padding:18px 22px;background:#fff;box-shadow:inset 0 0 0 1px #c9c5bf}
+.domain strong{font:900 clamp(28px,3vw,40px)/1 var(--display);text-transform:lowercase;letter-spacing:.01em}
+.domain span{font:600 15px/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;background:#1f7a3a;color:#fff;padding:7px 10px}
+.domain small{flex-basis:100%;color:var(--on-light-mute);font-size:15px}
+.items{margin-top:clamp(32px,4vw,48px);display:grid;gap:0}
+.items div{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr) minmax(0,1.2fr) minmax(0,1.2fr);gap:20px;padding:16px 0;border-top:1px solid #bdb8b1;align-items:baseline}
+.items div:last-child{border-bottom:1px solid #bdb8b1}
+.items b{font:800 22px/1.1 var(--display);text-transform:uppercase}
+.items span{color:var(--on-light-mute);font-size:16px}
+.items em{font-style:normal;font-weight:600}
+.items .head{border-top:0;padding-top:0}
+.items .head span{font:600 14px/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--on-light-mute)}
+.plans{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:clamp(36px,4vw,56px);align-items:stretch}
+.plan{display:flex;flex-direction:column;padding:26px;background:#fff;box-shadow:inset 0 0 0 1px #c9c5bf}
+.plan.rec{background:var(--ink);color:var(--bone);box-shadow:none}
+.plan .tag{align-self:flex-start;font:600 14px/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;padding:7px 10px;margin-bottom:14px}
+.plan h3{font-size:36px}
+.plan > p{margin:8px 0 0;font-size:16px;color:var(--on-light-mute)}
+.plan.rec > p{color:var(--mute)}
+.price{margin-top:18px;font:900 54px/1 var(--display)}
+.price small{font:500 18px/1 var(--body);color:var(--on-light-mute)}
+.plan.rec .price small{color:var(--mute)}
+.plan dl{margin:18px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:15px}
+.plan dt{color:var(--on-light-mute)}
+.plan.rec dt{color:var(--mute)}
+.plan dd{margin:0;text-align:right;font-weight:600}
+.plan .btn{margin-top:auto;align-self:stretch}
+.plan dl + .btn{margin-top:24px}
+.plan:not(.rec) .btn{background:var(--on-light);color:#fff}
+.why{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px)}
+.why h3{font-size:26px;font-weight:800}
+.why p{margin:10px 0 0;color:var(--on-light-mute);font-size:17px}
+.fine{margin:28px 0 0;font-size:14px;color:var(--on-light-mute);max-width:90ch}
+
+/* final */
+.closing{text-align:center}
+.closing .logo{width:150px;margin:0 auto}
+.closing h2{margin-top:24px}
+.closing .lead{margin-inline:auto}
+.closing .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px}
+.sign{margin-top:48px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;color:var(--mute-2)}
+.sign img{width:26px;height:26px}
+.sign strong{color:var(--bone)}
+
+.js .rv{opacity:0;transform:translateY(22px)}
+.js .rv.in{opacity:1;transform:none;transition:opacity 700ms var(--ease),transform 800ms var(--ease);transition-delay:var(--d,0ms)}
+
+@media (max-width:980px){
+  .devices{grid-template-columns:1fr 1fr}
+  .devices .desk{grid-column:1/-1}
+  .device .screen{height:460px}
+  .idea-grid,.now,.why{grid-template-columns:1fr}
+  .points{grid-template-columns:1fr}
+  .plans{grid-template-columns:1fr}
+  .gains{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .phone .screen{height:420px}
+  .items .head{display:none}
+  .items div{grid-template-columns:1fr auto;gap:4px 16px}
+  .items div span:nth-child(2){grid-column:1/-1;grid-row:2}
+  .items div span:nth-child(3){display:none}
+  .top .actions .btn,.closing .actions .btn{flex:1 1 auto}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:1ms!important;transition-delay:0ms!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand rv"><img src="assets/img/logo.webp" alt="" width="52" height="52"><div><span>Brutal <b>Fit</b></span><small>Academia · Artur Nogueira/SP</small></div></div>
+    <h1 class="rv" style="--d:80ms">O site da Brutal Fit está <em>pronto para conhecer.</em></h1>
+    <p class="lead rv" style="--d:160ms">Feito a partir do que vocês já mostram no Instagram: o professor do lado do aluno, o salão de aparelhos vermelhos, o Sandro e a nota <b>5,0 com 105 avaliações no Google</b>, que hoje quase ninguém vê.</p>
+    <div class="actions rv" style="--d:220ms">
+      <a class="btn btn-r" href="./" target="_blank" rel="noopener">Abrir o site completo</a>
+      <a class="btn btn-g" href="#ideia">Conhecer a proposta</a>
+    </div>
+  </div>
+</header>
+
+<section class="previews" aria-label="Prévias do novo site">
+  <div class="wrap devices">
+    <div class="desk rv"><div class="device"><div class="bar"><i></i><i></i><i></i><span>brutalfitacademia.com.br</span></div><div class="screen" data-w="1280"><iframe src="./" title="Prévia do site no computador" loading="lazy" tabindex="-1"></iframe></div></div><p class="cap">No computador</p></div>
+    <div class="rv" style="--d:120ms"><div class="phone"><div class="screen" data-w="390"><iframe src="./" title="Prévia do site no celular" loading="lazy" tabindex="-1"></iframe></div></div><p class="cap">No celular</p></div>
+    <div class="rv" style="--d:200ms"><div class="phone"><div class="screen" data-w="390"><iframe src="links/" title="Prévia da página de links da bio" loading="lazy" tabindex="-1"></iframe></div></div><p class="cap">Links da bio do Instagram</p></div>
+  </div>
+</section>
+
+<section class="sec idea" id="ideia" aria-labelledby="idea-t">
+  <div class="wrap">
+    <div class="idea-grid">
+      <figure class="idea-photo rv"><picture><source srcset="assets/img/corrige.webp" type="image/webp"><img src="assets/img/corrige.jpg" alt="Professor da Brutal Fit ajustando a posição de um aluno no leg press" width="880" height="1100" loading="lazy"></picture></figure>
+      <div>
+        <h2 class="rv" id="idea-t">Aqui você não é só mais uma <em>matrícula.</em></h2>
+        <p class="lead rv" style="--d:80ms">A frase é do próprio reel da Brutal, e virou o fio do site. A pessoa passa pela catraca e, conforme rola a página, vê os quatro verbos que o professor fala no vídeo acontecerem com alunos de verdade:</p>
+        <div class="verbs rv" style="--d:140ms" aria-label="Acompanha, corrige, incentiva, comemora"><span>Acompanha</span><span>Corrige</span><span>Incentiva</span><span>Comemora</span></div>
+      </div>
+    </div>
+    <div class="points">
+      <div class="rv"><h3>A nota vira vitrine</h3><p>O <b>5,0 com 105 avaliações</b> aparece logo depois da abertura, em uma faixa vermelha com o link para as avaliações no Google.</p></div>
+      <div class="rv" style="--d:80ms"><h3>Só fotos reais</h3><p>Todas as imagens saíram dos vídeos da academia: o professor, a equipe, o Sandro e as alunas treinando. <b>Nada de banco de imagens.</b></p></div>
+      <div class="rv" style="--d:160ms"><h3>Começar em um toque</h3><p>A pessoa escolhe o objetivo e a mensagem chega pronta no WhatsApp. A promoção <b>paga 1, leva 3</b> tem bloco próprio e some sozinha no fim do prazo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="adv-t">
+  <div class="wrap">
+    <h2 class="rv" id="adv-t">A reputação de vocês, <em>fora do Maps.</em></h2>
+    <p class="lead rv" style="--d:80ms">105 avaliações com nota máxima é raro para uma academia de bairro. Mas hoje essa prova fica escondida dentro do Google Maps, e o Instagram só alcança quem já segue a Brutal.</p>
+    <div class="now">
+      <div class="was rv"><h3>Hoje</h3><p>Fora do Instagram, a Brutal só aparece na ficha do Maps e no Booksy. Quem pesquisa <b>academia em Artur Nogueira</b> não encontra um site da academia.</p></div>
+      <div class="will rv" style="--d:80ms"><h3>Com o site</h3><p>Um endereço próprio que mostra <b>como é treinar aqui</b>, a nota do Google, os objetivos, o endereço e o contato, preparado para as buscas da cidade.</p></div>
+    </div>
+    <div class="gains">
+      <div class="rv"><h3>Aparecer no Google</h3><p>Textos e dados preparados para buscas como academia, musculação e emagrecimento em Artur Nogueira.</p></div>
+      <div class="rv" style="--d:60ms"><h3>Mensagem que já chega pronta</h3><p>Nome e objetivo de quem quer começar, antes mesmo da primeira conversa.</p></div>
+      <div class="rv"><h3>Link da bio com cara de Brutal</h3><p>Uma página de links própria, com WhatsApp, promoção, objetivos, rota e Instagram.</p></div>
+      <div class="rv" style="--d:60ms"><h3>Endereço no nome da academia</h3><p>Um domínio .com.br para a bio, o cartão e a fachada, que não depende do alcance das redes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec host" id="hospedagem" aria-labelledby="host-t">
+  <div class="wrap">
+    <h2 class="rv" id="host-t">Domínio e <em>hospedagem.</em></h2>
+    <p class="lead rv" style="--d:80ms">Para o site ficar no ar com endereço próprio, a Brutal precisa de <b>um domínio e uma hospedagem</b>, contratados direto na Hostinger, <b>no nome da academia</b>. A conta e o domínio são de vocês; a configuração e a publicação ficam comigo.</p>
+    <div class="domain rv" style="--d:120ms"><strong>brutalfitacademia.com.br</strong><span>Aparentemente livre</span><small>Consultado no Registro.br em 06/11/2026 (nada foi registrado). É o mesmo nome do Instagram e pode sair grátis no plano Single.</small></div>
+
+    <div class="items rv">
+      <div class="head"><span>Item</span><span>O que é</span><span>Quem fornece</span><span>Custo</span></div>
+      <div><b>Domínio</b><span>O endereço .com.br que vai na bio do Instagram e no cartão.</span><span>Hostinger</span><em>grátis no 1º ano*</em></div>
+      <div><b>Hospedagem</b><span>Onde o site fica guardado e funcionando 24 horas.</span><span>Hostinger</span><em>a partir de R$ 5,99/mês</em></div>
+      <div><b>Certificado SSL</b><span>O cadeado do navegador (https), exigido pelo Google.</span><span>Hostinger</span><em>incluso</em></div>
+      <div><b>E-mail profissional</b><span>Um e-mail da academia com o domínio próprio.</span><span>Hostinger</span><em>incluso</em></div>
+      <div><b>Configuração</b><span>Domínio, e-mail, Google e o site no ar no novo endereço.</span><span>Fernando Parmezani</span><em>a combinar</em></div>
+    </div>
+
+    <div class="plans">
+      <div class="plan rec rv"><span class="tag">Recomendado</span><h3>Single</h3><p>1 site e 1 domínio: tudo que a Brutal precisa.</p><div class="price">R$ 5,99<small> /mês</small></div>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 287,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 23,99/mês</dd><dt>Domínio</dt><dd>grátis</dd><dt>E-mail profissional</dt><dd>1 conta</dd></dl>
+        <a class="btn btn-r" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener noreferrer">Contratar Single</a></div>
+      <div class="plan rv" style="--d:80ms"><h3>Premium</h3><p>Para quem quer mais contas de e-mail.</p><div class="price">R$ 10,99<small> /mês</small></div>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 527,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 38,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>2 contas (1º ano)</dd></dl>
+        <a class="btn" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener noreferrer">Contratar Premium</a></div>
+      <div class="plan rv" style="--d:160ms"><h3>Unlimited</h3><p>Sites e e-mails ilimitados.</p><div class="price">R$ 13,99<small> /mês</small></div>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 671,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 64,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>ilimitado (1º ano)</dd></dl>
+        <a class="btn" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener noreferrer">Contratar Unlimited</a></div>
+    </div>
+    <div class="why">
+      <div class="rv"><h3>Por que o Single?</h3><p>A Brutal precisa de um site e um domínio. O Single cobre exatamente isso, com domínio grátis e uma conta de e-mail profissional, por cerca de R$ 6 por mês.</p></div>
+      <div class="rv" style="--d:80ms"><h3>Prefere contratar só 1 ano?</h3><p>A Hostinger também tem planos de 12 e 24 meses, com valor mensal um pouco maior. Um .com.br fora do plano custa cerca de R$ 40 por ano.</p></div>
+    </div>
+    <p class="fine">* Domínio grátis conforme o plano escolhido. Preços da Hostinger consultados em 05/10/2026, no plano de 48 meses, com parcelamento em até 12x. Podem mudar com promoções; o valor final é sempre o da tela de pagamento da Hostinger.</p>
+  </div>
+</section>
+
+<section class="sec closing" aria-labelledby="end-t">
+  <div class="wrap">
+    <img class="logo rv" src="assets/img/logo.webp" alt="Logo da Brutal Fit" width="500" height="500" loading="lazy">
+    <h2 class="rv" style="--d:80ms" id="end-t">Mais que uma <em>academia.</em></h2>
+    <p class="lead rv" style="--d:140ms">Abra no computador e no celular e role devagar pela parte da catraca: a história acontece com você. Gostaram? Me chamem e eu coloco no ar no endereço de vocês.</p>
+    <div class="actions rv" style="--d:200ms">
+      <a class="btn btn-r" href="./" target="_blank" rel="noopener">Acessar o novo site</a>
+      <a class="btn btn-g" href="https://wa.me/5511963767799?text=Ol%C3%A1%20Fernando%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20do%20site%20da%20Brutal%20Fit!" target="_blank" rel="noopener noreferrer">Falar com o Fernando</a>
+    </div>
+    <p class="sign"><img src="assets/img/fp-logo.png" alt="" width="26" height="26">Apresentação preparada para a Brutal Fit por <strong>Fernando Parmezani dos Reis</strong></p>
+  </div>
+</section>
+
+<script>
+(() => {
+  const screens = [...document.querySelectorAll('.screen[data-w]')];
+  const fit = () => screens.forEach(sc => { const w = +sc.dataset.w, s = sc.clientWidth / w, f = sc.querySelector('iframe'); f.style.width = w + 'px'; f.style.height = Math.ceil(sc.clientHeight / s) + 'px'; sc.style.setProperty('--s', s); });
+  fit(); new ResizeObserver(fit).observe(document.body);
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px', threshold: .1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

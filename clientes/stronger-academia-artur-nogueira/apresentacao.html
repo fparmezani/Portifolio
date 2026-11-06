@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Um site para a Stronger Academia · Apresentação</title>
+<meta name="description" content="Apresentação do novo site da Stronger Academia, academia em Artur Nogueira/SP.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="assets/fonts.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--bg:#0b0a0a;--bg-2:#110f0f;--panel:#171414;--panel-2:#1f1b1b;--line:#2a2525;--text:#f3efec;--muted:#a8a09c;--dim:#6f6764;--red:#cc1a1f;--red-d:#a71217;--display:'Barlow Condensed',Impact,sans-serif;--body:'Barlow',system-ui,sans-serif;--ease:cubic-bezier(.23,1,.32,1);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+p{margin:0;color:var(--muted)}
+strong{font-weight:600;color:var(--text)}
+img{display:block;max-width:100%;height:auto}
+.wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:800;line-height:.95;text-transform:uppercase}
+h1 em,h2 em{color:var(--red);font-style:italic;display:inline-block;padding-bottom:.05em}
+.eyebrow{display:flex;align-items:center;gap:12px;margin:0 0 18px;color:var(--muted);font:600 15px/1 var(--display);letter-spacing:.2em;text-transform:uppercase}
+.eyebrow::before{content:"";width:28px;height:3px;background:var(--red);transform:skewX(-30deg)}
+.button{display:inline-flex;min-height:54px;align-items:center;justify-content:center;gap:9px;padding:0 26px;border:0;background:var(--red);color:#fff;font:800 18px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);transition:background-color .2s ease,transform .16s var(--ease)}
+.button:active{transform:scale(.97)}
+.button.ghost{background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--line)}
+@media (hover:hover) and (pointer:fine){.button:hover{background:var(--red-d)}.button.ghost:hover{background:#2a2424}}
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0ms)}
+.js .rv.in{opacity:1;transform:none}
+
+.top{padding:16px 0;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;width:max-content;text-decoration:none}
+.brand img{width:40px;height:40px}
+.brand b{display:block;font:800 italic 24px/1 var(--display);text-transform:uppercase}
+.brand small{display:block;margin-top:3px;color:var(--muted);font:600 11px/1 var(--display);letter-spacing:.4em;text-transform:uppercase}
+
+header{padding:clamp(60px,8vw,100px) 0 56px;text-align:center}
+header .eyebrow{justify-content:center}
+h1{max-width:980px;margin:0 auto 22px;font-size:clamp(48px,7vw,96px)}
+h1 s{color:var(--dim);text-decoration-color:var(--red);text-decoration-thickness:.08em}
+.intro{max-width:660px;margin:0 auto;font-size:19px}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+
+.previews{padding:8px 0 clamp(64px,8vw,100px)}
+.device-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.5fr) minmax(220px,.5fr);gap:28px;align-items:end}
+.phones{display:contents}
+.device-grid>*{min-width:0}
+.device{padding:10px;border:1px solid #332c2c;background:#141111;box-shadow:0 28px 70px -36px rgba(0,0,0,.8)}
+.device-bar{display:flex;height:30px;align-items:center;gap:7px;padding:0 9px;color:var(--muted);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);opacity:.8}
+.device-bar span{margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen{position:relative;overflow:hidden;background:var(--bg)}
+.device .screen{height:620px}
+.phone .screen{aspect-ratio:375/780;border-radius:23px}
+.screen iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;transform:scale(var(--s,1))}
+.phone{width:min(300px,100%);margin:0 auto;padding:12px 10px 10px;border:1px solid #332c2c;border-radius:34px;background:#141111}
+.speaker{width:72px;height:5px;margin:1px auto 10px;border-radius:9px;background:rgba(243,239,236,.2)}
+.caption{margin:12px 0 0;text-align:center;font-size:14px}
+
+.sec{padding:clamp(60px,7vw,92px) 0;border-top:1px solid var(--line)}
+.sec--panel{background:var(--bg-2)}
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:end;margin-bottom:44px}
+.head h2{font-size:clamp(40px,5.4vw,70px)}
+.head>p{max-width:48ch;padding-left:22px;border-left:3px solid var(--red);font-size:18px}
+
+.ideas{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px;align-items:stretch}
+.idea{display:flex;flex-direction:column;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.idea img{width:100%;aspect-ratio:16/11;object-fit:cover}
+.idea div{padding:24px 26px 28px}
+.idea h3{margin-bottom:10px;font-size:30px}
+.idea p{font-size:16px}
+.from-ig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}
+.from-ig blockquote{margin:0;padding:26px 28px;background:var(--bg);border-left:4px solid var(--red)}
+.from-ig blockquote p{font:800 28px/1 var(--display);text-transform:uppercase;color:var(--text)}
+.from-ig blockquote footer{display:block;margin-top:14px;font:600 14px/1.3 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+.found{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:40px}
+.found div{padding:26px 28px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.found div.bad{box-shadow:inset 0 0 0 1px var(--red-d);background:#1b0e0e}
+.found b{display:block;font:800 28px/1 var(--display);text-transform:uppercase;margin-bottom:8px}
+.found p{font-size:16px}
+.adv{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0;padding:0;list-style:none}
+.adv li{padding:24px 0 24px 26px;border-top:1px solid var(--line);position:relative}
+.adv li::before{content:"";position:absolute;left:0;top:31px;width:10px;height:10px;background:var(--red);transform:rotate(45deg)}
+.adv li:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+.adv strong{display:block;margin-bottom:4px;font-size:18px}
+.adv p{font-size:16px}
+
+.alert{margin-bottom:36px;padding:22px 26px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);border-left:4px solid var(--red)}
+.domain{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:40px;padding:20px 24px;background:var(--panel-2)}
+.domain code{font:800 clamp(24px,3vw,34px)/1 var(--display);color:var(--text);letter-spacing:.02em}
+.domain span{font-size:15px}
+.domain em{font-style:normal;font:600 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;background:#3ccf6e;color:#062a12;padding:6px 9px}
+.sub{margin:0 0 18px;font:600 16px/1.4 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.table-wrap{margin-bottom:48px}
+.table{width:100%;border-collapse:collapse;background:var(--panel);box-shadow:0 0 0 1px var(--line)}
+.table th,.table td{padding:16px 22px;text-align:left;vertical-align:top}
+.table thead th{background:var(--bg);color:var(--muted);font:600 14px/1.4 var(--display);letter-spacing:.14em;text-transform:uppercase}
+.table tbody tr+tr td{border-top:1px solid var(--line)}
+.table td{color:var(--muted);font-size:16px}
+.table td strong{display:block}
+.table td small{display:block;font-size:14px;color:var(--dim)}
+.table td:nth-child(3),.table td:nth-child(4){font-weight:600;color:var(--text)}
+.plans{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:18px;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;padding:28px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.plan--rec{box-shadow:inset 0 0 0 2px var(--red)}
+.tag{position:absolute;top:-13px;left:28px;padding:5px 12px;background:var(--red);color:#fff;font:600 13px/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase}
+.plan h3{margin-bottom:4px;font-size:36px}
+.plan .for{margin-bottom:16px;font-size:15px}
+.plan .mo{color:var(--text);font:800 48px/1 var(--display)}
+.plan .mo small{font:400 15px/1 var(--body);color:var(--muted)}
+.plan dl{display:grid;grid-template-columns:1fr auto;gap:8px 12px;margin:20px 0 22px;padding-top:18px;border-top:1px solid var(--line);font-size:15px}
+.plan dt{color:var(--muted)}
+.plan dd{margin:0;font-weight:600;text-align:right}
+.plan .button{margin-top:auto}
+.why-link{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;padding:24px 28px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.why-link p{font-size:16px}
+.fineprint{margin:22px 0 0;font-size:13px;color:var(--dim)}
+
+.closing{text-align:center;background:linear-gradient(180deg,var(--bg),#170808)}
+.closing .eyebrow{justify-content:center}
+.closing h2{max-width:820px;margin:0 auto 16px;font-size:clamp(44px,6vw,80px)}
+.closing p{max-width:580px;margin:0 auto;font-size:18px}
+footer.foot{padding:22px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.credit{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.credit img{width:22px;height:22px;border-radius:50%}
+
+@media (max-width:900px){
+  .device-grid,.head,.why-link,.from-ig,.found{grid-template-columns:1fr}
+  .phones{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ideas,.plans,.adv{grid-template-columns:1fr}
+  .plans{gap:26px}
+  .adv li:nth-last-child(2){border-bottom:0}
+}
+@media (max-width:700px){
+  .table thead{display:none}
+  .table,.table tbody,.table tr,.table td{display:block;width:100%}
+  .table tbody tr+tr td{border-top:0}
+  .table tbody tr+tr{border-top:1px solid var(--line)}
+  .table td{padding:3px 18px}
+  .table td:first-child{padding-top:18px;padding-bottom:6px}
+  .table td:last-child{padding-bottom:18px}
+  .table td:not(:first-child)::before{content:attr(data-label) ": ";color:var(--dim);font-weight:400}
+}
+@media (max-width:560px){
+  .phones{grid-template-columns:1fr;gap:28px}
+  .device .screen{height:440px}
+  .actions .button{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="./" target="_blank" rel="noopener"><img src="assets/img/logo-sr.png" alt="" width="40" height="40"><span><b>Stronger</b><small>Academia · Artur Nogueira</small></span></a></div></div>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow rv">Uma apresentação para a Stronger Academia</p>
+    <h1 class="rv" style="--d:80ms"><s>Segunda eu começo.</s> O site da Stronger <em>já foi feito.</em></h1>
+    <p class="intro rv" style="--d:160ms">Dez anos, nota 4,8 com 125 avaliações no Google e mais de 6 mil seguidores. Juntamos o que vocês já mostram no Instagram num site próprio: a frase dos 10 anos, um dia inteiro dentro da academia, a fazendinha e os horários a um toque.</p>
+    <div class="actions rv" style="--d:240ms"><a class="button" href="./" target="_blank" rel="noopener">Abrir o site completo ↗</a><a class="button ghost" href="#ideia">Conhecer a proposta</a></div>
+  </div>
+</header>
+
+<main>
+  <section class="previews" aria-label="Prévia do novo site">
+    <div class="wrap device-grid">
+      <div class="rv"><div class="device"><div class="device-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>strongeracademia.com.br</span></div><div class="screen" data-w="1280"><iframe src="./" title="Prévia do site no computador" loading="lazy"></iframe></div></div><p class="caption">No computador</p></div>
+      <div class="phones">
+        <div class="rv" style="--d:120ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="./" title="Prévia do site no celular" loading="lazy"></iframe></div></div><p class="caption">No celular</p></div>
+        <div class="rv" style="--d:200ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="links/" title="Prévia da página de links da bio do Instagram" loading="lazy"></iframe></div></div><p class="caption">Página de links da bio</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--panel" id="ideia">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">O que pensamos</p><h2 class="rv" style="--d:80ms">Segunda eu começo. <em>Hoje eu fui.</em></h2></div>
+        <p class="rv" style="--d:160ms">A frase é de vocês, da arte dos 10 anos. O site abre com "Segunda eu começo" sendo riscado em vermelho. Depois a pessoa vive um dia na Stronger rolando a página: o relógio sai de 04:59 e chega a 21:30, com as frases que vocês repetem no feed.</p>
+      </div>
+      <div class="ideas">
+        <article class="idea rv"><img src="assets/img/fachada.webp" alt="Fachada da Stronger Academia" loading="lazy" width="1080" height="720"><div><h3>A marca de verdade</h3><p>O vermelho e o preto do logo, as fotos reais da fachada, do salão de tijolo e da prateleira de troféus. As artes com modelos de banco de imagem ficaram de fora.</p></div></article>
+        <article class="idea rv" style="--d:90ms"><img src="assets/img/geracoes.webp" alt="Dois alunos de gerações diferentes sob o letreiro" loading="lazy" width="1000" height="1250" style="object-position:50% 30%"><div><h3>A Meca caipira</h3><p>Musculação, powerlifting e fisiculturismo, do jovem aos mais experientes, e a comunidade: Arraiá, Natal Solidário, corrida e o Campeonato de Supino.</p></div></article>
+        <article class="idea rv" style="--d:180ms"><img src="assets/img/interior.webp" alt="Interior da academia" loading="lazy" width="900" height="1600" style="object-position:50% 40%"><div><h3>Ligar em 1 toque</h3><p>Telefone, rota no mapa, horários com o aviso "aberta agora" e um link de Direct, no site e na página de links da bio.</p></div></article>
+      </div>
+      <div class="from-ig">
+        <blockquote class="rv"><p>"Transformando 'segunda eu começo' em 'hoje eu fui'."</p><footer>Arte dos 10 anos · vira a abertura</footer></blockquote>
+        <blockquote class="rv" style="--d:90ms"><p>"Vença a vontade de não ir."</p><footer>Legenda do feed · vira o dia na Stronger</footer></blockquote>
+        <blockquote class="rv" style="--d:180ms"><p>"A Meca do bodybuilding caipira."</p><footer>Como vocês se chamam · vira a seção do espaço</footer></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">Vantagens</p><h2 class="rv" style="--d:80ms">Quem procura no Google <em>acha a Stronger.</em></h2></div>
+        <p class="rv" style="--d:160ms">O Instagram de vocês alcança quem já segue a academia. Quem é novo na cidade ou pesquisa "academia em Artur Nogueira" precisa de um endereço para clicar, ligar e chegar.</p>
+      </div>
+      <div class="found">
+        <div class="bad rv"><b>Hoje</b><p>Sem site. O telefone fixo só aparece no Google, não há WhatsApp público e os horários ficam na bio do Instagram.</p></div>
+        <div class="rv" style="--d:90ms"><b>Com o site</b><p>Um endereço próprio com horários, rota, telefone, modalidades e 10 anos de história, preparado para as buscas da cidade e ligado à ficha do Google.</p></div>
+      </div>
+      <ul class="adv">
+        <li class="rv"><strong>Aparecer no Google</strong><p>Textos e dados estruturados de academia (endereço, telefone, horários e nota) para buscas como academia, musculação e powerlifting em Artur Nogueira.</p></li>
+        <li class="rv" style="--d:80ms"><strong>Horário sempre certo</strong><p>O site mostra se a Stronger está aberta agora, no horário de Brasília, e avisa quando abre.</p></li>
+        <li class="rv"><strong>A página de links da bio</strong><p>Uma página própria para o link do Instagram: ligar, rota, horários, modalidades, loja de suplementos e Next Fit.</p></li>
+        <li class="rv" style="--d:80ms"><strong>Endereço no nome da Stronger</strong><p>Um domínio .com.br para colocar na bio, nas artes e na fachada, que continua de vocês independente das redes.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec--panel" id="hospedagem">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">Domínio e hospedagem</p><h2 class="rv" style="--d:80ms">Um endereço <em>no nome da Stronger.</em></h2></div>
+        <p class="rv" style="--d:160ms">Para o site ficar no ar, a Stronger precisa de um domínio e de uma hospedagem, contratados direto na Hostinger, no nome da academia, com <strong>parcelamento em até 12x</strong>. A conta e o domínio são de vocês; a configuração eu faço.</p>
+      </div>
+      <div class="domain rv"><code>strongeracademia.com.br</code><em>Parece livre</em><span>Consultado no Registro.br em 06/11/2026. Alternativa: academiastronger.com.br. Pode ser registrado grátis no plano Single.</span></div>
+      <h3 class="sub rv">Entenda cada item</h3>
+      <div class="table-wrap rv">
+        <table class="table">
+          <thead><tr><th>Item</th><th>O que é</th><th>Quem fornece</th><th>Custo</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item"><strong>Domínio</strong><small>o endereço .com.br</small></td><td data-label="O que é">O endereço que os alunos digitam e que vai na bio do Instagram.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">grátis no 1º ano*</td></tr>
+            <tr><td data-label="Item"><strong>Hospedagem</strong><small>provedor: Hostinger</small></td><td data-label="O que é">Onde o site fica guardado e funcionando 24 horas.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">a partir de R$ 5,99/mês</td></tr>
+            <tr><td data-label="Item"><strong>Certificado SSL</strong><small>o cadeado do navegador</small></td><td data-label="O que é">Conexão segura (https), exigida pelo Google e pelos navegadores.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+            <tr><td data-label="Item"><strong>E-mail profissional</strong><small>com o nome do domínio</small></td><td data-label="O que é">Um e-mail da Stronger com o endereço próprio.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub rv">Planos da Hostinger</h3>
+      <div class="plans">
+        <article class="plan plan--rec rv">
+          <span class="tag">Recomendado</span>
+          <h3>Single</h3><p class="for">1 site e 1 domínio: tudo que a Stronger precisa.</p>
+          <p class="mo">R$ 5,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 287,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 23,99/mês</dd><dt>Domínio</dt><dd>grátis</dd><dt>E-mail profissional</dt><dd>1 conta</dd></dl>
+          <a class="button" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Single</a>
+        </article>
+        <article class="plan rv" style="--d:90ms">
+          <h3>Premium</h3><p class="for">Para quem quer mais contas de e-mail.</p>
+          <p class="mo">R$ 10,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 527,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 38,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>2 contas (1º ano)</dd></dl>
+          <a class="button ghost" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Premium</a>
+        </article>
+        <article class="plan rv" style="--d:180ms">
+          <h3>Unlimited</h3><p class="for">Sites e e-mails ilimitados.</p>
+          <p class="mo">R$ 13,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 671,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 64,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>ilimitado (1º ano)</dd></dl>
+          <a class="button ghost" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Unlimited</a>
+        </article>
+      </div>
+      <div class="why-link rv">
+        <p><strong>Por que o Single?</strong> A Stronger precisa de um site e um domínio, e o Single cobre exatamente isso, com domínio grátis e uma conta de e-mail profissional, por cerca de R$ 6 por mês.</p>
+        <p><strong>Prefere contratar só 1 ano?</strong> A Hostinger também oferece planos de 12 e 24 meses; o valor mensal é um pouco maior e aparece na tela de pagamento. Um domínio .com.br avulso custa cerca de R$ 40 por ano.</p>
+      </div>
+      <p class="fineprint">* Domínio grátis conforme o plano escolhido. Preços da Hostinger no plano de 48 meses, com parcelamento em até 12x. Podem mudar conforme promoções; o valor final é sempre o mostrado na tela de pagamento da Hostinger.</p>
+    </div>
+  </section>
+
+  <section class="sec closing">
+    <div class="wrap">
+      <p class="eyebrow rv">Stronger Academia · Artur Nogueira/SP</p>
+      <h2 class="rv" style="--d:80ms">Vença a vontade <em>de não ir.</em></h2>
+      <p class="rv" style="--d:160ms">Abra no computador e no celular e role devagar pelo dia na Stronger. Gostaram? Me chamem e eu coloco no ar no endereço de vocês.</p>
+      <div class="actions rv" style="--d:240ms"><a class="button" href="./" target="_blank" rel="noopener">Acessar o novo site ↗</a><a class="button ghost" href="https://wa.me/5511963767799?text=Ol%C3%A1%20Fernando%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20do%20site%20da%20Stronger%20Academia!" target="_blank" rel="noopener">Falar com o Fernando</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <span>Apresentação preparada especialmente para a Stronger Academia.</span>
+  <a class="credit" href="https://fernandoparmezani.com.br" target="_blank" rel="noopener">Site desenvolvido por <img src="assets/img/fp-logo.png" alt=""> Fernando Parmezani dos Reis</a>
+</div></footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const screens=[...document.querySelectorAll('.screen')];
+function fit(){screens.forEach(sc=>{const w=+sc.dataset.w,s=sc.clientWidth/w,f=sc.querySelector('iframe');f.style.width=w+'px';f.style.height=Math.ceil(sc.clientHeight/s)+'px';sc.style.setProperty('--s',s)})}
+fit();addEventListener('resize',fit);new ResizeObserver(fit).observe(document.body);
+</script>
+</body>
+</html>

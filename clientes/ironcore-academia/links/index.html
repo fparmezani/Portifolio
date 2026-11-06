@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IRONCORE Academia · Links</title>
+<meta name="description" content="IRONCORE Academia, academia em Artur Nogueira/SP. Aula experimental pelo WhatsApp, aulas de hoje, horários, endereço e Instagram.">
+<meta name="theme-color" content="#0e0b0b">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/fonts.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--bg:#0e0b0b;--panel:#1a1414;--panel-2:#221a1a;--line:#2e2525;--line-2:#3d3232;--text:#f5f1f0;--muted:#b0a6a4;--dim:#857a78;--red:#e3161b;--red-hi:#ff3b3f;--led:#ff2a2f;--ease:cubic-bezier(.23,1,.32,1);color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);font:400 16px/1.5 'Montserrat',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.leds{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.leds path{fill:none;stroke:var(--led);stroke-width:2.2;stroke-linecap:round;opacity:.45;filter:drop-shadow(0 0 6px rgba(255,42,47,.6))}
+.js .leds path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s var(--ease) forwards}
+.leds path:nth-child(2){animation-delay:.2s}.leds path:nth-child(3){animation-delay:.4s}
+@keyframes draw{to{stroke-dashoffset:0}}
+main{position:relative;z-index:1;width:min(520px,calc(100% - 32px));margin:0 auto;padding:44px 0 32px}
+.head{text-align:center}
+.head img{width:min(260px,70%);margin:0 auto}
+.head p{margin:14px 0 0;color:var(--muted);font-size:15px}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 14px;border:1px solid var(--line-2);font-size:14px;font-weight:700}
+.status i{width:9px;height:9px;transform:rotate(45deg);background:var(--dim)}
+.status.open i{background:#35d07f;animation:pulse 1.8s ease-in-out infinite}
+.status.closed i{background:var(--red-hi)}
+@keyframes pulse{50%{opacity:.35}}
+.list{display:grid;gap:12px;margin-top:28px}
+.lk{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 18px;background:var(--panel);border:1px solid var(--line);font-weight:700;transition:transform 160ms var(--ease),border-color 200ms ease,background-color 200ms ease}
+.lk:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.lk:hover{border-color:var(--line-2);background:var(--panel-2)}.lk:hover .go{transform:translateX(3px)}}
+.lk svg.ic{width:24px;height:24px;flex:none;color:var(--red-hi)}
+.lk span{flex:1;min-width:0}
+.lk small{display:block;margin-top:2px;font-size:13px;font-weight:500;color:var(--muted)}
+.lk .go{width:18px;height:18px;flex:none;color:var(--dim);transition:transform 200ms var(--ease)}
+.lk.main{background:var(--red);border-color:var(--red);color:#fff;min-height:72px;font-size:17px}
+.lk.main svg.ic,.lk.main .go{color:#fff}
+.lk.main small{color:rgba(255,255,255,.9)}
+.card{padding:18px;background:var(--panel);border:1px solid var(--line)}
+.card h2{margin:0 0 12px;font:800 18px/1.1 'Saira',sans-serif;font-stretch:118%;text-transform:uppercase;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card h2 small{font:600 12px 'Montserrat',sans-serif;letter-spacing:.08em;color:var(--dim)}
+.today{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.today li{padding:10px;border:1px solid var(--line-2);text-align:center}
+.today b{display:block;font:800 18px/1 'Saira',sans-serif;font-stretch:112%}
+.today span{display:block;margin-top:5px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.today li.next{border-color:var(--red);background:rgba(227,22,27,.12)}
+.today li.past{opacity:.45}
+.today .none{grid-column:1/-1;text-align:left;border:0;padding:0;color:var(--muted);font-size:14px}
+.hours{margin:0;display:grid;gap:8px}
+.hours div{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.hours dt{color:var(--muted)}.hours dd{margin:0;font-weight:700}
+.passes{display:flex;gap:8px;margin-top:14px}
+.passes span{flex:1;padding:9px;border:1px solid var(--line-2);text-align:center;font-size:13px;font-weight:700}
+.foot{margin-top:28px;text-align:center;font-size:12px;color:var(--dim);line-height:1.7}
+.foot a.credit{display:inline-flex;align-items:center;gap:6px;margin-top:8px;color:var(--muted)}
+.foot a.credit img{width:22px;height:22px}
+.foot strong{color:var(--text);font-weight:600}
+.js .cas{opacity:0;transform:translateY(16px);animation:up 700ms var(--ease) forwards;animation-delay:calc(80ms + var(--i) * 60ms)}
+@keyframes up{to{opacity:1;transform:none}}
+:focus-visible{outline:2px solid var(--red-hi);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.js .cas{opacity:1;transform:none;animation:none}.js .leds path{animation:none;stroke-dashoffset:0}.status.open i{animation:none}}
+</style>
+</head>
+<body>
+<svg class="leds" viewBox="0 0 400 860" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path pathLength="1" d="M-20 120 L420 -40"/><path pathLength="1" d="M-20 860 L420 640"/><path pathLength="1" d="M180 900 L460 720"/></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></symbol>
+  <symbol id="go" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></symbol>
+</svg>
+<main>
+  <header class="head">
+    <h1 class="cas" style="--i:0;margin:0"><img src="../assets/img/logo-476.png" alt="IRONCORE Academia" width="476" height="92"></h1>
+    <p class="cas" style="--i:1">Academia em Artur Nogueira/SP · musculação e aulas coletivas</p>
+    <p class="status cas" id="status" style="--i:2"><i></i><span id="statusTxt">Seg a sex 5h às 22h</span></p>
+  </header>
+
+  <nav class="list" aria-label="Links da Ironcore">
+    <a class="lk main cas" style="--i:3" href="https://wa.me/5519998722479?text=Ol%C3%A1%2C%20Ironcore!%20Quero%20agendar%20uma%20aula%20experimental." target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#wa"/></svg><span>Agendar aula experimental<small>Resposta pelo WhatsApp</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+
+    <section class="card cas" style="--i:4" aria-labelledby="hoje-t">
+      <h2 id="hoje-t">Aulas de hoje <small id="hojeDia">grade da semana</small></h2>
+      <ul class="today" id="today"><li class="none">Seg a sex: FitDance, Spinning, GAP, Ritbox, Aerobox, Pilates e Alongamento.</li></ul>
+    </section>
+
+    <section class="card cas" style="--i:5" aria-labelledby="hr-t">
+      <h2 id="hr-t">Horários</h2>
+      <dl class="hours"><div><dt>Segunda a sexta</dt><dd>05h às 22h</dd></div><div><dt>Sáb, dom e feriado</dt><dd>09h às 14h</dd></div></dl>
+      <div class="passes"><span>Gympass</span><span>Totalpass (TP1+)</span></div>
+    </section>
+
+    <a class="lk cas" style="--i:6" href="https://www.google.com/maps/dir/?api=1&amp;destination=IRONCORE%20Academia%2C%20R.%20XV%20de%20Novembro%2C%20517%2C%20Artur%20Nogueira%20SP" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Como chegar<small>R. XV de Novembro, 517 · Sobreloja</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+    <a class="lk cas" style="--i:7" href="../#aulas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8"/></svg><span>Grade completa da semana<small>Todas as aulas coletivas</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+    <a class="lk cas" style="--i:8" href="../#planos"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><span>Plano Clube Iron<small>Avaliação física, freepass e trancamento</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+    <a class="lk cas" style="--i:9" href="../"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Site da Ironcore<small>Estrutura, um dia na academia e mais</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+    <a class="lk cas" style="--i:10" href="https://www.instagram.com/ironcore.academia/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg><span>Instagram<small>@ironcore.academia</small></span><svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+  </nav>
+
+  <footer class="foot">
+    CREF 020146-PJ/SP · (19) 99872-2479<br>
+    <a class="credit" href="https://fernandoparmezani.com.br" target="_blank" rel="noopener noreferrer">Site desenvolvido por <img src="../assets/img/fp-logo.png" alt="" width="22" height="22"><strong>Fernando Parmezani dos Reis</strong></a>
+  </footer>
+</main>
+<script>
+(() => {
+  const G = {1:[['07:20','Spinning'],['08:00','GAP'],['17:00','Pilates'],['18:30','Spinning'],['19:15','FitDance'],['20:00','Aerobox']],2:[['07:00','FitDance'],['08:00','Ritbox'],['09:00','Pilates'],['18:30','Spinning'],['19:15','FitDance'],['20:10','GAP']],3:[['07:00','Alongamento'],['08:00','Aerobox'],['09:00','Spinning'],['18:30','Spinning'],['19:15','FitDance'],['20:00','Spinning']],4:[['07:20','Spinning'],['08:00','Pilates'],['18:30','Spinning'],['19:15','FitDance']],5:[['07:00','FitDance'],['08:00','GAP']]};
+  const P = {}; new Intl.DateTimeFormat('en-US',{timeZone:'America/Sao_Paulo',hourCycle:'h23',weekday:'short',hour:'2-digit',minute:'2-digit'}).formatToParts(new Date()).forEach(x => P[x.type] = x.value);
+  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(P.weekday), min = (+P.hour % 24) * 60 + +P.minute;
+  const names = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  document.getElementById('hojeDia').textContent = names[wd];
+  const L = G[wd], ul = document.getElementById('today');
+  if (L) { let nx = false; ul.innerHTML = L.map(([t, n]) => { const m = +t.slice(0,2) * 60 + +t.slice(3); let c = ''; if (m + 50 <= min) c = 'past'; else if (!nx) { c = 'next'; nx = true; } return `<li class="${c}"><b>${t}</b><span>${n}</span></li>`; }).join(''); }
+  else ul.innerHTML = '<li class="none">Sem aulas coletivas hoje. Musculação das 9h às 14h.</li>';
+  const wk = wd >= 1 && wd <= 5, open = wk ? (min >= 300 && min < 1320) : (min >= 540 && min < 840);
+  let txt; if (open) txt = `Aberto agora · fecha às ${wk ? '22h' : '14h'}`; else if (wk && min < 300) txt = 'Fechado · abre hoje às 5h'; else if (!wk && min < 540) txt = 'Fechado · abre hoje às 9h'; else { const n = (wd + 1) % 7; txt = `Fechado · abre amanhã às ${n >= 1 && n <= 5 ? '5h' : '9h'}`; }
+  const st = document.getElementById('status'); st.classList.add(open ? 'open' : 'closed'); document.getElementById('statusTxt').textContent = txt;
+})();
+</script>
+</body>
+</html>

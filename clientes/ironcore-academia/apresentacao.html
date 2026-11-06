@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Um site para a IRONCORE Academia · Apresentação</title>
+<meta name="description" content="Apresentação do novo site e da página de links da IRONCORE Academia, em Artur Nogueira/SP.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+:root{--bg:#0e0b0b;--bg-2:#141010;--panel:#1a1414;--line:#2e2525;--paper:#f2f0ef;--paper-2:#e6e2e0;--ink:#151111;--ink-2:#544c4a;--line-l:#d8d2d0;--orange:#e3161b;--orange-hi:#ff3b3f;--orange-d:#b80f14;--text:#f5f1f0;--muted:#b0a6a4;--display:'Saira',Impact,sans-serif;--body:'Montserrat',system-ui,sans-serif;--mono:'Montserrat',system-ui,sans-serif;--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+p{margin-top:0;color:var(--ink-2)}
+strong{font-weight:600;color:var(--ink)}
+img{display:block;max-width:100%;height:auto}
+.wrap{width:min(1160px,calc(100% - 40px));margin:0 auto}
+h1,h2,h3{margin-top:0;font-family:var(--display);font-stretch:106%;font-weight:800;line-height:.98;text-transform:uppercase;text-wrap:balance}
+h1 em,h2 em{color:var(--orange);font-style:normal}
+.eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 16px;color:var(--orange-d);font:700 12px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:2px;background:currentColor}
+.button{display:inline-flex;min-height:50px;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border:0;background:var(--ink);color:var(--paper);font-weight:700;font-size:15px;text-decoration:none;transition:background .25s,transform .16s ease-out}
+.button:active{transform:scale(.97)}
+.button.o{background:var(--orange);color:#fff}
+.button.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px rgba(244,241,236,.4);clip-path:none}
+.button.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.3);clip-path:none}
+@media (hover:hover) and (pointer:fine){.button:hover{background:#000}.button.o:hover{background:var(--orange-hi)}.button.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--text);background:transparent}.button.line:hover{background:var(--paper-2)}}
+
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0ms)}
+.js .rv.in{opacity:1;transform:none}
+
+.top{padding:18px 0;background:var(--bg);color:var(--text);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;width:max-content;text-decoration:none}
+.brand svg{width:56px;height:28px}
+.brand b{display:block;font:800 21px/1 var(--display);text-transform:uppercase}
+.brand b i{color:var(--orange);display:inline-block;transform:skewX(-7deg);margin-right:3px}
+.brand small{display:block;margin-top:4px;color:var(--muted);font:400 11px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+
+header{position:relative;padding:clamp(64px,9vw,108px) 0 60px;text-align:center;background:var(--bg);color:var(--text);overflow:hidden}
+header .eyebrow{color:var(--orange-hi);justify-content:center}
+h1{max-width:900px;margin:0 auto 22px;font-size:clamp(42px,6vw,78px)}
+.intro{max-width:640px;margin:0 auto;font-size:18px;color:#cfc7c5}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.leds{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.leds path{fill:none;stroke:#ff2a2f;stroke-width:2.2;opacity:.5;filter:drop-shadow(0 0 6px rgba(255,42,47,.6));stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s var(--ease) forwards}
+.leds path:nth-child(2){animation-delay:.2s}.leds path:nth-child(3){animation-delay:.4s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+
+.previews{padding:8px 0 90px;background:linear-gradient(var(--bg),var(--bg) 38%,var(--paper) 38%)}
+.device-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.5fr) minmax(220px,.5fr);gap:28px;align-items:end}
+.phones{display:contents}
+.device-grid > *{min-width:0}
+.device{padding:10px;border:1px solid #333338;background:#151517;box-shadow:0 28px 70px -36px rgba(0,0,0,.7)}
+.device-bar{display:flex;height:30px;align-items:center;gap:7px;padding:0 9px;color:var(--muted);font-size:11px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--orange);opacity:.75}
+.device-bar span{margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen{position:relative;overflow:hidden;background:var(--bg)}
+.device .screen{height:620px}
+.phone .screen{aspect-ratio:375/780;border-radius:23px}
+.screen iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;transform:scale(var(--s,1))}
+.phone{width:min(300px,100%);margin:0 auto;padding:12px 10px 10px;border:1px solid #333338;border-radius:34px;background:#151517;box-shadow:0 24px 60px -34px rgba(0,0,0,.7)}
+.speaker{width:72px;height:5px;margin:1px auto 10px;border-radius:9px;background:rgba(244,241,236,.22)}
+.caption{margin:12px 0 0;text-align:center;font-size:13px}
+
+.sec{padding:clamp(60px,7vw,92px) 0}
+.sec--panel{background:#faf9f8}
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:end;margin-bottom:40px}
+.head h2{margin:0;font-size:clamp(36px,4.6vw,56px)}
+.head > p{max-width:46ch;margin:0;padding-left:22px;border-left:3px solid var(--orange);font-size:17px}
+.num{display:block;margin-bottom:12px;color:var(--orange-d);font:400 11px/1 var(--mono);letter-spacing:.16em}
+.sub{margin:0 0 18px;font:700 12px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange-d)}
+
+.ideas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.idea{overflow:hidden;background:var(--paper);border:1px solid var(--line-l);position:relative}
+.idea::after{content:"";position:absolute;right:0;top:0;width:34px;height:34px;background:var(--orange);clip-path:polygon(100% 0,0 0,100% 100%)}
+.idea img{width:100%;aspect-ratio:16/11;object-fit:cover}
+.idea div{padding:24px 26px 28px}
+.idea h3{margin-bottom:10px;font-size:30px}
+.idea p{margin:0;font-size:15px}
+
+.from-ig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+.from-ig blockquote{margin:0;padding:26px 30px;background:var(--bg);color:var(--text);border-left:4px solid var(--orange)}
+.from-ig blockquote p{margin:0;font:800 30px/1 var(--display);text-transform:uppercase;color:var(--text)}
+.from-ig blockquote footer{all:unset;display:block;margin-top:14px;font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--orange-hi)}
+
+.found{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-bottom:40px}
+.found div{padding:24px 26px;border:1px solid var(--line-l);background:#faf9f8}
+.found div.bad{border-color:#efb3b4;background:#fdeeee}
+.found b{display:block;font:800 26px/1 var(--display);text-transform:uppercase;margin-bottom:8px}
+.found p{margin:0;font-size:15px}
+.adv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;margin:0;padding:0;list-style:none}
+.adv li{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;padding:22px 0;border-top:1px solid var(--line-l)}
+.adv li:nth-last-child(-n+2){border-bottom:1px solid var(--line-l)}
+.adv svg{width:44px;height:44px;padding:10px;background:var(--bg);color:var(--orange)}
+.adv strong{display:block;margin-bottom:4px;font-size:16px}
+.adv p{margin:0;font-size:15px}
+
+.price-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:stretch}
+.table{width:100%;border-collapse:collapse;background:var(--paper);box-shadow:0 0 0 1px var(--line-l)}
+.table th,.table td{padding:16px 22px;text-align:left;vertical-align:top}
+.table thead th{background:var(--bg);color:var(--text);font:400 11px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.table tbody tr+tr td{border-top:1px solid var(--line-l)}
+.table td:last-child,.table th:last-child{text-align:right;white-space:nowrap}
+.table td small{display:block;font-size:13px;color:var(--ink-2)}
+.table .discount td{color:var(--orange-d);font-weight:600}
+.table tfoot td{border-top:2px solid var(--ink);font-weight:600;font-size:17px;vertical-align:middle}
+.table tfoot td small{font-size:12px;font-weight:400}
+.table tfoot td:last-child{font:800 36px/1 var(--display);color:var(--ink)}
+.pay{display:flex;flex-direction:column;justify-content:space-between;padding:30px;background:var(--bg);color:var(--text)}
+.pay h3{margin-bottom:6px;font-size:34px}
+.pay p{color:#cfc7c5}
+.pay ul{margin:0 0 22px;padding:0;list-style:none}
+.pay li{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:15px;color:#e8e2e0}
+.pay li::before{flex:none;width:8px;height:8px;margin-top:9px;background:var(--orange);transform:rotate(45deg);content:""}
+.sum{margin:4px 0 24px;padding:18px 20px;background:rgba(244,241,236,.06);border-left:3px solid var(--orange)}
+.sum span{display:block;color:var(--orange-hi);font-size:12px;font-weight:600;letter-spacing:.06em}
+.sum strong{display:block;margin:2px 0;color:var(--text);font:800 38px/1.05 var(--display)}
+.sum small{color:var(--muted);font-size:13px}
+.pay .button{width:100%}
+.note{margin:18px 0 0;font-size:13px}
+
+.alert{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;margin-bottom:40px;padding:22px 26px;border:1px solid #efb3b4;background:#fdeeee}
+.alert svg{width:40px;height:40px;padding:9px;background:var(--bg);color:var(--orange)}
+.alert p{margin:0;font-size:16px}
+.table-wrap{margin-bottom:48px}
+.table--gloss td:last-child,.table--gloss th:last-child{text-align:left;white-space:normal}
+.table--gloss td strong{display:block}
+.table--gloss td:nth-child(3){white-space:nowrap;font-weight:600;color:var(--ink)}
+.table--gloss td:nth-child(4){font-weight:600;color:var(--ink)}
+.table--gloss tbody tr:last-child td{background:#faf9f8}
+
+.domain{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:40px;padding:20px 24px;background:var(--bg);color:var(--text)}
+.domain code{font:400 clamp(18px,2.4vw,26px)/1 var(--mono);color:var(--orange-hi)}
+.domain span{font-size:14px;color:#cfc7c5}
+.domain em{font-style:normal;font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:#35d06f;color:#062a12;padding:6px 8px}
+
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;padding:28px;border:1px solid var(--line-l);background:var(--paper)}
+.plan--rec{border-color:var(--orange);background:#faf9f8;box-shadow:0 24px 50px -32px rgba(0,0,0,.45)}
+.tag{position:absolute;top:-13px;left:28px;padding:4px 12px;background:var(--orange);color:#fff;font:400 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.plan h3{margin-bottom:4px;font-size:34px}
+.plan .for{margin-bottom:16px;font-size:14px}
+.plan .mo{margin:0;color:var(--ink);font:800 44px/1 var(--display)}
+.plan .mo small{font:400 14px/1 var(--body);color:var(--ink-2)}
+.plan dl{display:grid;grid-template-columns:1fr auto;gap:8px 12px;margin:20px 0 22px;padding-top:18px;border-top:1px solid var(--line-l);font-size:14px}
+.plan dt{color:var(--ink-2)}
+.plan dd{margin:0;font-weight:600;text-align:right}
+.plan .button{margin-top:auto}
+.why-link{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:28px;padding:24px 28px;background:#faf9f8;border:1px solid var(--line-l)}
+.why-link p{margin:0;font-size:15px}
+.fineprint{margin:22px 0 0;font-size:12px}
+
+.closing{text-align:center;background:var(--bg);color:var(--text);position:relative;overflow:hidden}
+.closing .eyebrow{color:var(--orange-hi);justify-content:center}
+.closing h2{max-width:760px;margin:0 auto 16px;font-size:clamp(40px,5.4vw,64px)}
+.closing p{max-width:560px;margin:0 auto;font-size:17px;color:#cfc7c5}
+footer.foot{padding:22px 0;background:var(--bg);border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.credit{display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.credit img{width:22px;height:22px;border-radius:4px;background:#fff;padding:2px}
+
+@media (max-width:900px){
+  .device-grid,.head,.price-grid,.why-link,.from-ig,.found{grid-template-columns:1fr}
+  .phones{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ideas,.plans{grid-template-columns:1fr}
+  .plans{gap:26px}
+  .adv{grid-template-columns:1fr}
+  .adv li:nth-last-child(2){border-bottom:0}
+}
+@media (max-width:700px){
+  .table--gloss thead{display:none}
+  .table--gloss,.table--gloss tbody,.table--gloss tr,.table--gloss td{display:block;width:100%}
+  .table--gloss tbody tr+tr td{border-top:0}
+  .table--gloss tbody tr+tr{border-top:1px solid var(--line-l)}
+  .table.table--gloss td{padding:3px 18px;line-height:1.5}
+  .table.table--gloss td:first-child{padding-top:18px;padding-bottom:6px}
+  .table.table--gloss td:last-child{padding-bottom:18px}
+  .table--gloss td:not(:first-child)::before{content:attr(data-label) ": ";color:var(--ink-2)}
+}
+@media (max-width:560px){
+  .phones{grid-template-columns:1fr;gap:28px}
+  .wrap{width:calc(100% - 32px)}
+  .device .screen{height:440px}
+  .table th,.table td{padding:14px 16px}
+  .table tfoot td:last-child{font-size:30px}
+  .alert{grid-template-columns:1fr}
+  .from-ig blockquote p{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}.leds path{animation:none;stroke-dashoffset:0}}
+
+.brand img{width:150px}
+.brand small{margin-top:6px}
+.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch}
+.cmp{padding:28px;border:1px solid var(--line-l);background:var(--paper);display:flex;flex-direction:column}
+.cmp h3{font-size:28px;margin-bottom:6px}
+.cmp > p{font-size:15px}
+.cmp ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.cmp li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--ink-2)}
+.cmp li b{flex:none;width:22px;height:22px;display:grid;place-items:center;font-size:13px;color:#fff;background:var(--orange)}
+.cmp.old{background:#fdeeee;border-color:#efb3b4}
+.cmp.old li b{background:var(--ink)}
+.cmp code{font-size:14px;background:#fff;padding:2px 6px;border:1px solid #efb3b4}
+.mini{margin-top:auto;padding-top:20px}
+.mini .phone{width:220px}
+@media (max-width:900px){.compare{grid-template-columns:1fr}}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="./" target="_blank" rel="noopener"><img src="assets/img/logo-476.png" alt="IRONCORE Academia" width="476" height="92"><span><small>Academia · Artur Nogueira/SP</small></span></a></div></div>
+
+<header>
+  <svg class="leds" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path pathLength="1" d="M-40 160 L520 -20"/><path pathLength="1" d="M1000 760 L1500 420"/><path pathLength="1" d="M1180 -20 L1500 140"/></svg>
+  <div class="wrap" style="position:relative">
+    <p class="eyebrow rv">Uma apresentação para a equipe da Ironcore</p>
+    <h1 class="rv" style="--d:80ms">Ironcore, o site de vocês está <em>pronto para conhecer.</em></h1>
+    <p class="intro rv" style="--d:160ms">Feito a partir do que vocês já mostram no Instagram: a pergunta "qual é o seu motivo?", um dia inteiro na academia das 5h às 22h, a grade de aulas e a página de links que substitui o Linktree.</p>
+    <div class="actions rv" style="--d:240ms"><a class="button o" href="./" target="_blank" rel="noopener">Abrir o site completo ↗</a><a class="button ghost" href="#ideia">Conhecer a proposta</a></div>
+  </div>
+</header>
+
+<main>
+  <section class="previews" aria-label="Prévia do novo site">
+    <div class="wrap device-grid">
+      <div class="rv"><div class="device"><div class="device-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>ironcoreacademia.com.br</span></div><div class="screen" data-w="1280"><iframe src="./?aceso" title="Prévia do site no computador" loading="lazy"></iframe></div></div><p class="caption">No computador</p></div>
+      <div class="phones">
+        <div class="rv" style="--d:120ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="./?aceso" title="Prévia do site no celular" loading="lazy"></iframe></div></div><p class="caption">No celular</p></div>
+        <div class="rv" style="--d:200ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="links/" title="Prévia da página de links da bio do Instagram" loading="lazy"></iframe></div></div><p class="caption">Página de links da bio</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--panel" id="ideia">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">01 · O que pensamos</p><h2 class="rv" style="--d:80ms">Qual é o <em>seu motivo?</em></h2></div>
+        <p class="rv" style="--d:160ms">A frase é de vocês, de um reel: "Cada pessoa tem um motivo para treinar, e todos eles são importantes." O site abre com essa pergunta e depois mostra um dia na Ironcore: o relógio anda de 05:00 até 22:00 enquanto a pessoa rola, e cada horário tem uma foto real e um motivo.</p>
+      </div>
+      <div class="ideas">
+        <article class="idea rv"><img src="assets/img/hero.webp" alt="Salão da Ironcore com o letreiro na parede" loading="lazy" width="720" height="960"><div><span class="num">01 · IDENTIDADE</span><h3>Preto, branco e vermelho</h3><p>As cores do logo, das artes e do próprio salão, com as fitas de LED do teto desenhadas em vermelho. Só fotos reais da academia, da equipe e dos alunos.</p></div></article>
+        <article class="idea rv" style="--d:90ms"><img src="assets/img/d07.webp" alt="Aula coletiva de dança" loading="lazy" width="720" height="900" style="object-position:50% 30%"><div><span class="num">02 · AULAS</span><h3>A grade que o aluno procura</h3><p>A grade de aulas coletivas vira uma régua do dia: a pessoa escolhe o dia e vê as aulas no horário, com a próxima aula marcada.</p></div></article>
+        <article class="idea rv" style="--d:180ms"><img src="assets/img/parede.webp" alt="Professor de camiseta vermelha no salão" loading="lazy" width="720" height="900"><div><span class="num">03 · CONTATO</span><h3>Aula experimental em 1 toque</h3><p>A pessoa diz o que quer fazer, o melhor horário e se tem Gympass ou Totalpass. A mensagem chega pronta no WhatsApp de vocês.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="links">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">02 · Linktree × página de links</p><h2 class="rv" style="--d:80ms">O link da bio <em>hoje não funciona.</em></h2></div>
+        <p class="rv" style="--d:160ms">O Linktree da Ironcore tem um único botão, "Fale Conosco no Whatsapp", e o número está sem o código do Brasil. Quem toca nele cai num número dos Estados Unidos, não no WhatsApp de vocês.</p>
+      </div>
+      <div class="compare">
+        <div class="cmp old rv"><h3>Linktree atual</h3><p>linktr.ee/ironcoreacademia, conferido em 06/11/2026.</p>
+          <ul><li><b>1</b><span>Um botão de WhatsApp com o link <code>wa.me/19998722479</code>, sem o 55. Não abre a conversa certa.</span></li><li><b>×</b><span>Sem horários, sem grade de aulas, sem endereço, sem Gympass e Totalpass.</span></li><li><b>×</b><span>Endereço com o nome do Linktree, não da academia.</span></li></ul></div>
+        <div class="cmp rv" style="--d:90ms"><h3>Página de links nova</h3><p>No endereço da Ironcore, com a mesma cara do site.</p>
+          <ul><li><b>✓</b><span>Aula experimental pelo WhatsApp, com o número certo.</span></li><li><b>✓</b><span>Aulas de hoje com a próxima aula destacada, e o selo "aberto agora".</span></li><li><b>✓</b><span>Horários, Gympass e Totalpass, rota no mapa, plano Clube Iron, site e Instagram.</span></li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--panel">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">03 · Vantagens</p><h2 class="rv" style="--d:80ms">Ser encontrado <em>fora do Instagram.</em></h2></div>
+        <p class="rv" style="--d:160ms">A Ironcore tem nota 4,8 com 54 avaliações no Google e mais de 4.600 seguidores. O que falta é um endereço próprio para quem procura "academia em Artur Nogueira" e quer ver horários e aulas antes de ir.</p>
+      </div>
+      <ul class="adv">
+        <li class="rv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><div><strong>Aparecer no Google</strong><p>Textos e dados preparados para buscas como academia, musculação, spinning e FitDance em Artur Nogueira, com a nota do Google ligada ao site.</p></div></li>
+        <li class="rv" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><div><strong>Grade de aulas sempre à mão</strong><p>Em vez de procurar o post da grade no feed, o aluno vê as aulas do dia no site e na bio.</p></div></li>
+        <li class="rv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div><strong>Mensagens mais completas</strong><p>A aula experimental chega com nome, interesse, horário e se a pessoa tem Gympass ou Totalpass.</p></div></li>
+        <li class="rv" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><strong>Endereço no nome da Ironcore</strong><p>Um domínio .com.br próprio para a bio, o cartão, a fachada e as artes de vagas, com e-mail profissional.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="hospedagem">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow rv">04 · Domínio e hospedagem</p><h2 class="rv" style="--d:80ms">O endereço <em>no nome da Ironcore.</em></h2></div>
+        <p class="rv" style="--d:160ms">Para o site e a página de links ficarem no ar, é preciso um domínio e uma hospedagem, contratados direto na Hostinger, no nome da academia, com <strong>parcelamento em até 12x</strong>. A conta e o domínio são de vocês; a configuração eu faço.</p>
+      </div>
+      <div class="domain rv"><code>ironcoreacademia.com.br</code><em>Disponível</em><span>Consultado no Registro.br em 06/11/2026. Pode ser registrado grátis no plano Single. Alternativa livre: academiaironcore.com.br.</span></div>
+      <h3 class="sub rv">Entenda cada item</h3>
+      <div class="table-wrap rv">
+        <table class="table table--gloss">
+          <thead><tr><th>Item</th><th>O que é</th><th>Quem fornece</th><th>Custo</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item"><strong>Domínio</strong><small>o endereço .com.br do site</small></td><td data-label="O que é">O endereço que os alunos digitam e que vai na bio do Instagram.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">grátis no 1º ano*</td></tr>
+            <tr><td data-label="Item"><strong>Hospedagem</strong><small>provedor: Hostinger</small></td><td data-label="O que é">O "terreno" onde o site fica guardado e funcionando 24 horas.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">a partir de R$ 5,99/mês</td></tr>
+            <tr><td data-label="Item"><strong>Certificado SSL</strong><small>o cadeado do navegador</small></td><td data-label="O que é">Conexão segura (https), exigida pelo Google e pelos navegadores.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+            <tr><td data-label="Item"><strong>E-mail profissional</strong><small>com o nome do domínio</small></td><td data-label="O que é">Um e-mail da academia com o endereço próprio, por exemplo para receber currículos.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub rv">Planos da Hostinger</h3>
+      <div class="plans">
+        <article class="plan plan--rec rv">
+          <span class="tag">Recomendado</span>
+          <h3>Single</h3><p class="for">1 site e 1 domínio: tudo que a Ironcore precisa.</p>
+          <p class="mo">R$ 5,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 287,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 23,99/mês</dd><dt>Domínio</dt><dd>grátis</dd><dt>E-mail profissional</dt><dd>1 conta</dd></dl>
+          <a class="button" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Single</a>
+        </article>
+        <article class="plan rv" style="--d:90ms">
+          <h3>Premium</h3><p class="for">Para quem quer mais contas de e-mail.</p>
+          <p class="mo">R$ 10,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 527,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 38,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>2 contas (1º ano)</dd></dl>
+          <a class="button line" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Premium</a>
+        </article>
+        <article class="plan rv" style="--d:180ms">
+          <h3>Unlimited</h3><p class="for">Sites e e-mails ilimitados.</p>
+          <p class="mo">R$ 13,99<small>/mês</small></p>
+          <dl><dt>Total (48 meses)</dt><dd>R$ 671,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 64,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>ilimitado (1º ano)</dd></dl>
+          <a class="button line" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Unlimited</a>
+        </article>
+      </div>
+      <div class="why-link rv">
+        <p><strong>Por que o Single?</strong> A Ironcore precisa de um site e um domínio, e o Single cobre exatamente isso, com domínio grátis e uma conta de e-mail profissional, por cerca de R$ 6 por mês.</p>
+        <p><strong>Prefere contratar só 1 ano?</strong> A Hostinger também oferece planos de 12 e 24 meses; o valor mensal é um pouco maior e aparece na tela de pagamento. Um domínio .com.br, se não for o gratuito do plano, custa cerca de R$ 40 por ano.</p>
+      </div>
+      <p class="fineprint">* Domínio grátis conforme o plano escolhido. Preços da Hostinger consultados em 05/10/2026, no plano de 48 meses, com parcelamento em até 12x. Podem mudar conforme promoções; o valor final é sempre o mostrado na tela de pagamento da Hostinger.</p>
+    </div>
+  </section>
+
+  <section class="sec closing">
+    <svg class="leds" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path pathLength="1" d="M-40 560 L420 260"/><path pathLength="1" d="M1060 640 L1500 330"/><path pathLength="1" d="M1100 -20 L1500 120"/></svg>
+    <div class="wrap" style="position:relative">
+      <p class="eyebrow rv">IRONCORE Academia · Artur Nogueira/SP</p>
+      <h2 class="rv" style="--d:80ms">E você? Qual é <em>o seu motivo?</em></h2>
+      <p class="rv" style="--d:160ms">Abram no computador e no celular e rolem devagar pela parte "Um dia na Ironcore": o relógio anda das 5h às 22h. Gostaram? Me chamem e eu coloco no ar no endereço de vocês.</p>
+      <div class="actions rv" style="--d:240ms"><a class="button o" href="./" target="_blank" rel="noopener">Acessar o novo site ↗</a><a class="button ghost" href="https://wa.me/5511963767799?text=Ol%C3%A1%20Fernando%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20do%20site%20da%20Ironcore!" target="_blank" rel="noopener">Falar com o Fernando</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <span>Apresentação preparada especialmente para a IRONCORE Academia.</span>
+  <a class="credit" href="https://fernandoparmezani.com.br" target="_blank" rel="noopener">Site desenvolvido por <img src="assets/img/fp-logo.png" alt=""> Fernando Parmezani dos Reis</a>
+</div></footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const screens=[...document.querySelectorAll('.screen')];
+function fit(){screens.forEach(sc=>{const w=+sc.dataset.w,s=sc.clientWidth/w,f=sc.querySelector('iframe');f.style.width=w+'px';f.style.height=Math.ceil(sc.clientHeight/s)+'px';sc.style.setProperty('--s',s)})}
+fit();addEventListener('resize',fit);new ResizeObserver(fit).observe(document.body);
+</script>
+</body>
+</html>

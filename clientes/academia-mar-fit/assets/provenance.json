@@ -1,0 +1,208 @@
+{
+ "hero-on": {
+  "arquivos": [
+   "assets/img/hero-on.jpg",
+   "assets/img/hero-on.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DLFZgFmOmFI/",
+  "arquivo_fonte": "_src/ig/065.jpg",
+  "tratamento": "Foto original, sem edição além da compressão",
+  "tipo": "foto real"
+ },
+ "hero-off": {
+  "arquivos": [
+   "assets/img/hero-off.jpg",
+   "assets/img/hero-off.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DLFZgFmOmFI/",
+  "arquivo_fonte": "_src/ig/065.jpg",
+  "tratamento": "Versão \"apagada\": luminárias pintadas de escuro e exposição a 42% (PIL)",
+  "tipo": "foto real"
+ },
+ "dia-0400": {
+  "arquivos": [
+   "assets/img/dia-0400.jpg",
+   "assets/img/dia-0400.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DXh7mqbkV0v/",
+  "arquivo_fonte": "_src/ig/023r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-0600": {
+  "arquivos": [
+   "assets/img/dia-0600.jpg",
+   "assets/img/dia-0600.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DdL18zIR37I/",
+  "arquivo_fonte": "_src/ig/007r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-0710": {
+  "arquivos": [
+   "assets/img/dia-0710.jpg",
+   "assets/img/dia-0710.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DVPgRo_EU_-/",
+  "arquivo_fonte": "_src/ig/030r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-1200": {
+  "arquivos": [
+   "assets/img/dia-1200.jpg",
+   "assets/img/dia-1200.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DLr4dIru58i/",
+  "arquivo_fonte": "_src/ig/061.jpg",
+  "tratamento": "Recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-1900": {
+  "arquivos": [
+   "assets/img/dia-1900.jpg",
+   "assets/img/dia-1900.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DWZG4cPkUtt/",
+  "arquivo_fonte": "_src/ig/027r.jpg",
+  "tratamento": "Capa do reel de Fitdance, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-2200": {
+  "arquivos": [
+   "assets/img/dia-2200.jpg",
+   "assets/img/dia-2200.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DLFZgFmOmFI/",
+  "arquivo_fonte": "_src/ig/065.jpg",
+  "tratamento": "Recorte 4:5",
+  "tipo": "foto real"
+ },
+ "dia-fds": {
+  "arquivos": [
+   "assets/img/dia-fds.jpg",
+   "assets/img/dia-fds.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DCRskzsuHw3/",
+  "arquivo_fonte": "_src/ig/103r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "aulas-turma": {
+  "arquivos": [
+   "assets/img/aulas-turma.jpg",
+   "assets/img/aulas-turma.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DT3uR1FkWoe/",
+  "arquivo_fonte": "_src/ig/034r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "equipe": {
+  "arquivos": [
+   "assets/img/equipe.jpg",
+   "assets/img/equipe.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DUTLbhrjsAa/",
+  "arquivo_fonte": "_src/ig/033r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "treinao": {
+  "arquivos": [
+   "assets/img/treinao.jpg",
+   "assets/img/treinao.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DC4xVQ3PHEM/",
+  "arquivo_fonte": "_src/ig/099r.jpg",
+  "tratamento": "Capa do reel do Treinão, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "confra": {
+  "arquivos": [
+   "assets/img/confra.jpg",
+   "assets/img/confra.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DSOXLKYkXki/",
+  "arquivo_fonte": "_src/ig/040.jpg",
+  "tratamento": "Foto da confraternização 2025, sem recorte",
+  "tipo": "foto real"
+ },
+ "miss": {
+  "arquivos": [
+   "assets/img/miss.jpg",
+   "assets/img/miss.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DYF3D8XDbmn/",
+  "arquivo_fonte": "_src/ig/020.jpg",
+  "tratamento": "Recorte 4:5",
+  "tipo": "foto real"
+ },
+ "turma": {
+  "arquivos": [
+   "assets/img/turma.jpg",
+   "assets/img/turma.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/C-WSckWtWOT/",
+  "arquivo_fonte": "_src/ig/119r.jpg",
+  "tratamento": "Capa de reel, recorte 4:5",
+  "tipo": "foto real"
+ },
+ "escudo": {
+  "arquivos": [
+   "assets/img/escudo.png",
+   "assets/img/escudo.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/marfitacademia/ (foto de perfil)",
+  "arquivo_fonte": "_src/perfil.jpg",
+  "tratamento": "Logo da foto de perfil, recorte do escudo com fundo transparente por luminância",
+  "tipo": "logo oficial (raster)"
+ },
+ "logo": {
+  "arquivos": [
+   "assets/img/logo.png",
+   "assets/img/logo.webp"
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/marfitacademia/ (foto de perfil)",
+  "arquivo_fonte": "_src/perfil.jpg",
+  "tratamento": "Logo completo com fundo transparente por luminância",
+  "tipo": "logo oficial (raster)"
+ },
+ "og": {
+  "arquivos": [
+   "assets/img/og.jpg",
+   null
+  ],
+  "origem": "Instagram @marfitacademia",
+  "post": "https://www.instagram.com/p/DLFZgFmOmFI/",
+  "arquivo_fonte": "_src/ig/065.jpg",
+  "tratamento": "Foto 065 + logo, 1200x630",
+  "tipo": "foto real"
+ },
+ "fp-logo": {
+  "arquivos": [
+   "assets/img/fp-logo.png"
+  ],
+  "origem": "C:/Projetos/Portifolio/assets/logotipo.png (via CT Lucas)",
+  "tipo": "crédito do desenvolvedor"
+ },
+ "_nota": "Nenhuma imagem gerada por IA ou de banco de imagens. Ícones: Phosphor Icons 2.1.1 (MIT). Fontes: Anton e Montserrat (OFL), servidas localmente."
+}

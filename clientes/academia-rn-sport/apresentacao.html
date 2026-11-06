@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Um site para a Academia RN Sport · Apresentação</title>
+<meta name="description" content="Apresentação do novo site da Academia RN Sport, academia em Artur Nogueira/SP.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="assets/fonts.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--bg:#0c0c0c;--bg-2:#141413;--coal:#1c1b1a;--line:#33302c;--y:#fdce06;--y-hi:#ffdb3d;--y-d:#8a6f00;--text:#f4f2ec;--muted:#aaa59c;--paper:#f4f2ec;--paper-2:#e9e6de;--ink:#121212;--ink-2:#4f4b45;--line-l:#d8d3c8;--pool:#1f6bb3;--display:'Barlow Condensed',Impact,sans-serif;--body:'Montserrat',system-ui,sans-serif;--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit}
+p{margin:0}
+img{display:block;max-width:100%;height:auto}
+b,strong{font-weight:600}
+.wrap{width:min(1180px,calc(100% - 2*clamp(16px,4vw,48px)));margin:0 auto}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:800;font-style:italic;text-transform:uppercase;line-height:.93}
+h1 em,h2 em{color:var(--y);font-style:italic}
+.eyebrow{margin-bottom:16px;color:var(--y);font:600 12px/1.4 var(--body);letter-spacing:.2em;text-transform:uppercase}
+.button{display:inline-flex;min-height:52px;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border:0;background:var(--y);color:#111;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;transition:transform 160ms var(--ease),background-color 200ms ease,box-shadow 200ms ease}
+.button:active{transform:scale(.97)}
+.button.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px rgba(244,242,236,.4)}
+.button.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(18,18,18,.35)}
+.button.dark{background:var(--ink);color:var(--paper)}
+@media (hover:hover) and (pointer:fine){.button:hover{background:var(--y-hi)}.button.ghost:hover{background:transparent;box-shadow:inset 0 0 0 1.5px var(--text)}.button.line:hover{background:var(--paper-2)}.button.dark:hover{background:#000}}
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);transition-delay:var(--d,0ms)}
+.js .rv.in{opacity:1;transform:none}
+
+.top{padding:16px 0;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;width:max-content;text-decoration:none}
+.brand img{width:44px}
+.brand b{display:block;font:800 italic 21px/1 var(--display);text-transform:uppercase}
+.brand small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+
+header{position:relative;padding:clamp(56px,8vw,100px) 0 56px;text-align:center;overflow:hidden}
+header::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 50% 0%,rgba(253,206,6,.12),transparent 70%)}
+header .wrap{position:relative}
+.stripes{display:flex;justify-content:center;gap:10px;margin-bottom:28px}
+.stripes i{width:12px;height:64px;background:var(--y);transform-origin:top}
+@media (prefers-reduced-motion:no-preference){.js .stripes i{animation:drop 900ms cubic-bezier(.77,0,.175,1) both}.js .stripes i:nth-child(2){animation-delay:120ms}}
+@keyframes drop{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+h1{max-width:920px;margin:0 auto 22px;font-size:clamp(46px,7vw,92px)}
+.intro{max-width:660px;margin:0 auto;font-size:18px;color:#d6d1c8}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+
+.previews{padding:8px 0 90px;background:linear-gradient(var(--bg),var(--bg) 40%,var(--paper) 40%)}
+.device-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(200px,.5fr) minmax(200px,.5fr);gap:28px;align-items:end}
+.device-grid > *{min-width:0}
+.device{padding:10px;border:1px solid #333;background:#161615;box-shadow:0 28px 70px -36px rgba(0,0,0,.7)}
+.device-bar{display:flex;height:30px;align-items:center;gap:7px;padding:0 9px;color:var(--muted);font-size:11px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--y);opacity:.75}
+.device-bar span{margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen{position:relative;overflow:hidden;background:var(--bg)}
+.device .screen{height:620px}
+.phone .screen{aspect-ratio:375/780;border-radius:23px}
+.screen iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;transform:scale(var(--s,1))}
+.phone{width:min(290px,100%);margin:0 auto;padding:12px 10px 10px;border:1px solid #333;border-radius:34px;background:#161615;box-shadow:0 24px 60px -34px rgba(0,0,0,.7)}
+.speaker{width:72px;height:5px;margin:1px auto 10px;border-radius:9px;background:rgba(244,242,236,.22)}
+.caption{margin:12px 0 0;text-align:center;font-size:13px;color:var(--ink-2)}
+
+.sec{padding:clamp(60px,7vw,92px) 0;background:var(--paper);color:var(--ink)}
+.sec p{color:var(--ink-2)}
+.sec strong{color:var(--ink)}
+.sec .eyebrow{color:var(--y-d)}
+.sec--alt{background:#fbfaf6}
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:end;margin-bottom:40px}
+.head h2{font-size:clamp(40px,5.2vw,66px)}
+.sec h2 em{color:var(--ink);background:linear-gradient(transparent 58%,var(--y) 58% 92%,transparent 92%);padding:0 .06em}
+.head > p{padding-left:22px;border-left:3px solid var(--y);font-size:17px}
+
+.ideas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.idea{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line-l);border-top:4px solid var(--y)}
+.idea img{width:100%;aspect-ratio:16/11;object-fit:cover}
+.idea div{padding:22px 24px 26px}
+.idea .num{display:block;margin-bottom:10px;color:var(--y-d);font:600 11px/1 var(--body);letter-spacing:.18em}
+.idea h3{margin-bottom:10px;font-size:30px}
+.idea p{font-size:15px}
+.from-ig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+.from-ig blockquote{margin:0;padding:24px 28px;background:var(--bg);border-left:4px solid var(--y)}
+.from-ig blockquote p{font:800 italic 30px/1 var(--display);text-transform:uppercase;color:var(--text)}
+.from-ig blockquote footer{margin-top:12px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--y)}
+
+.found{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:40px}
+.found div{padding:24px 26px;border:1px solid var(--line-l);background:#fff}
+.found div.bad{border-color:#e7b9a5;background:#fdf1ec}
+.found b{display:block;font:800 italic 26px/1 var(--display);text-transform:uppercase;margin-bottom:8px;color:var(--ink)}
+.found p{font-size:15px}
+.found code{font-size:14px;background:#f1e2da;padding:1px 6px}
+.adv{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0;padding:0;list-style:none}
+.adv li{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;padding:22px 0;border-top:1px solid var(--line-l)}
+.adv svg{width:44px;height:44px;padding:10px;background:var(--ink);color:var(--y)}
+.adv strong{display:block;margin-bottom:4px;font-size:16px}
+.adv p{font-size:15px}
+
+.alert{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;margin-bottom:28px;padding:22px 26px;border:1px solid var(--line-l);background:#fff}
+.alert svg{width:40px;height:40px;padding:9px;background:var(--ink);color:var(--y)}
+.alert p{font-size:16px}
+.domains{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px}
+.domain{display:flex;flex-direction:column;gap:10px;padding:20px 24px;background:var(--ink);color:var(--text)}
+.domain code{font:600 clamp(18px,2.2vw,24px)/1.1 var(--body);color:var(--y)}
+.domain span{font-size:14px;color:#cfc9c1}
+.domain em{align-self:flex-start;font-style:normal;font:600 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;padding:6px 8px;background:#35d06f;color:#062a12}
+.domain em.warn{background:var(--y);color:#111}
+.sub{margin:0 0 18px;font:600 12px/1.4 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--y-d)}
+.table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 0 0 1px var(--line-l)}
+.table th,.table td{padding:15px 20px;text-align:left;vertical-align:top;font-size:15px}
+.table thead th{background:var(--ink);color:var(--text);font:600 11px/1.4 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.table tbody tr+tr td{border-top:1px solid var(--line-l)}
+.table td small{display:block;font-size:13px;color:var(--ink-2)}
+.table td:nth-child(3),.table td:nth-child(4){white-space:nowrap;font-weight:600}
+.table-wrap{margin-bottom:48px}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;padding:28px;border:1px solid var(--line-l);background:#fff}
+.plan--rec{border:2px solid var(--ink);box-shadow:0 24px 50px -32px rgba(0,0,0,.45)}
+.tag{position:absolute;top:-13px;left:28px;padding:4px 12px;background:var(--y);color:#111;font:600 11px/1.4 var(--body);letter-spacing:.12em;text-transform:uppercase}
+.plan h3{margin-bottom:4px;font-size:34px}
+.plan .for{margin-bottom:16px;font-size:14px}
+.plan .mo{color:var(--ink);font:800 italic 46px/1 var(--display)}
+.plan .mo small{font:400 14px/1 var(--body);color:var(--ink-2)}
+.plan dl{display:grid;grid-template-columns:1fr auto;gap:8px 12px;margin:20px 0 22px;padding-top:18px;border-top:1px solid var(--line-l);font-size:14px}
+.plan dt{color:var(--ink-2)}
+.plan dd{margin:0;font-weight:600;text-align:right}
+.plan .button{margin-top:auto}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;padding:24px 28px;background:#fff;border:1px solid var(--line-l)}
+.why p{font-size:15px}
+.fineprint{margin-top:22px;font-size:12px}
+
+.closing{padding:clamp(60px,7vw,92px) 0;text-align:center;position:relative;overflow:hidden}
+.closing::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 70% at 50% 100%,rgba(253,206,6,.14),transparent 70%)}
+.closing .wrap{position:relative}
+.closing img{width:96px;margin:0 auto 22px}
+.closing h2{max-width:760px;margin:0 auto 16px;font-size:clamp(44px,5.6vw,72px)}
+.closing p{max-width:560px;margin:0 auto;font-size:17px;color:#d0cbc2}
+footer.foot{padding:22px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.credit{display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.credit img{width:22px;height:22px;background:#fff;padding:2px}
+.credit strong{color:var(--text)}
+
+@media (max-width:900px){
+  .device-grid{grid-template-columns:1fr 1fr}
+  .device-grid > :first-child{grid-column:1/-1}
+  .head,.why,.from-ig,.found,.domains{grid-template-columns:1fr}
+  .ideas,.plans{grid-template-columns:1fr}
+  .plans{gap:26px}
+  .adv{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .table thead{display:none}
+  .table,.table tbody,.table tr,.table td{display:block;width:100%}
+  .table tbody tr+tr{border-top:1px solid var(--line-l)}
+  .table tbody tr+tr td{border-top:0}
+  .table td{padding:3px 18px;white-space:normal!important}
+  .table td:first-child{padding-top:16px}
+  .table td:last-child{padding-bottom:16px}
+  .table td:not(:first-child)::before{content:attr(data-label) ": ";color:var(--ink-2);font-weight:400}
+}
+@media (max-width:560px){
+  .device-grid{grid-template-columns:1fr;gap:28px}
+  .device .screen{height:440px}
+  .alert{grid-template-columns:1fr}
+  .from-ig blockquote p{font-size:26px}
+  .actions .button{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="./" target="_blank" rel="noopener"><img src="assets/img/logo-rn.png" alt="" width="453" height="410"><span><b>Academia RN Sport</b><small>Artur Nogueira/SP · desde 2005</small></span></a></div></div>
+
+<header>
+  <div class="wrap">
+    <div class="stripes" aria-hidden="true"><i></i><i></i></div>
+    <p class="eyebrow rv">Uma apresentação para a equipe da RN Sport</p>
+    <h1 class="rv" style="--d:80ms">RN Sport, o site das <em>duas unidades</em> está pronto para conhecer.</h1>
+    <p class="intro rv" style="--d:160ms">Feito a partir do que vocês já mostram no Instagram: o preto e amarelo da marca, as fotos reais das unidades e da piscina, e a frase que vocês repetem no feed, "escolha sua atividade física".</p>
+    <div class="actions rv" style="--d:240ms"><a class="button" href="./" target="_blank" rel="noopener">Abrir o site completo ↗</a><a class="button ghost" href="#ideia">Conhecer a proposta</a></div>
+  </div>
+</header>
+
+<main>
+<section class="previews" aria-label="Prévia do novo site">
+  <div class="wrap device-grid">
+    <div class="rv"><div class="device"><div class="device-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>rnsport.com.br</span></div><div class="screen" data-w="1280"><iframe src="./" title="Prévia do site no computador" loading="lazy"></iframe></div></div><p class="caption">No computador</p></div>
+    <div class="rv" style="--d:120ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="./" title="Prévia do site no celular" loading="lazy"></iframe></div></div><p class="caption">No celular</p></div>
+    <div class="rv" style="--d:200ms"><div class="phone"><div class="speaker" aria-hidden="true"></div><div class="screen" data-w="375"><iframe src="links/" title="Prévia da página de links da bio do Instagram" loading="lazy"></iframe></div></div><p class="caption">Página de links da bio</p></div>
+  </div>
+</section>
+
+<section class="sec" id="ideia">
+  <div class="wrap">
+    <div class="head">
+      <div><p class="eyebrow rv">01 · O que pensamos</p><h2 class="rv" style="--d:80ms">Escolha sua atividade. <em>O site mostra onde tem.</em></h2></div>
+      <p class="rv" style="--d:160ms">A pergunta que mais aparece no feed é qual unidade abre e o que tem em cada uma. O site responde isso em segundos e depois mostra o que só a RN tem na cidade: a piscina, com natação infantil, adulto, hidro e a equipe master.</p>
+    </div>
+    <div class="ideas">
+      <article class="idea rv"><img src="assets/img/salao-u1.webp" alt="Salão de musculação da Unidade 1" loading="lazy" width="640" height="1040" style="object-position:50% 60%"><div><span class="num">01 · ATIVIDADES</span><h3>Escolha e veja a unidade</h3><p>Musculação, natação infantil e adulto, hidro, funcional e Plano Evolution. Ao escolher, as duas unidades acendem ou apagam, com os dias de cada uma.</p></div></article>
+      <article class="idea rv" style="--d:90ms"><img src="assets/img/hidro.webp" alt="Hidroginástica na piscina da Unidade 1" loading="lazy" width="720" height="1160" style="object-position:50% 62%"><div><span class="num">02 · O MERGULHO</span><h3>A página entra na água</h3><p>Ao rolar, a linha d'água sobe, o preto vira azul e a piscina conta suas quatro turmas, com as fotos reais dos alunos e do pódio da equipe master.</p></div></article>
+      <article class="idea rv" style="--d:180ms"><img src="assets/img/vinte-anos.webp" alt="Festa de 20 anos da RN" loading="lazy" width="640" height="1060"><div><span class="num">03 · 21 ANOS</span><h3>A história em quatro marcos</h3><p>2005, os 20 anos, a Unidade 2 em 08/09/2025 e a piscina renovada. Depois, o Clube de Benefícios com os 21 carimbos sendo marcados um a um.</p></div></article>
+    </div>
+    <div class="from-ig">
+      <blockquote class="rv"><p>"Escolha sua atividade física."</p><footer>Frase de vários posts · vira o seletor de atividades</footer></blockquote>
+      <blockquote class="rv" style="--d:90ms"><p>"Só depende de você!"</p><footer>Escrita na parede da Unidade 1 · fecha o site</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--alt">
+  <div class="wrap">
+    <div class="head">
+      <div><p class="eyebrow rv">02 · Vantagens</p><h2 class="rv" style="--d:80ms">A maior base de avaliações <em>merece um site.</em></h2></div>
+      <p class="rv" style="--d:160ms">A Unidade 1 tem nota 4,7 com 287 avaliações no Google, a maior base entre as academias de Artur Nogueira. Quem chega pelo Google, porém, não encontra um site para conhecer a RN.</p>
+    </div>
+    <div class="found">
+      <div class="bad rv"><b>Hoje</b><p>O endereço <code>rnsport.com.br</code> está registrado, mas abriu uma página de erro (código 500) quando testamos em 06/11/2026. O horário de cada unidade e o que tem em cada uma só aparecem espalhados nos posts.</p></div>
+      <div class="rv" style="--d:90ms"><b>Com o site</b><p>Um endereço da RN com as duas unidades lado a lado, horários, piscina, rota até cada uma e a aula teste que chega pronta no WhatsApp, preparado para as buscas da cidade.</p></div>
+    </div>
+    <ul class="adv">
+      <li class="rv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><div><strong>Aparecer no Google</strong><p>Textos e dados para buscas como academia, natação e hidroginástica em Artur Nogueira, com as duas unidades e a nota do Google.</p></div></li>
+      <li class="rv" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div><strong>Aula teste com a unidade certa</strong><p>A mensagem chega com nome, atividade e unidade. Se a pessoa escolhe natação na Unidade 2, o site já corrige para a Unidade 1.</p></div></li>
+      <li class="rv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c2 0 2-1.5 4.5-1.5S10 15 12 15s2.5-1.5 4.5-1.5S19 15 21 15M3 19c2 0 2-1.5 4.5-1.5S10 19 12 19s2.5-1.5 4.5-1.5S19 19 21 19"/><path d="M12 4v7"/></svg><div><strong>A piscina em destaque</strong><p>Natação infantil, adulto, hidro e equipe master num só lugar, em vez de espalhados entre os destaques do Instagram.</p></div></li>
+      <li class="rv" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg><div><strong>Página de links própria</strong><p>Para a bio do Instagram: WhatsApp, as seis atividades, rota até cada unidade, telefone e o Clube de Benefícios.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="hospedagem">
+  <div class="wrap">
+    <div class="head">
+      <div><p class="eyebrow rv">03 · Domínio e hospedagem</p><h2 class="rv" style="--d:80ms">Um endereço <em>no nome da RN.</em></h2></div>
+      <p class="rv" style="--d:160ms">Para o site ficar no ar, a RN precisa de um domínio e de uma hospedagem. A hospedagem é contratada direto na Hostinger, no nome da academia, com <strong>parcelamento em até 12x</strong>. A conta e o domínio são de vocês; a configuração eu faço.</p>
+    </div>
+    <div class="alert rv">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <p><strong>O rnsport.com.br é de vocês?</strong> Ele está registrado desde 2009 e é renovado até agosto de 2027. Se for da academia, o site novo entra nesse mesmo endereço e o e-mail contato@rnsport.com.br continua funcionando. Se não for, existe uma alternativa livre.</p>
+    </div>
+    <div class="domains">
+      <div class="domain rv"><em class="warn">Registrado</em><code>rnsport.com.br</code><span>Já existe. Precisamos saber quem tem o acesso para apontar para a nova hospedagem.</span></div>
+      <div class="domain rv" style="--d:90ms"><em>Parece livre</em><code>academiarnsport.com.br</code><span>Não aparece no Registro.br (consulta em 06/11/2026). Pode ser registrado grátis no plano Single.</span></div>
+    </div>
+    <h3 class="sub rv">Entenda cada item</h3>
+    <div class="table-wrap rv">
+      <table class="table">
+        <thead><tr><th>Item</th><th>O que é</th><th>Quem fornece</th><th>Custo</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Item"><strong>Domínio</strong><small>o endereço .com.br do site</small></td><td data-label="O que é">O endereço que os alunos digitam e que vai na bio do Instagram.</td><td data-label="Quem fornece">Registro.br / Hostinger</td><td data-label="Custo">grátis no plano Single*</td></tr>
+          <tr><td data-label="Item"><strong>Hospedagem</strong><small>provedor: Hostinger</small></td><td data-label="O que é">Onde o site fica guardado e funcionando 24 horas.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">a partir de R$ 5,99/mês</td></tr>
+          <tr><td data-label="Item"><strong>Certificado SSL</strong><small>o cadeado do navegador</small></td><td data-label="O que é">Conexão segura (https), exigida pelo Google e pelos navegadores.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+          <tr><td data-label="Item"><strong>E-mail profissional</strong><small>com o nome do domínio</small></td><td data-label="O que é">Um e-mail da RN com o endereço próprio.</td><td data-label="Quem fornece">Hostinger</td><td data-label="Custo">incluso no plano</td></tr>
+          <tr><td data-label="Item"><strong>Configuração e publicação</strong><small>domínio, e-mail, Google</small></td><td data-label="O que é">Deixar tudo ligado e o site no ar no endereço da RN.</td><td data-label="Quem fornece">Fernando Parmezani</td><td data-label="Custo">combinado com o Fernando</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 class="sub rv">Planos da Hostinger</h3>
+    <div class="plans">
+      <article class="plan plan--rec rv">
+        <span class="tag">Recomendado</span>
+        <h3>Single</h3><p class="for">1 site e 1 domínio: o que a RN precisa.</p>
+        <p class="mo">R$ 5,99<small>/mês</small></p>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 287,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 23,99/mês</dd><dt>Domínio</dt><dd>grátis</dd><dt>E-mail profissional</dt><dd>1 conta</dd></dl>
+        <a class="button dark" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Single</a>
+      </article>
+      <article class="plan rv" style="--d:90ms">
+        <h3>Premium</h3><p class="for">Para quem quer mais contas de e-mail.</p>
+        <p class="mo">R$ 10,99<small>/mês</small></p>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 527,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 38,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>2 contas (1º ano)</dd></dl>
+        <a class="button line" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Premium</a>
+      </article>
+      <article class="plan rv" style="--d:180ms">
+        <h3>Unlimited</h3><p class="for">Sites e e-mails ilimitados.</p>
+        <p class="mo">R$ 13,99<small>/mês</small></p>
+        <dl><dt>Total (48 meses)</dt><dd>R$ 671,52</dd><dt>Parcelamento</dt><dd>até 12x</dd><dt>Renovação</dt><dd>R$ 64,99/mês</dd><dt>Domínio</dt><dd>grátis no 1º ano</dd><dt>E-mail profissional</dt><dd>ilimitado (1º ano)</dd></dl>
+        <a class="button line" href="https://www.hostinger.com/br?REFERRALCODE=RM3FPARMEQXL" target="_blank" rel="noopener sponsored">Contratar Unlimited</a>
+      </article>
+    </div>
+    <div class="why rv">
+      <p><strong>Por que o Single?</strong> A RN precisa de um site e de um domínio, e o Single cobre exatamente isso, com domínio grátis e uma conta de e-mail profissional, por cerca de R$ 6 por mês.</p>
+      <p><strong>E se o rnsport.com.br for de vocês?</strong> Ele continua registrado onde está e só é apontado para a hospedagem nova. Nesse caso o domínio grátis do plano nem precisa ser usado.</p>
+    </div>
+    <p class="fineprint">* Domínio grátis conforme o plano escolhido. Preços da Hostinger consultados em 05/10/2026, no plano de 48 meses, com parcelamento em até 12x. Podem mudar conforme promoções; o valor final é sempre o mostrado na tela de pagamento da Hostinger.</p>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <img class="rv" src="assets/img/logo-rn.png" alt="" width="453" height="410" loading="lazy">
+    <h2 class="rv" style="--d:80ms">Só depende <em>de você.</em></h2>
+    <p class="rv" style="--d:160ms">Abra no computador e no celular e role devagar até a piscina: a página entra na água. Gostaram? Me chamem e eu coloco no ar no endereço da RN.</p>
+    <div class="actions rv" style="--d:240ms"><a class="button" href="./" target="_blank" rel="noopener">Acessar o novo site ↗</a><a class="button ghost" href="https://wa.me/5511963767799?text=Ol%C3%A1%20Fernando%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20do%20site%20da%20RN%20Sport!" target="_blank" rel="noopener">Falar com o Fernando</a></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <span>Apresentação preparada especialmente para a Academia RN Sport.</span>
+  <a class="credit" href="https://fernandoparmezani.com.br" target="_blank" rel="noopener">Site desenvolvido por <img src="assets/img/fp-logo.png" alt=""> <strong>Fernando Parmezani dos Reis</strong></a>
+</div></footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const screens=[...document.querySelectorAll('.screen')];
+function fit(){screens.forEach(sc=>{const w=+sc.dataset.w,s=sc.clientWidth/w,f=sc.querySelector('iframe');f.style.width=w+'px';f.style.height=Math.ceil(sc.clientHeight/s)+'px';sc.style.setProperty('--s',s)})}
+fit();addEventListener('resize',fit);new ResizeObserver(fit).observe(document.body);
+</script>
+</body>
+</html>

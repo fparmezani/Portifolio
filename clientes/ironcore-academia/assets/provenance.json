@@ -1,0 +1,31 @@
+{
+  "fonte": "Instagram @ironcore.academia (capas de reels e posts próprios da academia), baixado em 06/11/2026. Todas as fotos são reais, gravadas dentro da academia. Recortes para tirar o texto sobreposto; ajuste leve de contraste, cor e nitidez.",
+  "imagens": {
+    "hero":    {"post": "https://www.instagram.com/p/DcBsu5oO32G/", "arquivo": "_src/hi/036r.jpg", "tratamento": "recorte, pretos esmagados, vermelho empurrado, vinheta. Par hero-off: o mesmo quadro, academia ainda fechada."},
+    "hero-off":{"post": "https://www.instagram.com/p/DcBsu5oO32G/", "arquivo": "_src/hi/036r.jpg", "tratamento": "mesmo recorte do hero, luz quase apagada, LED vermelho só um fio"},
+    "d05":     {"post": "https://www.instagram.com/p/DYSKTPgOR0x/", "arquivo": "_src/ig/073r.jpg", "tratamento": "recorte"},
+    "d07":     {"post": "https://www.instagram.com/p/DfYRMokplKk/", "arquivo": "_src/ig/001r.jpg", "tratamento": "recorte"},
+    "d09":     {"post": "https://www.instagram.com/p/DVG1aqTDpee/", "arquivo": "_src/ig/110r.jpg", "tratamento": "recorte abaixo da legenda"},
+    "d15":     {"post": "https://www.instagram.com/p/DYFRuFzOzws/", "arquivo": "_src/ig/076r.jpg", "tratamento": "recorte acima da legenda"},
+    "d18":     {"post": "https://www.instagram.com/p/DYxF3gFOvdG/", "arquivo": "_src/ig/069r.jpg", "tratamento": "recorte abaixo da legenda"},
+    "d22":     {"post": "https://www.instagram.com/p/Dd6sQ17hdQX/", "arquivo": "_src/ig/018r.jpg", "tratamento": "recorte acima da legenda"},
+    "equipe":  {"post": "https://www.instagram.com/p/DeHjQ9KuaYW/", "arquivo": "_src/ig/015r.jpg", "tratamento": "recorte"},
+    "salao":   {"post": "https://www.instagram.com/p/DeroOzABHxj/", "arquivo": "_src/ig/010r.jpg", "tratamento": "recorte acima da legenda"},
+    "parede":  {"post": "https://www.instagram.com/p/Dcls8jHOg7Z/", "arquivo": "_src/ig/029r.jpg", "tratamento": "recorte"},
+    "halter":  {"post": "https://www.instagram.com/p/DfUgV_Mh27zoynrrSs08T1RiSX70oQHI13D1gQ0/", "arquivo": "_src/ig/003r.jpg", "tratamento": "recorte acima da legenda"},
+    "cardio":  {"post": "https://www.instagram.com/p/DWmR-UijqCP/", "arquivo": "_src/ig/092r.jpg", "tratamento": "recorte acima da legenda"},
+    "festa":   {"post": "https://www.instagram.com/p/DXEPvCvjnru/", "arquivo": "_src/ig/086r.jpg", "tratamento": "descartada (não usada)"},
+    "fachada": {"post": "https://www.instagram.com/p/DWO7Wacjgm5/", "arquivo": "_src/ig/097r.jpg", "tratamento": "recorte acima da legenda"},
+    "reel-013": {"post": "https://www.instagram.com/p/DeR6IEzOSoE/", "tratamento": "capa original do reel, com a legenda da própria academia"},
+    "reel-024": {"post": "https://www.instagram.com/p/DdRj52vuTG8/", "tratamento": "capa original"},
+    "reel-069": {"post": "https://www.instagram.com/p/DYxF3gFOvdG/", "tratamento": "capa original"},
+    "reel-027": {"post": "https://www.instagram.com/p/Dc1SAiyOKTE/", "tratamento": "capa original"},
+    "reel-102": {"post": "https://www.instagram.com/p/DVwAWzQjvtp/", "tratamento": "capa original"},
+    "reel-035": {"post": "https://www.instagram.com/p/DcMGqRXOdWd/", "tratamento": "capa original"},
+    "logo":    {"arquivo": "_src/perfil.jpg", "tratamento": "logo recortado da foto de perfil, fundo preto convertido em transparência"},
+    "favicon": {"tratamento": "letras I e C recortadas do logo (como o monograma IC da parede)"},
+    "og":      {"tratamento": "composição: logo + foto do hero"},
+    "fp-logo": {"arquivo": "C:/Projetos/Portifolio/assets/logotipo.png", "tratamento": "copiado de sites/ct-lucas-ribeiro"}
+  },
+  "nao_usadas": "Artes com fotos de banco/IA (Dia dos Pais, Dia das Mães, Dia da Mulher, fundos de Save the date e Aniversário 2 anos) e o antes e depois da aluna Jo (marca d'água de outro profissional, sem autorização)."
+}

@@ -1,0 +1,151 @@
+{
+ "hoje-eu-fui": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/032r.jpg (alta: _src/hi/032r.jpg)",
+  "recorte": [
+   0,
+   0,
+   640,
+   1136
+  ],
+  "tamanho": [
+   780,
+   1384
+  ],
+  "tipo": "foto real"
+ },
+ "fachada": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/030.jpg (alta: _src/hi/030.jpg)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   720
+  ],
+  "tamanho": [
+   1080,
+   720
+  ],
+  "tipo": "foto real"
+ },
+ "letreiro": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/008.jpg (alta: _src/hi/008.jpg)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   430
+  ],
+  "tamanho": [
+   1080,
+   430
+  ],
+  "tipo": "foto real"
+ },
+ "trofeus": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/000r.jpg (alta: _src/hi/000r.jpg)",
+  "recorte": [
+   0,
+   0,
+   640,
+   380
+  ],
+  "tamanho": [
+   960,
+   570
+  ],
+  "tipo": "foto real"
+ },
+ "salao": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/038r.jpg (alta: _src/hi/038r.jpg)",
+  "recorte": [
+   0,
+   0,
+   640,
+   860
+  ],
+  "tamanho": [
+   800,
+   1075
+  ],
+  "tipo": "foto real"
+ },
+ "interior": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/094r.jpg (alta: _src/hi/094r.jpg)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   1920
+  ],
+  "tamanho": [
+   900,
+   1600
+  ],
+  "tipo": "foto real"
+ },
+ "geracoes": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/097.jpg (alta: _src/hi/097.jpg)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   1350
+  ],
+  "tamanho": [
+   1000,
+   1250
+  ],
+  "tipo": "foto real"
+ },
+ "agachamento": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/081r.jpg (alta: _src/hi/081r.jpg)",
+  "recorte": [
+   0,
+   100,
+   720,
+   800
+  ],
+  "tamanho": [
+   860,
+   836
+  ],
+  "tipo": "foto real"
+ },
+ "natal-solidario": {
+  "fonte": "Instagram @stronger_academia_an, arquivo _src/ig/063.jpg (alta: _src/hi/063.jpg)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   1440
+  ],
+  "tamanho": [
+   900,
+   1200
+  ],
+  "tipo": "foto real"
+ },
+ "logo-sr.png": {
+  "fonte": "foto de perfil do Instagram (_src/perfil.jpg, 257px)",
+  "tratamento": "fundo branco removido por limiar em PIL, 216px",
+  "tipo": "logo real (pedir vetor)"
+ },
+ "og.jpg": {
+  "fonte": "_src/hi/030.jpg (fachada)",
+  "recorte": [
+   0,
+   0,
+   1080,
+   567
+  ],
+  "tamanho": [
+   1200,
+   630
+  ],
+  "tipo": "foto real"
+ },
+ "favicon.png / apple-touch-icon.png": {
+  "fonte": "_src/perfil.jpg",
+  "tipo": "logo real"
+ }
+}

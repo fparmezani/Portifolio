@@ -1,0 +1,19 @@
+{
+ "fonte": "Instagram @brutalfitacademia: quadros dos reels públicos baixados em 06/11/2026 (yt-dlp + ffmpeg). Nenhuma imagem de banco ou gerada por IA.",
+ "tratamento": "Recorte 4:5 fugindo das legendas e emojis queimados nos vídeos, contraste +6%, saturação +5%. Exportado em WebP (q78) e JPG (q82).",
+ "imagens": {
+  "hero, professor": "Reel 'Sabe qual a diferença de treinar em uma academia de bairro?' (DZufmE_RI53, 1080x1920), quadro final em frente aos aparelhos vermelhos; professor = reel DZuYuUQxTzy, 30s",
+  "acompanha": "Reel DZufmE_RI53, 18,5s: professor ao lado de aluno no cabo",
+  "corrige": "Reel DZufmE_RI53, 9,5s: professor ajustando aluno no leg press (recortado acima da legenda 'corrige')",
+  "comemora": "Reel DZufmE_RI53, 13,5s: aluna em aparelho vermelho",
+  "incentiva, g-rack, g-eliptico": "Reel 'Você não precisa treinar em uma academia gigante' (DZuYuUQxTzy, 1080x1920), 17s, 28s e 20s",
+  "catraca, salao, salao-cheio": "Reel DPkBhLojHwm (720x720), catraca de entrada e salão",
+  "sandro-chega, sandro-treino": "Reel do aluno Sandro (DdMwKzMMhwz, 476x846: baixa resolução, usado pequeno)",
+  "g-cadeira, g-agacha, g-remada, g-terra, g-levanta, g-smith, g-dupla, g-cabo": "Reels curtos de treino (DSBWGE7EauG, DSBXI3eESR8, DSBZ9IUDK3f, DSKjUNrjFYk, DSLusd5EY4z, DSR0NcNDDkC, DSF4DBBEXoo, DSM2kgdDOmw)",
+  "logo": "Recorte da foto de perfil do Instagram (500x500), fundo coral removido; a base do selo já vem cortada na fonte",
+  "og.jpg": "Composição de hero.jpg + logo",
+  "fp-logo.png": "Logo de Fernando Parmezani dos Reis (crédito do rodapé)"
+ },
+ "nao_usar": "Arte da Black Friday (000.jpg) é peça gráfica: a oferta virou bloco em HTML, a arte não entra no site. Perfil @brutallfit tem outro logo e não foi usado.",
+ "autorizacao": "Pendente: confirmar com a academia o uso de imagem do Sandro e dos alunos (vídeos já públicos no perfil)."
+}

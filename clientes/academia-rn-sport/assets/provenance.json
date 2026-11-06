@@ -1,0 +1,31 @@
+{
+ "fonte": "Instagram @academiarnsport (posts públicos, coletados em 06/11/2026). Nenhuma imagem gerada por IA ou de banco de imagens.",
+ "tratamento": "Recorte, redução para no máximo 1100px, contraste +4%, WebP q78 + JPG q82 (PIL).",
+ "imagens": {
+  "logo-rn.png": "Foto de perfil do Instagram; amarelo #FDCE06 separado do fundo grafite por canal alfa (favicon e apple-touch-icon derivados)",
+  "fachada-u1": "Capa do reel 233r (post DEQL6SbRJIw, Gratidão 2024): fachada da Unidade 1, Rua José Bervint, 1079",
+  "fachada-u2": "Post 158 (DOVrmGADSA7, 08/09/2025, inauguração da Unidade II): fachada da Av. João Miranda, 1070",
+  "salao-u1": "Capa do reel 221r (DFTLI8KScH1, Repaginando nossa sala piso 2)",
+  "salao-u2": "Capa do reel 073r (DZSwIzKOqTv, RN Sport Vila Nogueira pronta para começar a semana)",
+  "noite-u1": "Capa do reel 141r (DQ-cNw5jSJp, funcional na frente da Unidade 1 com a galera da Vila Nogueira)",
+  "hidro": "Capa do reel 199r (DIHRltLxJjN, Escolha sua atividade física): hidroginástica na piscina",
+  "piscina-aula, piscina-turma": "Quadros inferiores do post 171 (DMyr4hJNz0Y, colagem): turmas dentro da piscina",
+  "equipe-a, equipe-b": "Post 170 (DM03Q6pSxjf, Começamos mais um mês): duas fotos da equipe de professores",
+  "master-a": "Post 095 (DXEkuWRlits, atletas master da natação)",
+  "master-b": "Post 105 (DV8YZUSDQx4, medalhas da equipe master)",
+  "hidro-amigas": "Post 239 (DDXApk0xYop, amigas da hidroginástica)",
+  "vinte-anos": "Capa do reel 211r (DF3Qv3PSaDN, comemoração dos 20 anos)",
+  "sorteio-u2": "Capa do reel 053r (DaWIp5fuFBO, presença premiada na Unidade II)",
+  "reforma-piscina": "Capa do reel 128r (DSliR-mDSTp, reta final da reforma da piscina)",
+  "arraia": "Capa do reel 293r (C8wxNf8u9xt, Arraiá da RN)",
+  "capacitacao": "Capa do reel 104r (DV9ADFXjetj, curso de primeiros socorros da equipe)",
+  "fp-logo.png": "Logo de Fernando Parmezani (C:/Projetos/Portifolio/assets/logotipo.png, recortado)"
+ },
+ "nao_usadas_por_serem_banco_ou_ia": [
+  "000 (crianças e bebê da arte de natação infantil)",
+  "244 (nadadora de touca)",
+  "014, 102r, 098, 268 (modelos das artes)",
+  "186 (Dia das Mães)",
+  "190r/208r (ilustrações do Reino de Azulia)"
+ ]
+}

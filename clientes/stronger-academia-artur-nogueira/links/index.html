@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Links · Stronger Academia</title>
+<meta name="description" content="Stronger Academia, academia em Artur Nogueira/SP: ligue, veja os horários e como chegar.">
+<meta name="theme-color" content="#0b0a0a">
+<meta property="og:title" content="Stronger Academia · Segunda eu começo. Hoje eu fui.">
+<meta property="og:image" content="../assets/img/og.jpg">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--bg:#0b0a0a;--panel:#171414;--panel-2:#211c1c;--line:#2a2525;--text:#f3efec;--muted:#a8a09c;--dim:#6f6764;--red:#cc1a1f;--red-d:#a71217;--ease:cubic-bezier(.23,1,.32,1);color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(560px 360px at 50% -40px,rgba(204,26,31,.28),transparent 70%),var(--bg);color:var(--text);font:400 15px/1.5 'Barlow',system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:28px 16px 40px;overflow-x:hidden}
+main{width:min(100%,440px);display:grid;justify-items:center;text-align:center}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.rv{animation:in .7s var(--ease) both;animation-delay:var(--d,0s)}
+.logo{width:108px;height:108px;margin-top:8px}
+h1{margin:10px 0 0;font:800 italic 44px/.9 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase}
+h1 small{display:block;font:600 13px/1 'Barlow Condensed',sans-serif;font-style:normal;letter-spacing:.5em;color:var(--muted);margin-top:6px}
+.tag{margin:14px 0 0;font:800 24px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;color:var(--dim)}
+.tag s{text-decoration-color:var(--red);text-decoration-thickness:3px}
+.tag em{color:var(--red);font-style:italic}
+.status{display:inline-flex;align-items:center;gap:9px;margin:16px 0 20px;font:600 14px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.status i{width:9px;height:9px;background:var(--dim);transform:rotate(45deg)}
+.status.open{color:var(--text)}.status.open i{background:#3ccf6e;animation:blink 2s ease-in-out infinite}
+@keyframes blink{50%{opacity:.35}}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;background:var(--red);color:#fff;font:800 20px/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);transition:transform 160ms var(--ease),background-color 200ms ease}
+.cta:active{transform:scale(.97)}
+.cta svg{width:22px;height:22px}
+.label{width:100%;margin:28px 0 10px;display:flex;align-items:center;gap:12px;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.label::before,.label::after{content:"";flex:1;height:1px;background:var(--line)}
+.week{width:100%;display:grid;gap:8px;padding:16px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);text-align:left}
+.week div{display:flex;justify-content:space-between;align-items:baseline}
+.week b{font:800 20px/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.week span{color:var(--muted)}
+.week .today b,.week .today span{color:var(--red)}
+.mods{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.tile{position:relative;display:block;aspect-ratio:3/4;overflow:hidden;background:var(--panel)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(11,10,10,.95) 0%,rgba(11,10,10,0) 60%)}
+.tile span{position:absolute;left:8px;right:8px;bottom:9px;z-index:1;font:800 17px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;text-align:left}
+.list{display:grid;gap:8px;width:100%}
+.list a{display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:12px;min-height:64px;padding:8px 16px 8px 10px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);text-align:left;transition:transform 160ms var(--ease),box-shadow 200ms ease}
+.list a:active{transform:scale(.98)}
+.ico{display:grid;place-items:center;width:42px;height:42px;background:var(--panel-2);color:var(--red);overflow:hidden}
+.ico svg{width:21px;height:21px}
+.ico img{width:42px;height:42px;object-fit:cover}
+.list b{display:block;font-weight:600;font-size:15.5px}
+.list small{display:block;color:var(--muted);font-size:13px;line-height:1.35}
+.arr{color:var(--red);font-weight:600}
+@media (hover:hover) and (pointer:fine){.cta:hover{background:var(--red-d)}.list a:hover{box-shadow:inset 0 0 0 1px var(--red)}.tile:hover img{transform:scale(1.06)}}
+footer{margin-top:34px;font-size:13px;color:var(--muted);display:grid;gap:8px;justify-items:center}
+footer a{display:inline-flex;align-items:center;gap:7px}
+footer img{width:22px;height:22px;border-radius:50%}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:1ms!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8Z"/></symbol>
+  <symbol id="i-app" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+<main>
+  <img class="logo rv" src="../assets/img/logo-sr.png" alt="Logo SR Academia" width="108" height="108">
+  <h1 class="rv" style="--d:.06s">Stronger<small>Academia · Artur Nogueira/SP</small></h1>
+  <p class="tag rv" style="--d:.12s"><s>Segunda eu começo.</s> <em>Hoje eu fui.</em></p>
+  <p class="status rv" style="--d:.18s" id="status"><i aria-hidden="true"></i><span id="statusTxt">Aberta 7 dias por semana</span></p>
+
+  <a class="cta rv" style="--d:.24s" href="tel:+551932043200"><svg aria-hidden="true"><use href="#i-phone"/></svg>Ligar · (19) 3204-3200</a>
+
+  <p class="label rv" style="--d:.3s">Horários</p>
+  <div class="week rv" style="--d:.33s" id="week">
+    <div data-d="wk"><b>Segunda a sexta</b><span>5h às 21h30</span></div>
+    <div data-d="6"><b>Sábado</b><span>8h às 12h</span></div>
+    <div data-d="0"><b>Domingo</b><span>8h às 12h</span></div>
+  </div>
+
+  <p class="label rv" style="--d:.38s">Modalidades</p>
+  <nav class="mods" aria-label="Modalidades">
+    <a class="tile rv" style="--d:.41s" href="../#modalidades"><img src="../assets/img/interior.webp" alt="" loading="lazy"><span>Muscu&shy;lação</span></a>
+    <a class="tile rv" style="--d:.44s" href="../#modalidades"><img src="../assets/img/agachamento.webp" alt="" loading="lazy"><span>Power&shy;lifting</span></a>
+    <a class="tile rv" style="--d:.47s" href="../#modalidades"><img src="../assets/img/trofeus.webp" alt="" loading="lazy" style="object-position:70% 50%"><span>Fisicul&shy;turismo</span></a>
+  </nav>
+
+  <p class="label rv" style="--d:.5s">Stronger</p>
+  <nav class="list" aria-label="Links">
+    <a class="rv" style="--d:.53s" href="https://www.google.com/maps/dir/?api=1&amp;destination=R.+Nossa+Senhora+das+Dores,+860,+Artur+Nogueira,+SP" target="_blank" rel="noopener noreferrer"><span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span><span><b>Como chegar</b><small>R. Nossa Senhora das Dores, 860</small></span><span class="arr" aria-hidden="true">→</span></a>
+    <a class="rv" style="--d:.56s" href="https://ig.me/m/stronger_academia_an" target="_blank" rel="noopener noreferrer"><span class="ico"><svg aria-hidden="true"><use href="#i-ig"/></svg></span><span><b>Mandar mensagem</b><small>Direct do Instagram</small></span><span class="arr" aria-hidden="true">→</span></a>
+    <a class="rv" style="--d:.59s" href="../"><span class="ico"><img src="../assets/img/fachada.webp" alt=""></span><span><b>Conhecer o site</b><small>Um dia na Stronger, das 5h às 21h30</small></span><span class="arr" aria-hidden="true">→</span></a>
+    <a class="rv" style="--d:.62s" href="https://www.google.com/maps/search/?api=1&amp;query=Stronger+Academia+R.+Nossa+Senhora+das+Dores+860+Artur+Nogueira" target="_blank" rel="noopener noreferrer"><span class="ico"><svg aria-hidden="true"><use href="#i-star"/></svg></span><span><b>Nota 4,8 no Google</b><small>125 avaliações de quem treina aqui</small></span><span class="arr" aria-hidden="true">→</span></a>
+    <a class="rv" style="--d:.65s" href="https://www.instagram.com/stronger_academia_suplementos/" target="_blank" rel="noopener noreferrer"><span class="ico"><svg aria-hidden="true"><use href="#i-ig"/></svg></span><span><b>Loja de suplementos</b><small>@stronger_academia_suplementos</small></span><span class="arr" aria-hidden="true">→</span></a>
+    <a class="rv" style="--d:.68s" href="https://www.nextfit.com.br/" target="_blank" rel="noopener noreferrer"><span class="ico"><svg aria-hidden="true"><use href="#i-app"/></svg></span><span><b>App Next Fit</b><small>A Stronger agora é parceira da Next Fit</small></span><span class="arr" aria-hidden="true">→</span></a>
+  </nav>
+
+  <footer>
+    <span>© 2026 Stronger Academia · Artur Nogueira/SP</span>
+    <a href="https://fernandoparmezani.com.br" target="_blank" rel="noopener noreferrer">Site desenvolvido por <img src="../assets/img/fp-logo.png" alt="" width="22" height="22"><strong>Fernando Parmezani dos Reis</strong></a>
+  </footer>
+</main>
+<script>
+(() => {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Sao_Paulo', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+  const get = t => parts.find(x => x.type === t).value;
+  const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
+  const m = +get('hour') * 60 + +get('minute'), we = wd === 0 || wd === 6;
+  const [o, c] = we ? [480, 720] : [300, 1290];
+  const row = document.querySelector(`#week [data-d="${we ? wd : 'wk'}"]`); if (row) row.classList.add('today');
+  const st = document.getElementById('status'), tx = document.getElementById('statusTxt');
+  if (m >= o && m < c) { st.classList.add('open'); tx.textContent = we ? 'Aberta agora · até as 12h' : 'Aberta agora · até as 21h30'; }
+  else if (m < o) tx.textContent = we ? 'Fechada · abre hoje às 8h' : 'Fechada · abre hoje às 5h';
+  else tx.textContent = (wd === 5 || wd === 6) ? 'Fechada · abre amanhã às 8h' : 'Fechada · abre amanhã às 5h';
+})();
+</script>
+</body>
+</html>

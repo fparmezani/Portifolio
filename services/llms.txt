@@ -24,3 +24,7 @@ Site principal: https://fernandoparmezani.com.br/
 - LGPD: política de privacidade
 - Sem mensalidade pelo site; o cliente paga apenas domínio e hospedagem
 - Investimento a partir de R$ 800. Resposta em até 2 horas. Primeira versão em até 2 dias.
+
+## Páginas de nicho
+- [Site para clínicas](https://services.fernandoparmezani.com.br/clinica/): landing para clínicas e consultórios em Campinas e região. Casos no ar: Instituto Médico Casagrande (Artur Nogueira/SP) e Dra. Aline Bragatto (Campinas/SP). A partir de R$ 800, sem mensalidade.
+- [Site para academias](https://services.fernandoparmezani.com.br/academia/): landing para academias e studios em Campinas e região. Casos no ar: CT Lucas Ribeiro (Artur Nogueira/SP) e Studio Raquel Simon (Cosmópolis/SP). A partir de R$ 800, sem mensalidade.

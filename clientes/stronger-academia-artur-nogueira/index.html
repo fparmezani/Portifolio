@@ -17,7 +17,7 @@
 <link rel="preload" href="assets/fonts/BarlowCondensed-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/BarlowCondensed-800i-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Barlow-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/img/hoje-eu-fui.webp" as="image">
+<link rel="preload" href="assets/img/hero-off.webp" as="image">
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -51,24 +51,42 @@
 
 <main id="conteudo">
 
-<!-- HERO -->
+<!-- HERO: 04:59, a Stronger abre, hoje eu fui -->
 <section class="hero" id="topo" aria-labelledby="h1">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow in" style="--i:0">Academia em Artur Nogueira/SP</p>
-      <h1 id="h1" class="h1">
-        <span class="h1-a in" style="--i:1"><span class="ln">Segunda eu<svg class="strike s1" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 26 C 120 14, 260 30, 396 14"/></svg></span> <span class="ln">começo.<svg class="strike s2" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 24 C 140 30, 250 12, 396 20"/></svg></span></span>
-        <span class="h1-b"><em>Hoje eu fui.</em></span>
-      </h1>
-      <p class="hero-sub in" style="--i:3">Há 10 anos a Stronger transforma promessa em treino. Musculação, powerlifting e fisiculturismo, todos os dias da semana.</p>
-      <div class="hero-cta in" style="--i:4">
-        <a class="btn btn-r" href="tel:+551932043200"><svg aria-hidden="true"><use href="#i-phone"/></svg>Ligar para a Stronger</a>
-        <a class="btn btn-g" href="#horarios">Ver horários <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+  <div class="hero-stick">
+    <div class="stage" id="stage">
+      <picture>
+        <source srcset="assets/img/hero-off.webp" type="image/webp">
+        <img src="assets/img/hero-off.jpg" alt="" width="1080" height="1654">
+      </picture>
+      <picture class="on">
+        <source srcset="assets/img/hero.webp" type="image/webp">
+        <img src="assets/img/hero.jpg" alt="Aluna comemorando com os braços para cima depois de uma série no leg press, com a parede de tijolo da Stronger ao fundo" width="1080" height="1654" fetchpriority="high">
+      </picture>
+      <i class="slash s1" aria-hidden="true"></i>
+      <i class="slash s2" aria-hidden="true"></i>
+      <i class="slash s3" aria-hidden="true"></i>
+    </div>
+    <div class="hero-shade" id="heroShade"></div>
+    <div class="cap cap-clock on" id="capClock" aria-hidden="true">
+      <p class="hero-clock" id="heroClock">04:59</p>
+      <p class="clock-sub" id="clockSub">A vontade de ficar. A Stronger ainda está fechada.</p>
+    </div>
+    <div class="cap cap-title" id="capTitle">
+      <div class="wrap">
+        <p class="eyebrow">Academia em Artur Nogueira/SP</p>
+        <h1 id="h1" class="h1">
+          <span class="h1-a"><span class="ln">Segunda eu<svg class="strike sk1" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 26 C 120 14, 260 30, 396 14"/></svg></span> <span class="ln">começo.<svg class="strike sk2" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 24 C 140 30, 250 12, 396 20"/></svg></span></span>
+          <span class="h1-b"><em>Hoje eu fui.</em></span>
+        </h1>
+        <p class="hero-sub">Há 10 anos a Stronger transforma promessa em treino. Musculação, powerlifting e fisiculturismo, todos os dias da semana.</p>
+        <div class="hero-cta">
+          <a class="btn btn-r" href="tel:+551932043200"><svg aria-hidden="true"><use href="#i-phone"/></svg>Ligar para a Stronger</a>
+          <a class="btn btn-g" href="#horarios">Ver horários <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
       </div>
     </div>
-    <figure class="hero-photo">
-      <picture><source srcset="assets/img/hoje-eu-fui.webp" type="image/webp"><img src="assets/img/hoje-eu-fui.jpg" alt="Aluna comemorando com os braços para cima depois de uma série no leg press, com a parede de tijolo da Stronger ao fundo" width="780" height="1384" fetchpriority="high"></picture>
-    </figure>
+    <p class="scroll-hint" id="hint"><span>Role para ir</span><i></i></p>
   </div>
 </section>
 
@@ -99,13 +117,13 @@
           <li class="ch" data-t="21:30" data-img="5"><h3>Hoje eu fui</h3><p>O único treino ruim é aquele que você não fez. A Stronger fecha às 21h30 e amanhã abre de novo.</p></li>
         </ol>
       </div>
-      <div class="day-media" id="dayMedia" aria-hidden="true">
-        <picture><source srcset="assets/img/fachada.webp" type="image/webp"><img src="assets/img/fachada.jpg" alt="" width="1080" height="720" loading="lazy" class="dusk"></picture>
-        <picture><source srcset="assets/img/fachada.webp" type="image/webp"><img src="assets/img/fachada.jpg" alt="" width="1080" height="720" loading="lazy"></picture>
-        <picture><source srcset="assets/img/salao.webp" type="image/webp"><img src="assets/img/salao.jpg" alt="" width="800" height="1075" loading="lazy"></picture>
-        <picture><source srcset="assets/img/interior.webp" type="image/webp"><img src="assets/img/interior.jpg" alt="" width="900" height="1600" loading="lazy"></picture>
-        <picture><source srcset="assets/img/agachamento.webp" type="image/webp"><img src="assets/img/agachamento.jpg" alt="" width="860" height="836" loading="lazy"></picture>
-        <picture><source srcset="assets/img/hoje-eu-fui.webp" type="image/webp"><img src="assets/img/hoje-eu-fui.jpg" alt="" width="780" height="1384" loading="lazy"></picture>
+      <div class="day-media" id="dayMedia">
+        <picture class="on"><source srcset="assets/img/dusk.webp" type="image/webp"><img class="on" src="assets/img/dusk.jpg" alt="Fachada da Stronger ainda no escuro, 04:59" width="1080" height="960" loading="lazy"></picture>
+        <picture><source srcset="assets/img/fachada.webp" type="image/webp"><img src="assets/img/fachada.jpg" alt="Fachada da Stronger ao amanhecer, 05:00" width="1080" height="960" loading="lazy"></picture>
+        <picture><source srcset="assets/img/salao.webp" type="image/webp"><img src="assets/img/salao.jpg" alt="Aluno no banco do salão, luz da manhã na porta" width="1080" height="1316" loading="lazy"></picture>
+        <picture><source srcset="assets/img/interior.webp" type="image/webp"><img src="assets/img/interior.jpg" alt="Aluno no banco, teto alto e prateleira de troféus" width="1080" height="1756" loading="lazy"></picture>
+        <picture><source srcset="assets/img/agachamento.webp" type="image/webp"><img src="assets/img/agachamento.jpg" alt="Agachamento no Smith, dois alunos no mesmo aparelho" width="1080" height="1110" loading="lazy"></picture>
+        <picture><source srcset="assets/img/hoje-eu-fui.webp" type="image/webp"><img src="assets/img/hoje-eu-fui.jpg" alt="Duas alunas no leg press no fim do dia" width="1080" height="1654" loading="lazy"></picture>
       </div>
     </div>
   </div>

@@ -6,15 +6,36 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
-  // entrada do hero
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('ready')));
 
-  // header sólido assim que a página rola
   const nav = $('#nav');
-  const sentinel = document.createElement('div');
-  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none';
-  document.body.prepend(sentinel);
-  new IntersectionObserver(([e]) => nav.classList.toggle('solid', !e.isIntersecting)).observe(sentinel);
+  const hero = $('#topo');
+  const span = (p, a, b) => clamp((p - a) / (b - a));
+  const prog = el => { const r = el.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - innerHeight)); };
+  const onNav = () => nav.classList.toggle('solid', scrollY > innerHeight * 0.7);
+
+  const stage = $('#stage'), shade = $('#heroShade');
+  const heroClock = $('#heroClock'), clockSub = $('#clockSub');
+  const capClock = $('#capClock'), capTitle = $('#capTitle'), hint = $('#hint');
+  const slashes = stage ? [...stage.querySelectorAll('.slash')] : [];
+  const heroFrame = () => {
+    if (!stage) return;
+    const p = reduce ? 1 : prog(hero);
+    const opened = p > .08;
+    heroClock.textContent = opened ? '05:00' : '04:59';
+    heroClock.classList.toggle('lit', opened);
+    clockSub.textContent = opened ? 'A Stronger abre. O salão acende.' : 'A vontade de ficar. A Stronger ainda está fechada.';
+    const fade = 1 - span(p, .42, .55);
+    slashes[0] && slashes[0].style.setProperty('--o', (span(p, .08, .16) * fade).toFixed(3));
+    slashes[1] && slashes[1].style.setProperty('--o', (span(p, .14, .22) * fade).toFixed(3));
+    slashes[2] && slashes[2].style.setProperty('--o', (span(p, .20, .30) * fade).toFixed(3));
+    stage.style.setProperty('--lit', (.04 + .96 * span(p, .16, .48)).toFixed(3));
+    stage.style.setProperty('--zoom', (1 + .1 * span(p, .2, 1)).toFixed(4));
+    shade.style.setProperty('--shade', span(p, .36, .56));
+    capClock.classList.toggle('on', p < .42);
+    capTitle.classList.toggle('on', p >= .46);
+    if (hint) hint.style.opacity = p > .05 ? 0 : 1;
+  };
 
   // contadores
   const fmt = (n, dec, th) => {
@@ -48,6 +69,8 @@
   const scenes = new Set(), visible = new Set();
   let running = false;
   const loop = () => {
+    onNav();
+    heroFrame();
     visible.forEach(fn => fn());
     if (visible.size) requestAnimationFrame(loop); else running = false;
   };
@@ -64,7 +87,9 @@
   if (day) {
     if (reduce) day.classList.add('static');
     else {
-      const chs = $$('.ch', day), imgs = $$('#dayMedia img'), clock = $('#clock'), bar = $('#dayBar');
+      const chs = $$('.ch', day), imgs = $$('#dayMedia img'), pics = $$('#dayMedia picture'), clock = $('#clock'), bar = $('#dayBar');
+      const media = $('#dayMedia');
+      const moods = ['#0c0a0c', '#1a1010', '#241410', '#1c1410', '#2a1010', '#140808'];
       const toMin = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
       const times = chs.map(c => toMin(c.dataset.t));
       const n = chs.length;
@@ -73,8 +98,11 @@
         if (i === cur) return;
         chs.forEach((c, k) => c.classList.toggle('on', k === i));
         imgs.forEach((im, k) => { im.classList.toggle('on', k === i); im.classList.toggle('was', k < i); });
+        pics.forEach((p, k) => p.classList.toggle('on', k === i));
+        if (media) media.style.setProperty('--mood', moods[i] || 'transparent');
         cur = i;
       };
+      new IntersectionObserver(([e], o) => { if (e.isIntersecting) { $$('img', day).forEach(i => i.loading = 'eager'); o.disconnect(); } }, { rootMargin: '100% 0px' }).observe(day);
       const tick = () => {
         const r = day.getBoundingClientRect();
         const p = clamp(-r.top / (r.height - innerHeight));
@@ -145,5 +173,14 @@
       const t = (wd + 1) % 7, o = (t === 0 || t === 6) ? 480 : 300;
       stt.textContent = `Fechada agora · abre amanhã às ${hhmm(o)}`;
     }
+  }
+
+  if (hero) watch(hero, heroFrame);
+  addEventListener('scroll', () => { if (!running) { running = true; requestAnimationFrame(loop); } }, { passive: true });
+  addEventListener('resize', () => { onNav(); heroFrame(); });
+  heroFrame();
+  onNav();
+  if (hero && new URLSearchParams(location.search).has('aceso')) {
+    addEventListener('load', () => scrollTo(0, hero.offsetHeight - innerHeight * 1.15));
   }
 })();

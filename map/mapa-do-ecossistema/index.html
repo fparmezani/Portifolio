@@ -1,0 +1,446 @@
+<!doctype html>
+<!--
+  MAPA DO ECOSSISTEMA - arquivo-fonte do PDF.
+  Para editar: mude os textos direto aqui (cada página é um <section class="page">, numeradas nos comentários).
+  Imagens ficam em img/. Para gerar o PDF de novo: dê dois cliques em gerar-pdf.cmd
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mapa do Ecossistema</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020814; --bg2:#06111f; --panel:#081527; --blue:#0d6efd; --accent:#1d4ed8;
+  --cyan:#38bdf8; --link:#83bdff; --text:#f8fafc; --muted:#a8b3c7; --soft:#708096;
+  --line:rgba(59,130,246,.25); --green:#34d399; --amber:#fbbf24; --red:#f87171;
+  --grad:linear-gradient(135deg,#2e8bff,#0d6efd,#1d4ed8);
+  --hl:#2f86ff; --panel-bg:linear-gradient(180deg,rgba(10,26,48,.9),rgba(6,17,31,.9));
+  --bar:#0b1626; --dot:#1e2d44; --shadow:rgba(0,0,0,.35); --shadow-shot:rgba(0,0,0,.55);
+  --glow:rgba(13,110,253,.22); --glow-strong:rgba(13,110,253,.35);
+}
+/* ===== TEMA CLARO: ative com ?light na URL ou <html data-theme="light"> ===== */
+html[data-theme="light"]{
+  --bg:#f4f7fc; --bg2:#ffffff; --panel:#ffffff; --blue:#0d6efd; --accent:#1d4ed8;
+  --cyan:#0284c7; --link:#1d5fd6; --text:#0b1730; --muted:#475569; --soft:#7a879b;
+  --line:rgba(13,110,253,.18); --green:#059669; --amber:#b45309; --red:#dc2626;
+  --hl:#0d6efd; --panel-bg:#ffffff;
+  --bar:#e8eef7; --dot:#c5d1e3; --shadow:rgba(15,40,90,.08); --shadow-shot:rgba(15,40,90,.18);
+  --glow:rgba(13,110,253,.10); --glow-strong:rgba(13,110,253,.16);
+}
+@page{size:1920px 1080px;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:1920px;height:1080px;position:relative;overflow:hidden;page-break-after:always;padding:88px 110px;
+  background:radial-gradient(1100px 600px at 85% -10%,var(--glow),transparent 60%),var(--bg)}
+.page:last-child{page-break-after:auto}
+.num{position:absolute;right:110px;bottom:48px;font:600 18px Inter;color:var(--soft);letter-spacing:.12em}
+.brandmark{position:absolute;left:110px;bottom:44px;display:flex;align-items:center;gap:12px;color:var(--soft);font:600 18px Inter}
+.brandmark img{width:30px;height:30px}
+.tag{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(13,110,253,.08);font:700 15px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--link)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue)}
+h1,h2,h3{font-family:Sora,sans-serif;letter-spacing:-.04em;line-height:1}
+h2{font-size:64px;font-weight:800;text-transform:uppercase;margin:22px 0 14px}
+h2 .g,h1 .g,.g{color:var(--hl)}
+.lead{font-size:24px;line-height:1.5;color:var(--muted);max-width:1100px}
+.lead b{color:var(--text)}
+.panel{background:var(--panel-bg);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 60px var(--shadow)}
+.shot{border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 30px 70px var(--shadow-shot);background:#000;position:relative}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.shot .bar{height:30px;background:var(--bar);display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid var(--line)}
+.shot .bar i{width:10px;height:10px;border-radius:50%;background:var(--dot)}
+.shot .bar span{margin-left:12px;font:500 13px Inter;color:var(--soft)}
+.shot.framed img{height:calc(100% - 30px)}
+.why{display:flex;flex-direction:column;gap:20px}
+.why h4{font:700 15px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--link);margin-bottom:6px}
+.why p,.why li{font-size:21px;line-height:1.5;color:var(--muted)}
+.why p b,.why li b{color:var(--text);font-weight:600}
+.why ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.why li{padding-left:26px;position:relative}
+.why li::before{content:"";position:absolute;left:2px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.step{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--grad);font:800 22px Sora;color:#fff;box-shadow:0 0 24px rgba(13,110,253,.6);flex:none}
+.quote{border-left:3px solid var(--blue);padding:6px 0 6px 22px;font:600 26px/1.35 Sora;letter-spacing:-.02em;color:var(--text)}
+.pill{display:inline-block;padding:6px 14px;border-radius:999px;border:1px solid var(--line);font:600 15px Inter;color:var(--link);background:rgba(13,110,253,.06)}
+.row{display:flex;gap:56px}
+.arrow{color:var(--blue);font:800 34px Sora;text-shadow:0 0 14px rgba(13,110,253,.8)}
+</style>
+<script>if(/light/.test(location.search))document.documentElement.setAttribute('data-theme','light')</script>
+</head>
+<body>
+
+<!-- 1 CAPA -->
+<section class="page" style="padding:110px 120px;background:radial-gradient(900px 700px at 78% 60%,var(--glow-strong),transparent 62%),var(--bg)">
+  <div style="display:flex;align-items:center;gap:16px;font:700 24px Sora"><img src="img/logo.png" style="width:52px">Fernando Parmezani</div>
+  <div style="margin-top:150px;max-width:960px">
+    <span class="tag">Mapa do ecossistema · material para mentoria</span>
+    <h1 style="font-size:100px;font-weight:800;text-transform:uppercase;margin:34px 0 34px;letter-spacing:-.055em">O que temos,<br>por que fizemos<br><span class="g">e para onde vai.</span></h1>
+    <p class="lead" style="font-size:28px;max-width:900px">Cada página do site, na ordem em que a pessoa passa por ela, com a ideia que guiou cada tela.</p>
+  </div>
+  <img src="img/foto.png" style="position:absolute;right:-60px;bottom:0;height:860px">
+  <div style="position:absolute;left:120px;bottom:70px;display:flex;gap:14px">
+    <span class="pill">Site principal</span><span class="pill">Sites para clientes</span><span class="pill">Ferramentas</span><span class="pill">Kits</span>
+  </div>
+</section>
+
+<!-- 2 MAPA GERAL -->
+<section class="page">
+  <span class="tag">Visão geral</span>
+  <h2>O mapa em <span class="g">uma página</span></h2>
+  <p class="lead">São quatro portas de entrada, uma conta só e um objetivo: <b>virar referência em C# e IA</b> e juntar uma audiência própria. A venda vem como consequência.</p>
+
+  <div style="display:grid;grid-template-columns:330px 60px 1fr 60px 330px;align-items:center;margin-top:56px;gap:0">
+    <!-- origem -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--soft)">DE ONDE A PESSOA VEM</div>
+      <div class="panel" style="padding:22px 24px"><div style="font:700 24px Sora">LinkedIn</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Canal principal. O Raio-X é divulgado só lá.</div></div>
+      <div class="panel" style="padding:22px 24px"><div style="font:700 24px Sora">Google e indicação</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Principalmente para quem procura site para o negócio.</div></div>
+    </div>
+    <div class="arrow" style="text-align:center">→</div>
+    <!-- portas -->
+    <div>
+      <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--soft);margin-bottom:18px">AS QUATRO PORTAS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div class="panel" style="padding:22px 24px"><div class="pill" style="font-size:13px">vitrine</div><div style="font:700 25px Sora;margin-top:12px">Site principal</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Quem eu sou como engenheiro .NET. Em inglês, para vagas.</div></div>
+        <div class="panel" style="padding:22px 24px"><div class="pill" style="font-size:13px">renda direta</div><div style="font:700 25px Sora;margin-top:12px">Sites para clientes</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Clínicas, academias, restaurantes. A partir de R$ 800.</div></div>
+        <div class="panel" style="padding:22px 24px;border-color:rgba(56,189,248,.55)"><div class="pill" style="font-size:13px">ímã principal</div><div style="font:700 25px Sora;margin-top:12px">Ferramentas</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Raio-X do Currículo e Simulador de Entrevista C#.</div></div>
+        <div class="panel" style="padding:22px 24px"><div class="pill" style="font-size:13px">autoridade</div><div style="font:700 25px Sora;margin-top:12px">Kits grátis</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Skills e prompts de IA que eu uso no dia a dia.</div></div>
+      </div>
+      <div class="panel" style="margin-top:18px;padding:18px 24px;display:flex;align-items:center;gap:18px;background:rgba(13,110,253,.12)">
+        <span class="step" style="width:40px;height:40px;font-size:18px">G</span>
+        <div style="font-size:20px;color:var(--muted)"><b style="color:var(--text)">Uma conta só, com Google.</b> Vale para ferramentas e kits. Quem cria ganha 10 créditos.</div>
+      </div>
+    </div>
+    <div class="arrow" style="text-align:center">→</div>
+    <!-- destino -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--soft)">O QUE ISSO SUSTENTA</div>
+      <div class="panel" style="padding:22px 24px"><div style="font:700 24px Sora">C# Moderno Sem Medo</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Ebook, R$ 27,90. Oferecido dentro das ferramentas.</div></div>
+      <div class="panel" style="padding:22px 24px"><div style="font:700 24px Sora">Créditos extras</div><div style="color:var(--muted);font-size:18px;margin-top:6px;line-height:1.45">Quem usa muito compra mais.</div></div>
+      <div class="panel" style="padding:22px 24px;background:var(--grad);border-color:transparent"><div style="font:800 24px Sora">Autoridade + audiência</div><div style="color:#e6efff;font-size:18px;margin-top:6px;line-height:1.45">O objetivo de fundo.</div></div>
+    </div>
+  </div>
+  <div class="brandmark"><img src="img/logo.png">Mapa do ecossistema</div><div class="num">02</div>
+</section>
+
+<!-- 3 SITE PRINCIPAL -->
+<section class="page">
+  <div class="row" style="height:100%">
+    <div style="width:820px;flex:none">
+      <div class="shot framed" style="height:900px"><div class="bar"><i></i><i></i><i></i><span>fernandoparmezani.com.br</span></div><img src="img/main.jpg"></div>
+    </div>
+    <div style="padding-top:20px">
+      <span class="tag">Porta 1 · Site principal</span>
+      <h2>A <span class="g">vitrine</span></h2>
+      <div class="quote" style="margin:18px 0 34px">Um recrutador decide em segundos se vale abrir o currículo. A página existe para essa decisão.</div>
+      <div class="why">
+        <div><h4>Para quem</h4><p>Recrutadores e líderes técnicos, inclusive de fora do Brasil. Por isso abre <b>em inglês</b>, com botão para PT-BR.</p></div>
+        <div><h4>O que pensamos</h4>
+          <ul>
+            <li><b>Rosto e cargo logo de cara:</b> Senior .NET / Tech Lead, sem rodeio.</li>
+            <li><b>Três números</b> no topo (18+ anos, 30+ projetos, 10+ tecnologias) para dar escala em um olhar.</li>
+            <li><b>Ações curtas:</b> baixar currículo, LinkedIn ou WhatsApp. Nada de formulário.</li>
+            <li>O menu leva a <b>Tools e Kits</b>. Quem chega aqui vê que eu não só falo de código: eu construo produto.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="num">03</div>
+</section>
+
+<!-- 4 SITES PARA CLIENTES -->
+<section class="page">
+  <span class="tag">Porta 2 · services.fernandoparmezani.com.br</span>
+  <div class="row" style="margin-top:8px">
+    <div style="width:700px;flex:none">
+      <h2>Sites que fazem<br>o cliente dizer <span class="g">uau.</span></h2>
+      <p class="lead" style="font-size:22px;margin-bottom:30px">Uma oferta separada, em outro endereço, para não misturar a marca de engenheiro com a de quem vende site.</p>
+      <div class="why">
+        <ul>
+          <li><b>Preço na cara:</b> a partir de R$ 800, sem mensalidade. Tira a principal dúvida antes da conversa.</li>
+          <li><b>Prova real:</b> em vez de depoimento escrito, o print do WhatsApp do cliente no dia em que o site entrou no ar.</li>
+          <li><b>Simples por fora, completo por dentro:</b> celular, página de links da bio, Google, LGPD. O cliente não precisa entender, só funcionar.</li>
+          <li><b>Do primeiro oi ao site no ar:</b> resposta em até 2 horas, primeira versão em até 2 dias. Tudo pelo WhatsApp.</li>
+        </ul>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px">
+      <div class="shot" style="height:470px"><img src="img/services_hero.jpg" style="object-position:center 0"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div class="shot" style="height:300px"><img src="img/services_whats.jpg" style="object-position:center 4%"></div>
+        <div class="shot" style="height:300px"><img src="img/services_steps.jpg" style="object-position:center 30%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="num">04</div>
+</section>
+
+<!-- 5 FERRAMENTAS + CRÉDITOS -->
+<section class="page">
+  <div class="row">
+    <div style="width:760px;flex:none">
+      <span class="tag">Porta 3 · Ferramentas</span>
+      <h2>Ferramentas<br>com <span class="g">créditos</span></h2>
+      <p class="lead" style="font-size:22px">Duas ferramentas que resolvem uma dor real de quem procura vaga de dev. Grátis para começar, com limite.</p>
+      <div class="shot framed" style="height:520px;margin-top:34px"><div class="bar"><i></i><i></i><i></i><span>/tools</span></div><img src="img/tools.jpg"></div>
+    </div>
+    <div style="flex:1;padding-top:30px">
+      <div class="panel" style="padding:36px 40px">
+        <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link)">COMO FUNCIONAM OS CRÉDITOS</div>
+        <div style="display:flex;align-items:center;gap:22px;margin-top:28px">
+          <div style="text-align:center;width:170px"><div style="font:800 76px Sora" class="g">10</div><div style="color:var(--muted);font-size:18px">ao criar a conta</div></div>
+          <div class="arrow">→</div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;padding:14px 18px;border:1px solid var(--line);border-radius:12px;font-size:20px"><span>Raio-X do Currículo</span><b>3 créditos</b></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 18px;border:1px solid var(--line);border-radius:12px;font-size:20px"><span>Simulador de Entrevista</span><b>1 crédito</b></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 18px;border:1px dashed rgba(251,191,36,.5);border-radius:12px;font-size:20px;color:var(--amber)"><span>Acabou? Compra mais</span><b>Stripe</b></div>
+          </div>
+        </div>
+        <p style="margin-top:22px;color:var(--soft);font-size:17px">O saldo fica sempre visível no topo, ao lado do nome.</p>
+      </div>
+      <div class="why" style="margin-top:38px">
+        <h4>Por que créditos, e não tudo grátis ou tudo pago</h4>
+        <ul>
+          <li><b>Dá motivo para criar conta.</b> Sem conta, a pessoa usa e some. Com conta, ela vira audiência.</li>
+          <li><b>Mostra que tem valor.</b> O que é infinito parece barato. 10 créditos dão para testar de verdade.</li>
+          <li><b>Controla o custo da IA</b>, que é pago a cada análise.</li>
+          <li><b>Abre a porta para cobrar</b> sem bloquear ninguém logo na entrada.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="num">05</div>
+</section>
+
+<!-- 6 RAIO-X SEQUÊNCIA -->
+<section class="page">
+  <span class="tag">Ferramenta 1 · Raio-X do Currículo</span>
+  <h2>A sequência <span class="g">do Raio-X</span></h2>
+  <p class="lead">A pessoa manda o currículo em PDF e recebe uma nota, o que mudar em cada trecho e o currículo já reescrito. Cinco telas, nesta ordem:</p>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-top:56px">
+    <div><div class="shot" style="height:250px"><img src="img/rx_upload.jpg"></div><div style="display:flex;gap:14px;align-items:center;margin-top:22px"><span class="step">1</span><b style="font:700 22px Sora">Solta o PDF</b></div><p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:10px">Sem cadastro. Vaga é opcional.</p></div>
+    <div><div class="shot" style="height:250px"><img src="img/rx_login.jpg"></div><div style="display:flex;gap:14px;align-items:center;margin-top:22px"><span class="step">2</span><b style="font:700 22px Sora">Entra com Google</b></div><p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:10px">Só aqui pede conta. Ganha 10, usa 3.</p></div>
+    <div><div class="shot" style="height:250px"><img src="img/rx_wait.jpg"></div><div style="display:flex;gap:14px;align-items:center;margin-top:22px"><span class="step">3</span><b style="font:700 22px Sora">Vídeo de espera</b></div><p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:10px">Enquanto a IA analisa, eu converso com a pessoa.</p></div>
+    <div><div class="shot" style="height:250px"><img src="img/rx_ready.jpg"></div><div style="display:flex;gap:14px;align-items:center;margin-top:22px"><span class="step">4</span><b style="font:700 22px Sora">Pronto</b></div><p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:10px">Botão verde com um resumo que dá vontade de clicar.</p></div>
+    <div><div class="shot" style="height:250px"><img src="img/rx_result.jpg"></div><div style="display:flex;gap:14px;align-items:center;margin-top:22px"><span class="step">5</span><b style="font:700 22px Sora">Resultado</b></div><p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:10px">Nota, diagnóstico e currículo reescrito.</p></div>
+  </div>
+  <div class="panel" style="margin-top:60px;padding:28px 36px;display:flex;gap:30px;align-items:center">
+    <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link);flex:none">A IDEIA DA ORDEM</div>
+    <div style="font-size:22px;color:var(--muted);line-height:1.5">Primeiro a pessoa <b style="color:var(--text)">se compromete</b> (escolhe o arquivo), depois pedimos algo (a conta), e só então <b style="color:var(--text)">entregamos</b>. Cada pedido vem depois de um passo que ela já deu.</div>
+  </div>
+  <div class="num">06</div>
+</section>
+
+<!-- 7 RAIO-X PASSOS 1 e 2 -->
+<section class="page">
+  <span class="tag">Raio-X · passos 1 e 2</span>
+  <h2>Upload e <span class="g">login</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:40px">
+    <div>
+      <div class="shot framed" style="height:430px"><div class="bar"><i></i><i></i><i></i><span>/tools/ats</span></div><img src="img/rx_upload.jpg" style="object-position:center 30%"></div>
+      <div class="why" style="margin-top:34px">
+        <div style="display:flex;gap:14px;align-items:center"><span class="step">1</span><b style="font:700 28px Sora">Solte o PDF aqui</b></div>
+        <ul>
+          <li><b>Nenhuma barreira antes do valor.</b> A primeira coisa que a pessoa vê é onde soltar o arquivo.</li>
+          <li><b>Confiança:</b> o PDF é lido no próprio navegador. Só o texto vai para a análise e é descartado logo depois (LGPD).</li>
+          <li><b>Vaga opcional:</b> quem cola a vaga recebe sugestões focadas nela.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="shot framed" style="height:430px"><div class="bar"><i></i><i></i><i></i><span>/tools/ats · cadastro</span></div><img src="img/rx_login.jpg" style="object-position:center 20%"></div>
+      <div class="why" style="margin-top:34px">
+        <div style="display:flex;gap:14px;align-items:center"><span class="step">2</span><b style="font:700 28px Sora">Entra com Google para eu terminar</b></div>
+        <ul>
+          <li><b>O login vem depois do upload</b>, de propósito. O PDF já está lá e a barra já começou: desistir agora parece perder o que já foi feito.</li>
+          <li><b>Um clique só</b> com Google. Sem senha, sem formulário.</li>
+          <li><b>Conta clara:</b> "você ganha 10, esta leitura usa 3, fica 7". Ninguém se sente enganado depois.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="num">07</div>
+</section>
+
+<!-- 8 VÍDEO DE ESPERA -->
+<section class="page">
+  <div class="row">
+    <div style="width:820px;flex:none">
+      <span class="tag">Raio-X · passo 3</span>
+      <h2>Por que fizemos<br>o <span class="g">vídeo de espera</span></h2>
+      <div class="shot" style="height:560px;margin-top:26px"><img src="img/rx_wait.jpg" style="object-position:center 45%"></div>
+    </div>
+    <div style="flex:1;padding-top:40px">
+      <div class="quote" style="margin-bottom:34px">A análise leva uns 30 segundos. Uma tela parada nesse tempo é uma aba fechada.</div>
+      <div class="why">
+        <div><h4>O que o vídeo faz nesse tempo</h4>
+        <ul>
+          <li><b>Põe um rosto na ferramenta.</b> Sou eu falando, não um robô. Isso cria confiança antes do resultado.</li>
+          <li><b>Faz a ponte do currículo para a entrevista:</b> "Passar no filtro é só a primeira porta. Na segunda, tem uma pessoa querendo saber se você entende ou só decorou."</li>
+          <li><b>Apresenta o livro no momento de mais atenção</b>, com uma analogia simples: quem decorou o caminho trava quando a rua fecha; quem conhece o bairro dá a volta.</li>
+          <li><b>Não atrapalha:</b> o botão de compra abre em outra aba, a análise continua e o botão verde avisa quando ficou pronto.</li>
+        </ul></div>
+      </div>
+      <div class="panel" style="margin-top:34px;padding:24px 30px;display:flex;gap:26px;align-items:center">
+        <div class="shot" style="width:260px;height:150px;flex:none"><img src="img/rx_ready.jpg" style="object-position:center 18%"></div>
+        <div><div style="display:flex;gap:12px;align-items:center"><span class="step" style="width:38px;height:38px;font-size:17px">4</span><b style="font:700 22px Sora">Pronto</b></div>
+        <p style="color:var(--muted);font-size:18px;line-height:1.45;margin-top:8px">A barra fica verde e mostra um resumo: "Nota 62 · 35 trocas sugeridas · 11 trechos para completar". Gera curiosidade para clicar.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="num">08</div>
+</section>
+
+<!-- 9 RESULTADO -->
+<section class="page">
+  <span class="tag">Raio-X · passo 5</span>
+  <h2>O resultado: <span class="g">diagnóstico e currículo pronto</span></h2>
+  <div style="display:grid;grid-template-columns:600px 600px 1fr;gap:44px;margin-top:34px">
+    <div>
+      <div class="shot" style="height:640px"><img src="img/rx_result.jpg" style="object-position:center 16%"></div>
+      <p style="margin-top:16px;font:700 15px Inter;letter-spacing:.12em;color:var(--link)">PARTE 1 · A SUA NOTA</p>
+    </div>
+    <div>
+      <div class="shot" style="height:640px"><img src="img/rx_result_cv.jpg"></div>
+      <p style="margin-top:16px;font:700 15px Inter;letter-spacing:.12em;color:var(--link)">PARTE 2 · CURRÍCULO REESCRITO</p>
+    </div>
+    <div class="why" style="padding-top:6px">
+      <div><h4>Nota com explicação</h4><p>Não é só um número. Vem um resumo em linguagem de gente, <b>o que já funciona</b> e <b>o que derruba a leitura</b>.</p></div>
+      <div><h4>Palavras-chave</h4><p>As que o filtro encontra (verde) e as que faltam (vermelho), para a pessoa ver o buraco na hora.</p></div>
+      <div><h4>Pronto para usar</h4><p>O currículo vem reescrito e editável. Os trechos em amarelo pedem <b>um dado que só a pessoa tem</b>. Exporta em PDF ou Word.</p></div>
+      <div><h4>Cada troca tem um "por quê"</h4><p>A pessoa aprende o motivo, não só copia. Isso é autoridade.</p></div>
+    </div>
+  </div>
+  <div class="num">09</div>
+</section>
+
+<!-- 10 FIM DO RAIO-X -->
+<section class="page">
+  <div class="row" style="align-items:center;height:100%">
+    <div style="width:900px;flex:none">
+      <div class="shot" style="height:720px"><img src="img/rx_result_end.jpg" style="object-position:center 40%"></div>
+    </div>
+    <div>
+      <span class="tag">Raio-X · fechamento</span>
+      <h2>O fim do Raio-X<br>abre a <span class="g">próxima porta</span></h2>
+      <div class="quote" style="margin:20px 0 36px">"O currículo abre a porta. A entrevista cobra o porquê."</div>
+      <div class="why"><ul>
+        <li><b>A oferta só aparece depois</b> que a pessoa recebeu tudo. Primeiro ajuda, depois oferece.</li>
+        <li><b>A frase liga as duas etapas:</b> o currículo resolve o filtro; o livro prepara para a conversa com uma pessoa.</li>
+        <li><b>Duas saídas:</b> comprar o livro (R$ 27,90, PDF na hora, 7 dias para devolver) ou analisar outro PDF.</li>
+        <li>O caminho natural seguinte é o <b>Simulador de Entrevista</b>.</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="num">10</div>
+</section>
+
+<!-- 11 SIMULADOR -->
+<section class="page">
+  <span class="tag">Ferramenta 2 · Simulador de Entrevista C#</span>
+  <h2>Treinar a entrevista <span class="g">antes dela</span></h2>
+  <p class="lead">10 perguntas de múltipla escolha que caem de verdade em entrevista C# e .NET. No fim, a pessoa vê onde errou, por quê e o que o entrevistador queria ouvir.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:44px">
+    <div>
+      <div class="shot" style="height:400px"><img src="img/sim_config.jpg" style="object-position:center 35%"></div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:24px"><span class="step">1</span><b style="font:700 24px Sora">Monta a entrevista</b></div>
+      <p style="color:var(--muted);font-size:19px;line-height:1.5;margin-top:10px">Escolhe o nível (Júnior, Pleno, Sênior), os temas e o tempo. Custa <b style="color:var(--text)">1 crédito</b>, mostrado antes de começar.</p>
+    </div>
+    <div>
+      <div class="shot" style="height:400px"><img src="img/sim_q.jpg" style="object-position:center 40%"></div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:24px"><span class="step">2</span><b style="font:700 24px Sora">Responde com o relógio</b></div>
+      <p style="color:var(--muted);font-size:19px;line-height:1.5;margin-top:10px">Perguntas com código de verdade e cronômetro, como na vida real. Tem a opção <b style="color:var(--text)">"Não sei (melhor que chutar)"</b>, para o resultado ser honesto.</p>
+    </div>
+    <div>
+      <div class="shot" style="height:400px"><img src="img/sim_result.jpg" style="object-position:center 8%"></div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:24px"><span class="step">3</span><b style="font:700 24px Sora">Vê a lacuna e o caminho</b></div>
+      <p style="color:var(--muted);font-size:19px;line-height:1.5;margin-top:10px">Nota por tema, o assunto mais fraco e <b style="color:var(--text)">o capítulo exato do livro</b> que resolve. A oferta vira resposta, não propaganda.</p>
+    </div>
+  </div>
+  <div class="num">11</div>
+</section>
+
+<!-- 12 KITS -->
+<section class="page">
+  <div class="row">
+    <div style="width:760px;flex:none">
+      <span class="tag">Porta 4 · Kits</span>
+      <h2>Kits grátis:<br><span class="g">mostrar como eu trabalho</span></h2>
+      <p class="lead" style="font-size:22px;margin-bottom:34px">Pacotes de IA que eu uso de verdade, liberados com a mesma conta das ferramentas.</p>
+      <div class="why"><ul>
+        <li><b>Grátis em troca da conta.</b> É a forma mais leve de alguém entrar para a base.</li>
+        <li><b>Prova de que eu uso IA no dia a dia:</b> o kit "Reel técnico com Claude" é o fluxo que edito meus próprios vídeos.</li>
+        <li><b>Download na hora</b>, com passo a passo de instalação. Nada de "te mando por e-mail".</li>
+        <li><b>"Em breve" de propósito:</b> o kit de prompts de entrevista C# já aparece, para criar motivo de voltar.</li>
+        <li>Liga dois assuntos: <b>C# + IA</b>, que é onde quero ser referência.</li>
+      </ul></div>
+    </div>
+    <div style="flex:1;position:relative;height:880px">
+      <div class="shot framed" style="position:absolute;left:0;top:0;width:820px;height:400px"><div class="bar"><i></i><i></i><i></i><span>/kits</span></div><img src="img/kits.jpg"></div>
+      <div class="shot framed" style="position:absolute;right:0;top:430px;width:700px;height:450px"><div class="bar"><i></i><i></i><i></i><span>/kits · reel técnico</span></div><img src="img/kits_unlock.jpg"></div>
+    </div>
+  </div>
+  <div class="num">12</div>
+</section>
+
+<!-- 13 JORNADA -->
+<section class="page">
+  <span class="tag">A lógica completa</span>
+  <h2>A jornada de <span class="g">uma pessoa</span></h2>
+  <p class="lead">Exemplo: uma dev pleno procurando vaga. Cada etapa entrega algo antes de pedir algo.</p>
+  <div style="position:relative;margin-top:80px">
+    <div style="position:absolute;left:40px;right:40px;top:23px;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan))"></div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:28px;position:relative">
+      <div><span class="step">1</span><div style="font:700 24px Sora;margin:24px 0 10px">Vê um post</div><p style="color:var(--muted);font-size:19px;line-height:1.5">No LinkedIn, sobre currículo e filtro de vagas.</p><p class="pill" style="margin-top:14px">atenção</p></div>
+      <div><span class="step">2</span><div style="font:700 24px Sora;margin:24px 0 10px">Testa o Raio-X</div><p style="color:var(--muted);font-size:19px;line-height:1.5">Sobe o PDF, entra com Google, ganha 10 créditos.</p><p class="pill" style="margin-top:14px">conta criada</p></div>
+      <div><span class="step">3</span><div style="font:700 24px Sora;margin:24px 0 10px">Me conhece</div><p style="color:var(--muted);font-size:19px;line-height:1.5">No vídeo de espera, ouve sobre a entrevista e o livro.</p><p class="pill" style="margin-top:14px">confiança</p></div>
+      <div><span class="step">4</span><div style="font:700 24px Sora;margin:24px 0 10px">Recebe o resultado</div><p style="color:var(--muted);font-size:19px;line-height:1.5">Nota, currículo reescrito, motivo de cada troca.</p><p class="pill" style="margin-top:14px">valor entregue</p></div>
+      <div><span class="step">5</span><div style="font:700 24px Sora;margin:24px 0 10px">Faz o Simulador</div><p style="color:var(--muted);font-size:19px;line-height:1.5">Ainda tem créditos. Descobre a lacuna e o capítulo certo.</p><p class="pill" style="margin-top:14px">compra o livro</p></div>
+      <div><span class="step">6</span><div style="font:700 24px Sora;margin:24px 0 10px">Volta e indica</div><p style="color:var(--muted);font-size:19px;line-height:1.5">Baixa um kit, segue no LinkedIn, manda para um amigo.</p><p class="pill" style="margin-top:14px">audiência</p></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:80px;padding:30px 38px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px">
+    <div><div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link)">PRINCÍPIO 1</div><div style="font:700 24px Sora;margin-top:10px">Dar antes de pedir</div></div>
+    <div><div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link)">PRINCÍPIO 2</div><div style="font:700 24px Sora;margin-top:10px">Oferta como resposta a um problema que a pessoa acabou de ver</div></div>
+    <div><div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link)">PRINCÍPIO 3</div><div style="font:700 24px Sora;margin-top:10px">Explicar sem jargão: história primeiro, termo técnico no fim</div></div>
+  </div>
+  <div class="num">13</div>
+</section>
+
+<!-- 14 VENDAS (CAKTO) -->
+<section class="page">
+  <span class="tag">Resultados · relatórios da Cakto</span>
+  <h2>O que já <span class="g">vendeu</span></h2>
+  <p class="lead">Vendas registradas na Cakto, a plataforma de pagamento dos produtos digitais. Prints dos relatórios, sem ajuste.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px">
+    <div>
+      <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link);margin-bottom:16px">RECEITA POR PRODUTO · 12/10 A 12/11/2026</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Receita total</div><div style="font:800 34px Sora;color:var(--green);margin-top:4px">R$ 1.020,94</div></div>
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Vendas</div><div style="font:800 34px Sora;margin-top:4px">9</div></div>
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Ticket médio</div><div style="font:800 34px Sora;color:var(--amber);margin-top:4px">R$ 113,44</div></div>
+      </div>
+      <div class="panel" style="padding:8px 24px;font-size:19px">
+        <div style="display:grid;grid-template-columns:1fr 90px 150px;padding:12px 0;color:var(--soft);font-size:15px;letter-spacing:.1em;border-bottom:1px solid var(--line)"><span>PRODUTO</span><span style="text-align:right">VENDAS</span><span style="text-align:right">RECEITA</span></div>
+        <div style="display:grid;grid-template-columns:1fr 90px 150px;padding:12px 0;border-bottom:1px solid var(--line)"><span>Mentoria em C# Sem Medo</span><span style="text-align:right">1</span><b style="text-align:right">R$ 852,60</b></div>
+        <div style="display:grid;grid-template-columns:1fr 90px 150px;padding:12px 0;border-bottom:1px solid var(--line)"><span>C# Moderno Sem Medo (ebook)</span><span style="text-align:right">5</span><b style="text-align:right">R$ 125,66</b></div>
+        <div style="display:grid;grid-template-columns:1fr 90px 150px;padding:12px 0"><span>Claude Code para .NET</span><span style="text-align:right">3</span><b style="text-align:right">R$ 42,68</b></div>
+      </div>
+      <div class="shot" style="height:250px;margin-top:20px"><img src="img/cakto_produto.jpg" style="object-position:center 52%"></div>
+    </div>
+    <div>
+      <div style="font:700 15px Inter;letter-spacing:.14em;color:var(--link);margin-bottom:16px">RECEITA DE CO-PRODUÇÃO · 12/05 A 12/11/2026</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Receita total enviada</div><div style="font:800 34px Sora;color:var(--green);margin-top:4px">R$ 2.025,38</div></div>
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Pico no período</div><div style="font:800 34px Sora;color:var(--cyan);margin-top:4px">R$ 892,52</div></div>
+        <div class="panel" style="padding:18px 20px"><div style="color:var(--muted);font-size:16px">Dias com receita</div><div style="font:800 34px Sora;margin-top:4px">12</div></div>
+      </div>
+      <div class="shot" style="height:520px"><img src="img/cakto_coproducao.jpg" style="object-position:center 0"></div>
+    </div>
+  </div>
+  <div class="num">14</div>
+</section>
+
+</body>
+</html>
